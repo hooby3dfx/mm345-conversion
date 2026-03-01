@@ -1,8 +1,14 @@
 #import <string.h>
 #include <stdio.h>
+#include <stdint.h>
 
+static inline uint16_t rotl16(uint16_t value, uint8_t shift) {
+    // Masking the shift with 15 prevents undefined behavior 
+    // if shift is >= 16
+    return (value << (shift & 15)) | (value >> ((16 - shift) & 15));
+}
 
-int hashFileName( char *name, int len )
+int hashFileNameMM4( char *name, int len )
 {
   int i, h;
 
@@ -21,12 +27,28 @@ int hashFileName( char *name, int len )
   return( h );
 }
 
+uint16_t hashFileNameMM3(const char* fileName, int len)
+{
+  uint16_t hash = 0;
+  while (0 != *fileName)
+  {
+    uint8_t c = ((*fileName & 0x7F) < 0x60) ? *fileName : *fileName - 0x20;
+    hash = rotl16(hash, 9);  // xchg bl, bh | rol bx, 1
+    hash += c;
+    fileName++;
+  }
+  return hash;
+}
+
 int main(int argc,char* argv[]){
 
   if (strlen(argv[1]) >= 0){
-    int hash = hashFileName(argv[1], strlen(argv[1]));
-    printf("%d\n", hash);
-    printf("%04x\n", hash);
+    int mm4hash = hashFileNameMM4(argv[1], strlen(argv[1]));
+    printf("MM4 Hash: %d\n", mm4hash);
+    printf("MM4 Dec : %04x\n", mm4hash);
+    int mm3hash = hashFileNameMM3(argv[1], strlen(argv[1]));
+    printf("MM3 Hash: %d\n", mm3hash);
+    printf("MM3 Dec : %04x\n", mm3hash);
   }
 
 }

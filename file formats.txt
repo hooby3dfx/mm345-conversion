@@ -1,3 +1,13 @@
+Research Notes
+
+Credits/References (standing on the shoulders of giants):
+- dreammaster (ScummVM developer for MM engines) https://github.com/scummvm/scummvm/tree/master/engines/mm/xeen
+- "Wizard Stan" https://xeen.fandom.com/wiki/Xeen_Wiki
+- Jeff Ludwig https://jeffludwig.com/mm3/index.php
+- Cedric Busch http://games.playazlounge.net/
+- ReWolf https://blog.rewolf.pl/blog/?p=1202
+- https://xeenmusic.com/
+
 
 
 MM4 Xeen Clouds file formats (XEEN.CC)
@@ -135,8 +145,10 @@ MAZE01~MAZE106
 - _UNKNOWN_FILE_XXXX.BIN	strings files / map data?
 
 
-Example map:
-MM4 28, Vertigo
+Example map conversion:
+MM4 0028, Vertigo
+MM3 0101, Fountain Head
+
 
 
 
@@ -147,6 +159,17 @@ Sprite conversion:
 	size: 132x86
 - MM4 monster sprites are split into 2 files; .mon (8 frames idle), .att (4 frames attack)
 	size: 250x148?
+
+
+Environment:
+mm3-cc-files/0xf053.ccx contains 13 frames:
+- 00~03: 104x53 front wall, blue with light animated
+- 04~05: 32x85 side wall, blue
+- 06~10: 104x53 font wall doors/gates, blue
+- 11~12: 32x85 side wall pillars, blue
+
+twn	cav	dun	cas	sci
+
 
 
 MM3 sprite format differences:
