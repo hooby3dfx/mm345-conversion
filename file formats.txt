@@ -1,0 +1,163 @@
+
+
+MM4 Xeen Clouds file formats (XEEN.CC)
+MM5 Xeen Darkside file formats (DARK.CC)
+
+
+//sprites: https://xeen.fandom.com/wiki/Sprite_File_Format
+.OBJ	object sprite			https://xeen.fandom.com/wiki/Xxx.OBJ_File_Format
+.MON	monster idle sprite		https://xeen.fandom.com/wiki/ATT_and_MON_File_Format
+.ATT	monster attack sprite	https://xeen.fandom.com/wiki/ATT_and_MON_File_Format
+.PIC	wall sprite
+
+.FAC	portrait sprites	https://xeen.fandom.com/wiki/FAC_File_Format
+
+.GND	environment sprites		https://xeen.fandom.com/wiki/Environment_Set
+.SKY	environment sprites		https://xeen.fandom.com/wiki/Environment_Set
+.TIL	environment minimap		https://xeen.fandom.com/wiki/TIL_File_Format
+.FWL	environment sprites		https://xeen.fandom.com/wiki/Environment_Set
+.SWL	environment sprites		https://xeen.fandom.com/wiki/Environment_Set
+
+.SRF	ground sprites			https://xeen.fandom.com/wiki/SRF_File_Format
+
+
+//text: https://xeen.fandom.com/wiki/Text_File_Format
+.TXT	mirrors, map text	https://xeen.fandom.com/wiki/Mirror_File_Format
+.BIN	text				https://xeen.fandom.com/wiki/Text_File_Format
+
+.HED	map header? 2kb
+.DAT	map				http://xeen.fandom.com/wiki/MAZExxxx.DAT_File_Format
+.EVT	event data		https://xeen.fandom.com/wiki/Event_Scripting
+.MOB	map mons+obj	https://xeen.fandom.com/wiki/MAZExxxx.MOB_File_Format
+
+
+//media:
+.M		music		https://xeen.fandom.com/wiki/M_File_Format
+.VOC	wav sfx		https://xeen.fandom.com/wiki/VOC_File_Format
+
+.VGA	animations	https://xeen.fandom.com/wiki/VGA_File_Format
+
+.RAW	images		https://xeen.fandom.com/wiki/RAW_File_Format
+.PAL	palette		https://xeen.fandom.com/wiki/Palette_File_Format
+
+
+//misc:
+.PTY	savegame		https://xeen.fandom.com/wiki/MAZE.PTY_File_Format
+exe constants			https://github.com/scummvm/scummvm/tree/master/devtools/create_mm/create_xeen
+
+//unknown:
+.ICN	???
+.BUF	???
+.FRM	???
+.END	???
+.TWN	???
+.WAL	???
+.BRD	???
+
+.ccx	Xeen-CC-Packer format file
+
+
+
+
+
+
+
+
+
+
+MM3 Terra file formats (MM3.CC)
+
+.FAC	portrait sprite (same as xeen)?
+.PIC	wall sprite (same as xeen)?
+.MON	monster sprite (same as xeen)?
+.TIL	minimap (same as xeen)?
+
+
+.MAZ	map text?
+.BIN	???
+
+.DAT	some kind of monster data?
+
+
+.RAW	images (same as xeen)?
+.M		music (same as xeen)?
+.VGA	animation (same as xeen)?
+
+
+.BRD	???
+.T		???
+.ICN	???
+.OUT	???
+.SPL	???
+.S		???
+
+
+
+
+
+TODO/PROCESS:
+
+1. Convert MM3 map data to MM4/5 and repack
+2. Convert MM3 sprites data to MM4/5 and repack
+3. Convert MM3 media data to MM4/5 and repack
+4. Hardcoded data in exe; https://github.com/scummvm/scummvm/blob/master/devtools/create_mm/create_xeen/constants.h
+
+
+for wip/testing repack into swords CC file?
+(seems like Xeen CC Packer can't repack the swords file)
+plan B: use clouds file (XEEN.CC)
+
+note: XEEN0028.TXT = Vertigo (starting level)
+
+
+Map structure conversion:
+MM4/5:
+MM4 (XEEN): MAZE0001~MAZE0085 ~ MAZEX100~MAZEX142
+MM5 (DARK): MAZE0001~MAZE0099 ~ MAZEX100~MAZEX183
+SWORDS:		MAZE0001~MAZE0099
+- DARK0001.TXT	text file with name of map only "Map A1"+0x00(null terminated)
+- XEEN0001.TXT	"" for clouds levels
+
+- MAZE0001.EVT	event file ~3kb
+- MAZE0001.DAT	892 bytes
+- MAZE0001.MOB	416 bytes
+- AAZE0001.HED	padding file? just 020100 repeating, 2048 bytes
+- AAZE0001.TXT	strings file
+
+MM3:
+MAZE01~MAZE106
+- MAZE01.DAT	832 bytes; from SAV file!
+- MAZE01.EVT	event file ~2kb; from SAV file!
+- MAZE01.MOB	138 bytes; from SAV file!
+- text01.maz	strings file; from CC file
+
+
+- _UNKNOWN_FILE_XXXX.BIN	strings files / map data?
+
+
+Example map:
+MM4 28, Vertigo
+
+
+
+
+
+Sprite conversion:
+- MM3 .mon sprites are 12 frames; 6 attack and 6 idle?
+	size: 132x86
+- MM4 monster sprites are split into 2 files; .mon (8 frames idle), .att (4 frames attack)
+	size: 250x148?
+
+
+MM3 sprite format differences:
+- CMD 0: same as MM4 CMD 0 (len + 1 bytes are palette indexes)
+- CMD 1: also same as MM4 CMD 0 (len + 1 bytes are palette indexes)
+- CMD 2: NOT SURE... STOP?
+- CMD 3: NOT SURE (stream copy?)
+- CMD 4: same as MM4 CMD 5 (skip len + 1 pixels)
+- CMD 5: same as MM4 CMD 5 but skip len + 33 pixels (like MM4 CMD 1)
+- CMD 6: same as MM4 CMD 2 (draw len + 3 times)
+- CMD 7: NOT SURE; same as MM4 pattern?
+
+
+
