@@ -139,7 +139,7 @@ MAZE01~MAZE106
 - MAZE01.DAT	832 bytes; from SAV file!
 - MAZE01.EVT	event file ~2kb; from SAV file!
 - MAZE01.MOB	138 bytes; from SAV file!
-- text01.maz	strings file; from CC file
+- text01.maz	strings file; from CC file (01~64)
 
 
 - _UNKNOWN_FILE_XXXX.BIN	strings files / map data?
@@ -147,7 +147,7 @@ MAZE01~MAZE106
 
 Example map conversion:
 MM4 0028, Vertigo
-MM3 0101, Fountain Head
+MM3 0001, Fountain Head
 
 
 
