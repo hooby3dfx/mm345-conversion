@@ -52,10 +52,10 @@ def parse_mazedat(map):
 			walladdr = (y*16 + x)*2
 			#for outdoors, base/middle/top/overlay type ids
 			#for indoors, north/east/south/west wall type ids
-			iBase = (map[walladdr] & 0x0F);
-			iMiddle = (map[walladdr]>>4 & 0x0F);
-			iTop = (map[walladdr+1] & 0x0F);
-			iOverlay = (map[walladdr+1]>>4 & 0x0F);
+			WestiBase = (map[walladdr] & 0x0F);
+			SouthiMiddle = (map[walladdr]>>4 & 0x0F);
+			EastiTop = (map[walladdr+1] & 0x0F);
+			NorthiOverlay = (map[walladdr+1]>>4 & 0x0F);
 
 			celladdr = y*16 + x + 512
 			cflags = map[celladdr]
@@ -63,43 +63,62 @@ def parse_mazedat(map):
 
 			# print(f"cell {x},{y}: {iBase}|{iMiddle}|{iTop}|{iOverlay} ({walladdr}) [{cflags}] ({celladdr})")
 			
-			print(f"{iBase}|{iMiddle}|{iTop}|{iOverlay} ", end="")
+			print(f"{NorthiOverlay}|{EastiTop}|{SouthiMiddle}|{WestiBase}({cflags}) ", end="")
 
 			# disp = iBase
 			# print(f"{'{:2d}'.format(disp) if disp!=0 else "  "} ", end="")
 
 		print("")
 		print("")
+	print(f"cell flags: {map[512:]}")
 
 def parse_mazeinfo(mazeinfo):
 
-	'''
-	2 bytes: mazenumber, uint16 value indicating this map ID (see above)
-	"SurrMazes":
-	2 bytes: uint16 value indicating the map ID to the north
-	2 bytes: uint16 value indicating the map ID to the east
-	2 bytes: uint16 value indicating the map ID to the south
-	2 bytes: uint16 value indicating the map ID to the west
-	2 bytes: mazeFlags
-	2 bytes: mazeFlags2
-	'''
+	print(f"mm3 map id: {mazeinfo[31]}")
+
 
 	print(f"mm4 map id: {mazeinfo[0]}")
 	# print(f"mm4 map id: {mazeinfo[1]}")
 
 	print(f"mm4 surr N: {mazeinfo[2]}")
-	print(f"mm4 surr E: {mazeinfo[3]}")
-	print(f"mm4 surr S: {mazeinfo[4]}")
-	print(f"mm4 surr W: {mazeinfo[5]}")
+	print(f"mm4 surr E: {mazeinfo[4]}")
+	print(f"mm4 surr S: {mazeinfo[6]}")
+	print(f"mm4 surr W: {mazeinfo[8]}")
 
-	print(f"mm4 mazeFlags00: {mazeinfo[6]}")
-	print(f"mm4 mazeFlags01: {mazeinfo[7]}")
-	print(f"mm4 mazeFlags02: {mazeinfo[8]}") #dark, outdoors
-	print(f"mm4 mazeFlags03: {mazeinfo[9]}")
+	print(f"mm4 mazeFlags00: {mazeinfo[10]}")
+	print(f"mm4 mazeFlags01: {mazeinfo[11]}")
+	print(f"mm4 mazeFlags02: {mazeinfo[12]}") #dark, outdoors
+	print(f"mm4 mazeFlags03: {mazeinfo[13]}")
+	wallTypes = mazeinfo[14:30]
+	surfTypes = mazeinfo[30:46]
+	floorType = mazeinfo[46]
+	runX = mazeinfo[47]
+	wallNoPass = mazeinfo[48]
+	surfNoPass = mazeinfo[49]
+	unlockDoor = mazeinfo[50]
+	unlockBox = mazeinfo[51]
+	bashDoor = mazeinfo[52]
+	bashGrate = mazeinfo[53]
+	bashWall = mazeinfo[54]
+	chanceToRun = mazeinfo[55]
+	runY = mazeinfo[56]
+	trapDmg = mazeinfo[57]
+	wallKind = mazeinfo[58]
+	tavernTips = mazeinfo[59]
+
+	print(f"wallTypes: {wallTypes}")
+	print(f"surfTypes: {surfTypes}")
+	print(f"floorType: {floorType}")
+	print(f"wallKind: {wallKind}")
+
+
+	fog = mazeinfo[60:]
+	# print(f"mazeinfo remainder {len(fog)}")
+	if len(fog) != 64:
+		print(f"mm3 mazeinfo remainder: {fog}")
 
 
 
-	print(f"mm3 map id: {mazeinfo[31]}")
 
 
 

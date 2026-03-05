@@ -110,7 +110,8 @@ TODO/PROCESS:
 1. Convert MM3 map data to MM4/5 and repack
 2. Convert MM3 sprites data to MM4/5 and repack
 3. Convert MM3 media data to MM4/5 and repack
-4. Hardcoded data in exe; https://github.com/scummvm/scummvm/blob/master/devtools/create_mm/create_xeen/constants.h
+4. Convert MM3 stats data to MM4/5 and repack
+5. Hardcoded data in exe; https://github.com/scummvm/scummvm/blob/master/devtools/create_mm/create_xeen/constants.h
 
 
 for wip/testing repack into swords CC file?
