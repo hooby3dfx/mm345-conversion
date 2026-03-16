@@ -33,7 +33,20 @@ MM4: 892
 "Fog":
 32 bytes: 16x16 bit array indicating which tiles have been "seen"
 32 bytes: 16x16 bit array indicating which tiles have been "stepped on"
+
+indoor wall tiles:
+
+0: empty
+2: column
+4: small door
+7: large door
+8: wall
+9: gate
+10: flag
+12: torch
+
 '''
+
 
 
 '''
@@ -43,10 +56,76 @@ MM3: 832
 
 64?
 
+indoor wall tiles:
+
+0: empty
+2: door
+6: gate
+7: columns
+9: wall
+11: art?
+12: gate
+
 
 '''
+def combine_nibbles(high_nibble, low_nibble):
+    # 1. Shift high_nibble 4 bits to the left
+    # 2. Use the OR (|) operator to merge it with low_nibble
+    return (high_nibble << 4) | low_nibble
 
-def parse_mazedat(map):
+def wall3to4(wall3):
+	match wall3:
+		case 0: #empty
+			return 0
+		case 2: #door
+			return 4
+		case 6: #gate
+			return 9
+		case 7: #columns
+			return 2
+		case 9: #wall
+			return 8
+		case 11: #torch?
+			return 12
+		case 12: #gate (alt)
+			return 6
+		case _:
+			print("unhandled wall3")
+			return 0
+
+
+def convert_3to4(map):
+	mm3to4 = bytearray()
+
+	for y in range(16):#do NOT reverse y
+		for x in range(16):
+			walladdr = (y*16 + x)*2
+			#for outdoors, base/middle/top/overlay type ids
+			#for indoors, north/east/south/west wall type ids
+			WestiBase = (map[walladdr] & 0x0F);
+			SouthiMiddle = (map[walladdr]>>4 & 0x0F);
+			EastiTop = (map[walladdr+1] & 0x0F);
+			NorthiOverlay = (map[walladdr+1]>>4 & 0x0F);
+
+			# celladdr = y*16 + x + 512
+			# cflags = map[celladdr]
+			
+			# print(f"{NorthiOverlay}|{EastiTop}|{SouthiMiddle}|{WestiBase}({cflags}) ", end="")
+
+			# convert from MM3 enums to MM4 enums
+			mm3to4.append(combine_nibbles(wall3to4(SouthiMiddle), wall3to4(WestiBase)))
+			mm3to4.append(combine_nibbles(wall3to4(NorthiOverlay), wall3to4(EastiTop)))
+
+	# print(f"mm3to4: {mm3to4}")
+	# print("")
+	mm3to4.extend(bytearray(256))
+	parse_mazedat(mm3to4)
+	with open("mm3to4dat.bin", "wb") as f:
+		f.write(mm3to4)
+
+
+def parse_mazedat(map, is_mm3=False):
+
 	for y in range(15,-1,-1):#reverse y
 		for x in range(16):
 			walladdr = (y*16 + x)*2
@@ -72,13 +151,22 @@ def parse_mazedat(map):
 		print("")
 	print(f"cell flags: {map[512:]}")
 
+
 def parse_mazeinfo(mazeinfo):
 
-	print(f"mm3 map id: {mazeinfo[31]}")
+	is_mm3 = False
 
-
-	print(f"mm4 map id: {mazeinfo[0]}")
+	mm3id = mazeinfo[31]
+	print(f"mm3 map id: {mm3id}")
+	mm4id = mazeinfo[0]
+	print(f"mm4 map id: {mm4id}")
 	# print(f"mm4 map id: {mazeinfo[1]}")
+
+	if mm3id and not mm4id:
+		#very dumb "detection"
+		is_mm3 = True
+
+
 
 	print(f"mm4 surr N: {mazeinfo[2]}")
 	print(f"mm4 surr E: {mazeinfo[4]}")
@@ -117,6 +205,7 @@ def parse_mazeinfo(mazeinfo):
 	if len(fog) != 64:
 		print(f"mm3 mazeinfo remainder: {fog}")
 
+	return is_mm3
 
 
 
@@ -137,9 +226,13 @@ def parse_mazefile(filepath):
 		# print(f"mm4 map id: {data[768]}")
 		# print(f"mm4 map id: {mazeinfo[0]}")
 		
-		parse_mazedat(mazedat)
+		is_mm3 = parse_mazeinfo(mazeinfo)
 
-		parse_mazeinfo(mazeinfo)
+		parse_mazedat(mazedat, is_mm3)
+
+		if is_mm3:
+			convert_3to4(mazedat)
+
 
 		print("")
 
@@ -151,5 +244,5 @@ parse_mazefile("scummvmxeen/mazex255-og.dat")
 parse_mazefile("scummvmxeen/mazex255.dat")
 
 parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
-parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
+# parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
 
