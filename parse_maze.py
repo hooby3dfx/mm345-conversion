@@ -210,8 +210,6 @@ def parse_mazeinfo(mazeinfo):
 
 
 
-
-
 def parse_mazefile(filepath):
 	print(f"parsing {filepath}")
 	with open(filepath, "rb") as f:
@@ -233,8 +231,34 @@ def parse_mazefile(filepath):
 		if is_mm3:
 			convert_3to4(mazedat)
 
-
 		print("")
+
+
+'''
+MM3 has 90 monsters?
+
+list1: monsters?
+list2: sprite objects (fountain, chest)
+
+'''
+def parse_mob(filepath):
+	print(f"parsing {filepath}")
+	with open(filepath, "rb") as f:
+		data = f.read()
+		fsize = len(data)
+		print(f"mob list size: {fsize} {':)' if fsize%3==0 else ':('}")
+		list_type = 0
+		for iobj in range(fsize//3):
+			i = iobj*3
+			ox = data[i]
+			oy = data[i+1]
+			oid = data[i+2]
+			if oid > 6:
+				list_type+=1
+				# print(f"list_type: {list_type}")
+				print(f"next list with ids: {oid} {ox} {oy}")
+			else:
+				print(f"object {oid} at x: {ox}, y: {oy}")
 
 
 
@@ -245,4 +269,8 @@ parse_mazefile("scummvmxeen/mazex255.dat")
 
 parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
 # parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
+
+parse_mob("mm3_default.sav-files/MAZE01.MOB")
+parse_mob("mm3_default.sav-files/MAZE02.MOB")
+parse_mob("mm3_default.sav-files/MAZE03.MOB")
 
