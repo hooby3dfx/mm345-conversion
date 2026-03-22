@@ -118,7 +118,9 @@ def convert_3to4(map):
 
 	# print(f"mm3to4: {mm3to4}")
 	# print("")
-	mm3to4.extend(bytearray(256))
+	mm3to4.extend(bytearray(256))#cell flags
+	mm3to4.extend(bytearray(60))#properties
+	mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
 	parse_mazedat(mm3to4)
 	with open("mm3to4dat.bin", "wb") as f:
 		f.write(mm3to4)
@@ -156,54 +158,78 @@ def parse_mazeinfo(mazeinfo):
 
 	is_mm3 = False
 
+	if (len(mazeinfo)==64):
+		is_mm3 = True
+
 	mm3id = mazeinfo[31]
 	print(f"mm3 map id: {mm3id}")
 	mm4id = mazeinfo[0]
 	print(f"mm4 map id: {mm4id}")
 	# print(f"mm4 map id: {mazeinfo[1]}")
 
-	if mm3id and not mm4id:
-		#very dumb "detection"
-		is_mm3 = True
+	# if mm3id and not mm4id:
+	# 	#very dumb "detection"
+	# 	is_mm3 = True
+
+	if is_mm3:
+		print("parsing as mm3")
+		i07 = mazeinfo[7]
+		# i12~i15 010101
+		i16 = mazeinfo[16]
+		i17 = mazeinfo[17]
+		i18 = mazeinfo[18]
+		i19 = mazeinfo[19]
+		# i20~i23 010101
+		i24 = mazeinfo[24]
+		i25 = mazeinfo[25]
+		i26 = mazeinfo[26]
+		i27 = mazeinfo[27]
+
+		i28 = mazeinfo[28]
+		i29 = mazeinfo[29]
+		i30 = mazeinfo[30]
+		mm3id = mazeinfo[31]
+
+		mm3fog = mazeinfo[32:]#seen?
+
+	else:
+		print("parsing as mm4")
+
+		print(f"mm4 surr N: {mazeinfo[2]}")
+		print(f"mm4 surr E: {mazeinfo[4]}")
+		print(f"mm4 surr S: {mazeinfo[6]}")
+		print(f"mm4 surr W: {mazeinfo[8]}")
+
+		print(f"mm4 mazeFlags00: {mazeinfo[10]}")
+		print(f"mm4 mazeFlags01: {mazeinfo[11]}")
+		print(f"mm4 mazeFlags02: {mazeinfo[12]}") #dark, outdoors
+		print(f"mm4 mazeFlags03: {mazeinfo[13]}")
+		wallTypes = mazeinfo[14:30]
+		surfTypes = mazeinfo[30:46]
+		floorType = mazeinfo[46]
+		runX = mazeinfo[47]
+		wallNoPass = mazeinfo[48]
+		surfNoPass = mazeinfo[49]
+		unlockDoor = mazeinfo[50]
+		unlockBox = mazeinfo[51]
+		bashDoor = mazeinfo[52]
+		bashGrate = mazeinfo[53]
+		bashWall = mazeinfo[54]
+		chanceToRun = mazeinfo[55]
+		runY = mazeinfo[56]
+		trapDmg = mazeinfo[57]
+		wallKind = mazeinfo[58]
+		tavernTips = mazeinfo[59]
+
+		print(f"wallTypes: {wallTypes}")
+		print(f"surfTypes: {surfTypes}")
+		print(f"floorType: {floorType}")
+		print(f"wallKind: {wallKind}")
 
 
+		mm4fog = mazeinfo[60:] #64 bytes (32 seen, 32 stepped on)
 
-	print(f"mm4 surr N: {mazeinfo[2]}")
-	print(f"mm4 surr E: {mazeinfo[4]}")
-	print(f"mm4 surr S: {mazeinfo[6]}")
-	print(f"mm4 surr W: {mazeinfo[8]}")
-
-	print(f"mm4 mazeFlags00: {mazeinfo[10]}")
-	print(f"mm4 mazeFlags01: {mazeinfo[11]}")
-	print(f"mm4 mazeFlags02: {mazeinfo[12]}") #dark, outdoors
-	print(f"mm4 mazeFlags03: {mazeinfo[13]}")
-	wallTypes = mazeinfo[14:30]
-	surfTypes = mazeinfo[30:46]
-	floorType = mazeinfo[46]
-	runX = mazeinfo[47]
-	wallNoPass = mazeinfo[48]
-	surfNoPass = mazeinfo[49]
-	unlockDoor = mazeinfo[50]
-	unlockBox = mazeinfo[51]
-	bashDoor = mazeinfo[52]
-	bashGrate = mazeinfo[53]
-	bashWall = mazeinfo[54]
-	chanceToRun = mazeinfo[55]
-	runY = mazeinfo[56]
-	trapDmg = mazeinfo[57]
-	wallKind = mazeinfo[58]
-	tavernTips = mazeinfo[59]
-
-	print(f"wallTypes: {wallTypes}")
-	print(f"surfTypes: {surfTypes}")
-	print(f"floorType: {floorType}")
-	print(f"wallKind: {wallKind}")
-
-
-	fog = mazeinfo[60:]
-	# print(f"mazeinfo remainder {len(fog)}")
-	if len(fog) != 64:
-		print(f"mm3 mazeinfo remainder: {fog}")
+	
 
 	return is_mm3
 
@@ -229,15 +255,16 @@ def parse_mazefile(filepath):
 		parse_mazedat(mazedat, is_mm3)
 
 		if is_mm3:
+			print("converting 3to4:")
 			convert_3to4(mazedat)
 
 		print("")
 
 
 '''
-MM3 has 90 monsters?
+MM3 has 90 monster types?
 
-list1: monsters?
+list1: monsters
 list2: sprite objects (fountain, chest)
 
 '''

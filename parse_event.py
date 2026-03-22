@@ -25,9 +25,9 @@ OPCODE_MAP = {
     0x38: ("GotoRandom", "Count (1 byte), followed by N Line numbers"),
     0x3B: ("FlipWorld", "Side flag (1 byte): 0=Clouds, 1=Darkside"),
     0x3C: ("PlayCD", "Track (1 byte), Start (2 bytes), End (2 bytes)"),
+    
     #mm3
     0x11: ("Shop", "ID type shop (0:bank/1:blacksmith/2:magicguild/3:inn/4:pub/5:temple/6:training)"),
-
     #0x03
     #0x07
     #0x08
@@ -39,6 +39,70 @@ OPCODE_MAP = {
     #0x19
     #0x1B
     #0x1F
+}
+
+OPCODE_MAP = {
+    0x00: ("NOP", "No operation"),
+    0x01: ("Display", "Text ID (1b)"),
+    0x02: ("DoorTextSml", "Text ID (1b)"),
+    0x03: ("DoorTextLrg", "Text ID (1b)"),
+    0x04: ("SignText", "Text ID (1b)"),
+    0x05: ("NPC", "Name ID, Conv ID, FaceID, Confirm, [NextLine]"),
+    0x06: ("PlayFX", "Effect ID"),
+    0x07: ("TeleportExit", "MapID, X, Y"),
+    0x08: ("If_Type1", "CompType, Value(2b), DestLine"),
+    0x09: ("If_Type2", "CompType, Value(2b), DestLine"),
+    0x0A: ("If_Type3", "CompType, Value(2b), DestLine"),
+    0x0B: ("MoveObj", "ObjNum, X, Y"),
+    0x0C: ("TakeOrGive", "TakeType, Obj1(2b), GiveType, Obj2(2b)"),
+    0x0D: ("NoAction", "-"),
+    0x0E: ("Remove", "-"),
+    0x0F: ("SetChar", "CharIndex"),
+    0x10: ("Spawn", "MonsterID, X, Y, Unk"),
+    0x11: ("DoTownEvent", "TownEventID"),
+    0x12: ("Exit", "-"),
+    0x13: ("AlterMap", "X, Y, Wall, Val"),
+    0x14: ("GiveExtended", "Unknown"),
+    0x15: ("ConfirmWord", "Word1 ID, Dest, Word2 ID, Prompt ID"),
+    0x16: ("Damage", "Amount (uint16), Type"),
+    0x17: ("JumpRnd", "Max, Comp, DestLine"),
+    0x18: ("AlterEvent", "LineNum, NewOpcode"),
+    0x19: ("CallEvent", "X, Y, Facing"),
+    0x1A: ("Return", "-"),
+    0x1B: ("SetVar", "VarID, Value(2b)"),
+    0x1C: ("TakeOrGive", "GiveType, Comp(2b), GiveType2, Obj2(2b)"),
+    0x1D: ("TakeOrGive", "TakeType, Obj1(2b), GiveType, Obj2(2b)"),
+    0x1E: ("CutsceneClouds", "-"),
+    0x1F: ("TeleportCont", "MapID, X, Y"),
+    0x20: ("WhoWill", "WhatIdx, Desc ID"),
+    0x21: ("RndDamage", "Type, Max"),
+    0x22: ("MoveWallObj", "WallObjNum, X, Y"),
+    0x23: ("AlterCellFlag", "X, Y, NewVal"),
+    0x24: ("AlterHed", "NewVal (uint16)"),
+    0x25: ("DisplayStat", "Text ID"),
+    0x26: ("TakeOrGive", "GiveType, Obj1(2b), GiveType2, Obj2(2b)"),
+    0x27: ("SeaTextSml", "Text ID"),
+    0x28: ("PlayEventVoc", "VocIndex"),
+    0x29: ("DisplayBottom", "Desc ID"),
+    0x2A: ("IfMapFlag", "MonsterID, DestLine"),
+    0x2B: ("SelRndChar", "-"),
+    0x2C: ("GiveEnchanted", "Type, Base, Extra, Unk"),
+    0x2D: ("ItemType", "ItemType"),
+    0x2E: ("MakeNothing", "-"),
+    0x2F: ("NoAction", "-"),
+    0x30: ("ChooseNum", "OptCount, Array[LineNums]"),
+    0x31: ("DisplayBtm2", "Line1 ID, Line2 ID"),
+    0x32: ("DisplayLarge", "Text ID"),
+    0x33: ("ExchObj", "Obj1, Obj2"),
+    0x34: ("FallToMap", "MapID, X, Y, Damage"),
+    0x35: ("DisplayMain", "Text ID"),
+    0x36: ("Goto", "Surface, DestLine"),
+    0x37: ("ConfirmWord2", "W1 ID, Dest1, W2 ID, Dest2"),
+    0x38: ("GotoRandom", "Count, Array[LineNums]"),
+    0x39: ("CutsceneDark", "-"),
+    0x3A: ("CutsceneWorld", "-"),
+    0x3B: ("FlipWorld", "SideFlag"),
+    0x3C: ("PlayCD", "Track, Start(2b), End(2b)"),
 }
 
 class XeenEventLine:
