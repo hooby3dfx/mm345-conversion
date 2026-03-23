@@ -113,6 +113,11 @@ TODO/PROCESS:
 4. Convert MM3 stats data to MM4/5 and repack
 5. Hardcoded data in exe; https://github.com/scummvm/scummvm/blob/master/devtools/create_mm/create_xeen/constants.h
 
+Spreadsheet for tracking various files/data:
+https://docs.google.com/spreadsheets/d/1ZnpPGrpL8T8_RxN9iaA6Pihs1jsHjdaLoyRq2ptRnuo/edit?usp=sharing
+
+
+
 
 for wip/testing repack into swords CC file?
 (seems like Xeen CC Packer can't repack the swords file)

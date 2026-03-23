@@ -268,24 +268,32 @@ list1: monsters
 list2: sprite objects (fountain, chest)
 
 '''
-def parse_mob(filepath):
+def parse_mm3_mob(filepath):
 	print(f"parsing {filepath}")
 	with open(filepath, "rb") as f:
 		data = f.read()
 		fsize = len(data)
 		print(f"mob list size: {fsize} {':)' if fsize%3==0 else ':('}")
-		list_type = 0
+
+		skip1 = False
+		print("monster list ids: ???")
 		for iobj in range(fsize//3):
+			if skip1:
+			    skip1 = False
+			    continue
+
 			i = iobj*3
+
 			ox = data[i]
 			oy = data[i+1]
 			oid = data[i+2]
-			if oid > 6:
-				list_type+=1
+
+			if ox==255:
 				# print(f"list_type: {list_type}")
-				print(f"next list with ids: {oid} {ox} {oy}")
+				print(f"object list ids: \n0: {data[i+1]:2d}\n1: {data[i+2]:2d}\n2: {data[i+3]:2d}\n3: {data[i+4]:2d}{'' if data[i+5]==255 else f'\n4: {data[i+5]:2d}'}")
+				skip1 = True
 			else:
-				print(f"object {oid} at x: {ox}, y: {oy}")
+				print(f"({ox:2d}, {oy:2d}) id: {oid}")
 
 
 
@@ -297,7 +305,14 @@ parse_mazefile("scummvmxeen/mazex255.dat")
 parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
 # parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
 
-parse_mob("mm3_default.sav-files/MAZE01.MOB")
-parse_mob("mm3_default.sav-files/MAZE02.MOB")
-parse_mob("mm3_default.sav-files/MAZE03.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE05.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE06.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE07.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE08.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE09.MOB")
+
 
