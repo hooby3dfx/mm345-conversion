@@ -118,7 +118,7 @@ def convert_3to4(map):
 
 	# print(f"mm3to4: {mm3to4}")
 	# print("")
-	mm3to4.extend(bytearray(256))#cell flags
+	mm3to4.extend(bytearray([0x10]) * 256)#cell flags
 	mm3to4.extend(bytearray(60))#properties
 	mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
 	parse_mazedat(mm3to4)
@@ -152,6 +152,8 @@ def parse_mazedat(map, is_mm3=False):
 		print("")
 		print("")
 	print(f"cell flags: {map[512:]}")
+	#example: 	cell	 17 (0x11) (0b00010001)
+	#FLAG_AUTOEXECUTE_EVENT = 0x10 (0b00010000)
 
 
 def parse_mazeinfo(mazeinfo):

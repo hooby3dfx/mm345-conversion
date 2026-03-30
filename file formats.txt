@@ -142,10 +142,10 @@ SWORDS:		MAZE0001~MAZE0099
 
 MM3:
 MAZE01~MAZE106
-- MAZE01.DAT	832 bytes; from SAV file!
-- MAZE01.EVT	event file ~2kb; from SAV file!
-- MAZE01.MOB	138 bytes; from SAV file!
-- text01.maz	strings file; from CC file (01~64)
+- MAZE01.DAT	832 bytes; from SAV file! [similar but different from MM4]
+- MAZE01.EVT	event file ~2kb; from SAV file! [SAME AS MM4!]
+- MAZE01.MOB	138 bytes; from SAV file! [different from MM4]
+- text01.maz	strings file; from CC file (01~64) [SAME AS MM4!]
 
 
 - _UNKNOWN_FILE_XXXX.BIN	strings files / map data?
@@ -174,6 +174,7 @@ mm3-cc-files/0xf053.ccx contains 13 frames:
 - 06~10: 104x53 font wall doors/gates, blue
 - 11~12: 32x85 side wall pillars, blue
 
+Tilesets:
 twn	cav	dun	cas	sci
 
 
@@ -187,6 +188,19 @@ MM3 sprite format differences:
 - CMD 5: same as MM4 CMD 5 but skip len + 33 pixels (like MM4 CMD 1)
 - CMD 6: same as MM4 CMD 2 (draw len + 3 times)
 - CMD 7: NOT SURE; same as MM4 pattern?
+
+
+
+
+Progress notes:
+-Indoor map parsing working, need to do sprites
+-Monster/object parsing working, need to determine which monsters
+-Events mostly working as-is, some differences: display 0x01 -> 0x29 ✅
+-Event facing: 0(N),1(E),2(S),3(W),4(any) -> E&S are swapped! ✅
+-Display events not auto triggering, not sure why - needed cell flag for auto execute - sorted! ✅
+-Need to come up with process for entry point and repacking. For example, do I put MM3 maze 01 into MM4 maze 28 (starting level?)
+-Need to parse/convert outdoor map!
+-
 
 
 
