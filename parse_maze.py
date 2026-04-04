@@ -87,14 +87,122 @@ def wall3to4(wall3):
 			return 8
 		case 11: #torch?
 			return 12
-		case 12: #gate (alt)
+		case 12: #town gate
+			return 7
+		case _:
+			print(f"unhandled wall3: {wall3}")
+			return 0
+
+def top3to4(top3):
+	match top3:
+		case 0: #empty
+			return 0
+		case 3: #temple
+			return 9
+		case 6: #caravan
+			return 6
+		case 8: #empty
+			return 0
+		case 9: #houses/village
+			return 8
+		case 14: #caravan
 			return 6
 		case _:
-			print("unhandled wall3")
+			print(f"unhandled top3: {top3}")
 			return 0
 
 
-def convert_3to4(map):
+'''
+MM4 base layer values (surface type index):
+
+0 = no surface drawn, the default ground sprite shows through
+1 = DIRT.SRF
+2 = GRASS.SRF
+3 = SNOW.SRF
+4 = SWAMP.SRF
+5 = LAVA.SRF
+6 = DESERT.SRF
+7 = ROAD.SRF
+8 = WATER.SRF
+9 = TFLR.SRF
+10 = SKY.SRF
+11 = CROAD.SRF
+12 = SEWER.SRF
+13 = CLOUD.SRF
+14 = SCORTCH.SRF 
+15 = SPACE.SRF
+16. space			00	middle layer (wall type index)
+17. mountain		01
+18. trees			02
+19. forest			03
+20. tall grass		04
+21. pine trees		05
+22. pine forest		06
+23. mountain2		07
+24. birch trees		08
+25. hill			09
+26. volcano			10
+27. palm			11
+28. dune			12
+29. dead trees		13
+30. dead trees2		14
+31. space			15
+32. space			00	top layer (direct reference)
+33. tower			01
+34. tent			02
+35. hut				03
+36. fountain		04
+37. castle			05
+38. caravan			06
+39. pyramid 		07
+40. houses			08
+41. temple			09
+42. wood?			10
+43. straw hut		11
+44. cave			12
+45. temple			13
+46. space			14
+47. space			15
+
+
+MM3 OUT.TIL:
+0. water
+1. mountain
+2. trees
+3. forest
+4. tall grass
+5. trees		->	2
+6. mountain2	->	1
+7. trees
+8. hill
+9. volcano
+10. palm
+11. dune
+12. grass
+13. dirt		->	2
+14. snow		->	1
+15. swamp
+16. lava
+17. sand
+18. road
+19. up
+20. down
+21. right
+22. left
+23. houses
+24. castle
+25. temple
+26. hut
+27. pyramid
+28. caravan
+29. gold house?
+30. x
+
+
+'''
+
+
+def convert_3to4(map, indoor=True):
 	mm3to4 = bytearray()
 
 	for y in range(16):#do NOT reverse y
@@ -112,9 +220,29 @@ def convert_3to4(map):
 			
 			# print(f"{NorthiOverlay}|{EastiTop}|{SouthiMiddle}|{WestiBase}({cflags}) ", end="")
 
-			# convert from MM3 enums to MM4 enums
-			mm3to4.append(combine_nibbles(wall3to4(SouthiMiddle), wall3to4(WestiBase)))
-			mm3to4.append(combine_nibbles(wall3to4(NorthiOverlay), wall3to4(EastiTop)))
+			if indoor:
+				# convert from MM3 enums to MM4 enums
+				mm3to4.append(combine_nibbles(wall3to4(SouthiMiddle), wall3to4(WestiBase)))
+				mm3to4.append(combine_nibbles(wall3to4(NorthiOverlay), wall3to4(EastiTop)))
+			else:
+				# outdoor
+				# convert from MM3 enums to MM4 enums
+
+				# mm3to4.append(combine_nibbles(SouthiMiddle, WestiBase))
+				# mm3to4.append(combine_nibbles(NorthiOverlay, EastiTop))
+
+				# mm3to4.append(combine_nibbles(WestiBase, SouthiMiddle))
+				# mm3to4.append(combine_nibbles(EastiTop, NorthiOverlay))
+
+				# MM3 nibble is actually a 7 bit number?
+				# index into 7 byte array at byte offset 768
+				# 8th bit purpose TBC...
+
+				#								middle		base
+				mm3to4.append(combine_nibbles(WestiBase, SouthiMiddle))
+				#								overlay		top
+				mm3to4.append(combine_nibbles(0,		 top3to4(EastiTop)))#EastiTop, NorthiOverlay
+
 
 	# print(f"mm3to4: {mm3to4}")
 	# print("")
@@ -258,7 +386,7 @@ def parse_mazefile(filepath):
 
 		if is_mm3:
 			print("converting 3to4:")
-			convert_3to4(mazedat)
+			convert_3to4(mazedat, False)
 
 		print("")
 
@@ -343,12 +471,15 @@ def parse_mm3_mob(filepath):
 
 
 parse_mazefile("ext_cld_world/MAZE0028.DAT")
-parse_mazefile("scummvmxeen/mazex255-og.dat")
+# parse_mazefile("scummvmxeen/mazex255-og.dat")
+parse_mazefile("ext_cld_world/MAZE0023.DAT")
 
-parse_mazefile("scummvmxeen/mazex255.dat")
+# parse_mazefile("scummvmxeen/mazex255.dat")
 
 parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
 # parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
+parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
+
 
 parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")

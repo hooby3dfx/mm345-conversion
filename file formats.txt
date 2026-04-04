@@ -152,10 +152,12 @@ MAZE01~MAZE106
 
 
 Example map conversion:
+indoor:
 MM4 0028, Vertigo
 MM3 0001, Fountain Head
-
-
+outdoor:
+MM4	0023, Area F3 (outside Vertigo)
+MM3 0041, Area A1 (outside Fountain Head)
 
 
 
@@ -199,6 +201,7 @@ Progress notes:
 -Event facing: 0(N),1(E),2(S),3(W),4(any) -> E&S are swapped! ✅
 -Display events not auto triggering, not sure why - needed cell flag for auto execute - sorted! ✅
 -Need to come up with process for entry point and repacking. For example, do I put MM3 maze 01 into MM4 maze 28 (starting level?)
+	lets try to keep the MM3 IDs
 -Need to parse/convert outdoor map!
 -
 
