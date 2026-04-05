@@ -87,8 +87,8 @@ def wall3to4(wall3):
 			return 8
 		case 11: #torch?
 			return 12
-		case 12: #town gate
-			return 7
+		case 12: #town gate?
+			return 9 #7
 		case _:
 			print(f"unhandled wall3: {wall3}")
 			return 0
@@ -234,9 +234,9 @@ def convert_3to4(map, indoor=True):
 				# mm3to4.append(combine_nibbles(WestiBase, SouthiMiddle))
 				# mm3to4.append(combine_nibbles(EastiTop, NorthiOverlay))
 
-				# MM3 nibble is actually a 7 bit number?
+				# MM3 nibble is actually a 3 bit number?
 				# index into 7 byte array at byte offset 768
-				# 8th bit purpose TBC...
+				# 4th bit purpose TBC...
 
 				#								middle		base
 				mm3to4.append(combine_nibbles(WestiBase, SouthiMiddle))
@@ -247,7 +247,8 @@ def convert_3to4(map, indoor=True):
 	# print(f"mm3to4: {mm3to4}")
 	# print("")
 	mm3to4.extend(bytearray([0x10]) * 256)#cell flags
-	mm3to4.extend(bytearray(60))#properties
+	mazeinfo = convert_mazeinfo()#len60
+	mm3to4.extend(mazeinfo)#properties
 	mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
 	parse_mazedat(mm3to4)
 	with open("mm3to4dat.bin", "wb") as f:
@@ -364,6 +365,73 @@ def parse_mazeinfo(mazeinfo):
 	return is_mm3
 
 
+def convert_mazeinfo():
+	indoor = True
+	mazeinfo = bytearray(60)
+
+	maze_id = 41
+	maze_surr_N = 0
+	maze_surr_E = 0
+	maze_surr_S = 0
+	maze_surr_W = 0
+	maze_flags00 = 0
+	maze_flags01 = 0
+	maze_flags02 = 0
+	maze_flags03 = 0 if indoor else 128 #indoor 0; outdoor 128
+
+	if indoor:	
+		wallTypes = [0x00, 0x01, 0x02, 0x03, 0x00, 0x05, 0x00, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x00, 0x0D, 0x0E, 0x0F]
+		surfTypes = [0x00, 0x01, 0x02, 0x03, 0x00, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x0D, 0x0E, 0x0F]
+	else:
+		wallTypes = [0x00, 0x01, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00]
+		surfTypes = [0x00, 0x01, 0x02, 0x03, 0x04, 0x02, 0x01, 0x07, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x02, 0x01, 0x0F]
+
+	floorType = 0
+	runX = 0
+	wallNoPass = 7
+	surfNoPass = 0
+	unlockDoor = 0
+	unlockBox = 0
+	bashDoor = 0
+	bashGrate = 0
+	bashWall = 0
+	chanceToRun = 0
+	runY = 0
+	trapDmg = 0
+	wallKind = 0
+	tavernTips = 0
+
+
+
+	mazeinfo[0] = maze_id
+	mazeinfo[2] = maze_surr_N
+	mazeinfo[4] = maze_surr_E
+	mazeinfo[6] = maze_surr_S
+	mazeinfo[8] = maze_surr_W
+	mazeinfo[10] = maze_flags00
+	mazeinfo[11] = maze_flags01
+	mazeinfo[12] = maze_flags02
+	mazeinfo[13] = maze_flags03
+	
+	mazeinfo[14:30] = wallTypes
+	mazeinfo[30:46] = surfTypes
+
+	mazeinfo[46] = floorType
+	mazeinfo[47] = runX
+	mazeinfo[48] = wallNoPass
+	mazeinfo[49] = surfNoPass
+	mazeinfo[50] = unlockDoor
+	mazeinfo[51] = unlockBox
+	mazeinfo[52] = bashDoor
+	mazeinfo[53] = bashGrate
+	mazeinfo[54] = bashWall
+	mazeinfo[55] = chanceToRun
+	mazeinfo[56] = runY
+	mazeinfo[57] = trapDmg
+	mazeinfo[58] = wallKind
+	mazeinfo[59] = tavernTips
+
+	return mazeinfo
 
 
 def parse_mazefile(filepath):
@@ -386,88 +454,11 @@ def parse_mazefile(filepath):
 
 		if is_mm3:
 			print("converting 3to4:")
-			convert_3to4(mazedat, False)
+			indoor = True
+			convert_3to4(mazedat, indoor)
 
 		print("")
 
-
-'''
-MM3 has 90 monster types?
-
-list1: monsters
-list2: sprite objects (fountain, chest)
-
-'''
-def parse_mm3_mob(filepath):
-	print(f"parsing {filepath}")
-	with open(filepath, "rb") as f:
-		data = f.read()
-		fsize = len(data)
-
-		mm4_mids = bytearray()
-		mm4_monsters = bytearray()
-		mm4_oids = bytearray()
-		mm4_objects = bytearray()
-
-		print(f"mm3 mob list size: {fsize} {':)' if fsize%3==0 else ':('}")
-
-		skip1 = False
-		print("monster list ids: ???")
-		for iobj in range(fsize//3):
-			if skip1:
-			    skip1 = False
-			    continue
-
-			i = iobj*3
-
-			ox = data[i]
-			oy = data[i+1]
-			oid = data[i+2]
-
-			if ox==255:
-				# print(f"list_type: {list_type}")
-				oid0 = data[i+1]
-				oid1 = data[i+2]
-				oid2 = data[i+3]
-				oid3 = data[i+4]
-				oid4 = data[i+5]
-
-				print(f"object list ids: \n0: {oid0:2d}\n1: {oid1:2d}\n2: {oid2:2d}\n3: {oid3:2d}{'' if oid4==255 else f'\n4: {oid4:2d}'}")
-				# mm4_oids.extend([oid0, oid1, oid2, oid3, oid4])
-				mm4_oids.extend([0x00, 0x01, 0x02, 0x03, 0x04])
-				mm4_oids.extend(bytearray([0xFF]) * 11)
-
-				mm4_mids.extend([0x02, 0x00, 0xFF, 0xFF, 0xFF])
-				mm4_mids.extend(bytearray([0xFF]) * 11)
-
-				skip1 = True
-			else:
-				print(f"({ox:2d}, {oy:2d}) id: {oid}")
-				if mm4_oids:
-					if ox<16 and oy<16 and oid<16:
-						mm4_objects.extend([ox, oy, oid, 0x00])
-				else:
-					if ox<16 and oy<16 and oid<16:
-						mm4_monsters.extend([ox, oy, oid, 0x00])
-
-
-		mm4_mob = bytearray()
-
-		mm4_mob.extend(mm4_oids)#object sprite id list
-		mm4_mob.extend(mm4_mids)#monster id list
-		mm4_mob.extend(bytearray([0xFF]) * 16)#wall object sprite id list
-
-		mm4_mob.extend(mm4_objects)#objects list
-		mm4_mob.extend(bytearray([0xFF]) * 4)
-
-		mm4_mob.extend(mm4_monsters)#monsters list
-		mm4_mob.extend(bytearray([0xFF]) * 4)
-
-		mm4_mob.extend(bytearray([128,128,0,0]))#wall sprites list
-		mm4_mob.extend(bytearray([0xFF]) * 4)
-
-		with open("mm3to4mob.bin", "wb") as f:
-			f.write(mm4_mob)
 
 
 parse_mazefile("ext_cld_world/MAZE0028.DAT")
@@ -478,17 +469,5 @@ parse_mazefile("ext_cld_world/MAZE0023.DAT")
 
 parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
 # parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
-parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
-
-
-parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE05.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE06.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE07.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE08.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE09.MOB")
-
+# parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
 

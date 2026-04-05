@@ -95,6 +95,17 @@ class XeenEventLine:
         
     #     return (f"Line {self.line_num:02d}: {name:<15} | Args: [{args_hex:<12}] # {desc}")
 
+    def to_data(self):
+        out = bytearray()
+        out.append(self.length)
+        out.append(self.x)
+        out.append(self.y)
+        out.append(self.facing)
+        out.append(self.line_number)
+        out.append(self.opcode)
+        out.extend(self.raw_args)
+        return out
+
 
 def group_by_location(lines):
     map_events = defaultdict(list)
@@ -132,10 +143,35 @@ def parse_xeen_evt_lines(file_path):
             
     return events
 
+def convert_3to4(event_line):
+
+    modified = False
+
+    if event_line.opcode==0x01:
+        #mm3 display 0x01 -> mm4 DisplayBottom 0x29
+        event_line.opcode = 0x29
+        modified = True
+    
+    # Event facing: 0(N),1(E),2(S),3(W),4(any) -> E&S are swapped!
+    if event_line.facing == 1:
+        event_line.facing = 2
+        modified = True
+    elif event_line.facing == 2:
+        event_line.facing = 1
+        modified = True
+
+    if modified:
+        print("** LINE CONVERTED TO: **")
+        print(event_line)
+
 def parse_xeen_evt_file(file_path):
     lines = parse_xeen_evt_lines(file_path)
+
+    mm3to4 = bytearray()
     for line in lines:
         print(line)
+        convert_3to4(line)
+        mm3to4.extend(line.to_data())
 
     # grouped = group_by_location(lines)
     # for loc, script in grouped.items():
@@ -143,9 +179,13 @@ def parse_xeen_evt_file(file_path):
     #     for line in script:
     #         print(f"  {line}")
 
+    with open("mm3to4evt.bin", "wb") as f:
+        f.write(mm3to4)
+
 
 # Example Usage:
-parse_xeen_evt_file('WIP_MM3_REPACK/MAZE0028.EVT')
+# parse_xeen_evt_file('WIP_MM3_REPACK/MAZE0028.EVT')
 parse_xeen_evt_file("mm3_default.sav-files/MAZE01.EVT")
+# parse_xeen_evt_file("mm3_default.sav-files/MAZE41.EVT")
 
 
