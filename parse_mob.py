@@ -43,7 +43,7 @@ def parse_mm3_mob(filepath):
 				print(f"object list ids: \n0: {oid0:2d}\n1: {oid1:2d}\n2: {oid2:2d}\n3: {oid3:2d}{'' if oid4==255 else f'\n4: {oid4:2d}'}")
 				# mm4_oids.extend([oid0, oid1, oid2, oid3, oid4])
 				# mm4_oids.extend([0x00, 0x01, 0x02, 0x03, 0x04])
-				mm4_oids.extend([0x57, 0x01, 0x02, 0x0B, 0x08])
+				mm4_oids.extend([0x24, 0x10, 0x28, 0x0B, 0x08])
 				mm4_oids.extend(bytearray([0xFF]) * 11)
 
 				mm4_mids.extend([0x02, 0x00, 0xFF, 0xFF, 0xFF])

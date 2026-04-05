@@ -22,7 +22,7 @@ OPCODE_MAP = {
     0x0E: ("Remove", "-"),
     0x0F: ("SetChar", "CharIndex"),
     0x10: ("Spawn", "MonsterID, X, Y, Unk"),
-    0x11: ("DoTownEvent", "TownEventID"),#ID type shop (0:bank/1:blacksmith/2:magicguild/3:inn/4:pub/5:temple/6:training)
+    0x11: ("DoTownEvent", "TownEventID"),
     0x12: ("Exit", "-"),
     0x13: ("AlterMap", "X, Y, Wall, Val"),
     0x14: ("GiveExtended", "Unknown"),
@@ -151,6 +151,40 @@ def convert_3to4(event_line):
         #mm3 display 0x01 -> mm4 DisplayBottom 0x29
         event_line.opcode = 0x29
         modified = True
+    # elif event_line.opcode==0x03:
+    #     #mm3 DoorTextLrg -> mm4 DisplayMain
+    #     event_line.opcode = 0x35
+    #     modified = True
+    elif event_line.opcode==0x11:
+        #MM3 ID type shop (0:bank/1:blacksmith/2:magicguild/3:inn/4:pub/5:temple/6:training)
+        #mm4:
+        # Byte Value
+        # 0x00 Bank
+        # 0x01 Blacksmith
+        # 0x02 Guild
+        # 0x03 Tavern
+        # 0x04 Temple
+        # 0x05 Trainer
+        # 0x06 Arena Event
+        # 0x07 Unknown
+        # 0x08 Reaper Event (Enter Tower)
+        # 0x09 Golem Event (Enter Dungeon)
+        # 0x0A Dwarf Event (Enter Dwarf's Mines in Clouds)
+        # 0x0B Sphinx Event
+        # 0x0C Pyramid
+        # 0x0D Dwarf Event (Enter Town in Darkside)
+        #mm3to4:
+        #0->0
+        #1->1
+        #2->2
+        #3->3
+        #4->3
+        #5->4
+        #6->5
+        if event_line.raw_args[0] > 3:
+            event_line.raw_args = [event_line.raw_args[0]-1]
+            modified = True
+
     
     # Event facing: 0(N),1(E),2(S),3(W),4(any) -> E&S are swapped!
     if event_line.facing == 1:
