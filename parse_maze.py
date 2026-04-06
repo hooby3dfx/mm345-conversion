@@ -202,7 +202,8 @@ MM3 OUT.TIL:
 '''
 
 
-def convert_3to4(map, indoor=True):
+def convert_3to4(map, outpath):
+	indoor = True #temp hack
 	mm3to4 = bytearray()
 
 	for y in range(16):#do NOT reverse y
@@ -251,7 +252,7 @@ def convert_3to4(map, indoor=True):
 	mm3to4.extend(mazeinfo)#properties
 	mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
 	parse_mazedat(mm3to4)
-	with open("mm3to4dat.bin", "wb") as f:
+	with open(outpath, "wb") as f:
 		f.write(mm3to4)
 
 
@@ -434,7 +435,7 @@ def convert_mazeinfo():
 	return mazeinfo
 
 
-def parse_mazefile(filepath):
+def parse_mazefile(filepath, outpath='mm3to4dat.bin'):
 	print(f"parsing {filepath}")
 	with open(filepath, "rb") as f:
 		data = f.read()
@@ -454,8 +455,8 @@ def parse_mazefile(filepath):
 
 		if is_mm3:
 			print("converting 3to4:")
-			indoor = True
-			convert_3to4(mazedat, indoor)
+			convert_3to4(mazedat, outpath)
+
 
 		print("")
 

@@ -6,7 +6,7 @@ list1: monsters
 list2: sprite objects (fountain, chest)
 
 '''
-def parse_mm3_mob(filepath):
+def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 	print(f"parsing {filepath}")
 	with open(filepath, "rb") as f:
 		data = f.read()
@@ -75,7 +75,7 @@ def parse_mm3_mob(filepath):
 		mm4_mob.extend(bytearray([128,128,0,0]))#wall sprites list
 		mm4_mob.extend(bytearray([0xFF]) * 4)
 
-		with open("mm3to4mob.bin", "wb") as f:
+		with open(outpath, "wb") as f:
 			f.write(mm4_mob)
 
 

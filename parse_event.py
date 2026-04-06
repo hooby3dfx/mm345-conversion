@@ -119,7 +119,7 @@ def group_by_location(lines):
         
     return map_events
 
-def parse_xeen_evt_lines(file_path):
+def parse_evt_lines(file_path):
     print(f"parsing {file_path}")
     events = []
     with open(file_path, 'rb') as f:
@@ -135,6 +135,10 @@ def parse_xeen_evt_lines(file_path):
             
             if len(line_payload) < length:
                 break # End of file or corrupt
+
+            if length<5:
+                print(f"abnormally short line: {line_payload}")
+                continue
                 
             # Combine length byte and payload for processing
             full_line_data = length_byte + line_payload
@@ -198,8 +202,8 @@ def convert_3to4(event_line):
         print("** LINE CONVERTED TO: **")
         print(event_line)
 
-def parse_xeen_evt_file(file_path):
-    lines = parse_xeen_evt_lines(file_path)
+def parse_evt_file(file_path, out_path="mm3to4evt.bin"):
+    lines = parse_evt_lines(file_path)
 
     mm3to4 = bytearray()
     for line in lines:
@@ -213,13 +217,14 @@ def parse_xeen_evt_file(file_path):
     #     for line in script:
     #         print(f"  {line}")
 
-    with open("mm3to4evt.bin", "wb") as f:
+    with open(out_path, "wb") as f:
         f.write(mm3to4)
 
 
 # Example Usage:
-# parse_xeen_evt_file('WIP_MM3_REPACK/MAZE0028.EVT')
-parse_xeen_evt_file("mm3_default.sav-files/MAZE01.EVT")
-# parse_xeen_evt_file("mm3_default.sav-files/MAZE41.EVT")
+# parse_evt_file('WIP_MM3_REPACK/MAZE0028.EVT')
+# parse_evt_file("mm3_default.sav-files/MAZE01.EVT")
+# parse_evt_file("mm3_default.sav-files/MAZE41.EVT")
+parse_evt_file("mm3_default.sav-files/MAZE03.EVT")
 
 
