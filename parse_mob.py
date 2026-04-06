@@ -50,6 +50,9 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 				mm4_mids.extend(bytearray([0xFF]) * 11)
 
 				skip1 = True
+			elif oy==255:
+				print("early termination; skipping")
+				skip1 = True
 			else:
 				print(f"({ox:2d}, {oy:2d}) id: {oid}")
 				if mm4_oids:
@@ -80,7 +83,7 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 
 
 
-parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
+# parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
@@ -89,5 +92,6 @@ parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE07.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE08.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE09.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
 

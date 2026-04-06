@@ -97,6 +97,20 @@ def convert_maps(in_dir, out_dir):
 			maze_dat_mm4 = f"MAZE{numi:04}.DAT"
 			print(f"target MM4 maze DAT file: {maze_dat_mm4}")
 			parse_mazefile(in_dir+"/"+maze_dat, out_dir+"/"+maze_dat_mm4)
+
+			maze_hed_mm4 = f"AAZE{numi:04}.HED"
+			hed_data = bytearray(512)
+			with open(out_dir+"/"+maze_hed_mm4, 'wb') as dest:
+				dest.write(hed_data)
+
+			maze_id_mm4 = f"XEEN{numi:04}.TXT"
+			maze_name = f"MM3 MAZE{num}"
+			maze_name_bytes = bytearray(maze_name.encode())
+			maze_name_bytes.append(0x00)
+			with open(out_dir+"/"+maze_id_mm4, 'wb') as dest:
+				dest.write(maze_name_bytes)
+
+
 		else:
 			print("no maze DAT file")
 

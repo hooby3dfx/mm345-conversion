@@ -196,14 +196,15 @@ MM3 sprite format differences:
 
 Progress notes:
 -Indoor map parsing working, need to do sprites
--Monster/object parsing working, need to determine which monsters
+-Monster/object parsing working, need to determine which monster ids are used in maze/mob ⚠️
 -Events mostly working as-is, some differences: display 0x01 -> 0x29 ✅
 -Event facing: 0(N),1(E),2(S),3(W),4(any) -> E&S are swapped! ✅
 -Display events not auto triggering, not sure why - needed cell flag for auto execute - sorted! ✅
 -Need to come up with process for entry point and repacking. For example, do I put MM3 maze 01 into MM4 maze 28 (starting level?)
 	lets try to keep the MM3 IDs
--Need to parse/convert outdoor map!
--
+-Need to determine if mm3 map is indoor or outdoor ⚠️
+
+
 
 
 
