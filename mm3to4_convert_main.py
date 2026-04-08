@@ -71,9 +71,19 @@ this script will do the following:
 	outputs:
 	- *.m (music)
 
-
-
 '''
+
+MM3_MAZE_NAMES = [
+	'Fountain Head','Baywatch','Wildabar','Swamp Town','Blistering Heights','Fountain Head Cavern','Baywatch Cavern','Wildabar Cavern',
+	'Swamp Town Cavern','Blistering Heights Cavern','Cyclops Cavern','Arachnoid Cavern','Cursed Cold Cavern','Dragon Cavern','The Magic Cavern','Ancient Temple of Moo',
+	'Slithercult Stronghold','Fortress of Fear','Halls of Insanity','Dark Warrior Keep','Cathedral of Carnage','Tomb of Terror','The Maze From Hell','Castle Whiteshield',
+	'Castle Bloodreign','Castle Dragontooth','Castle Greywind','Castle Blackwind','Whiteshield Dungeon','Bloodreign Dungeon','Dragontooth Dungeon','Greywind Dungeon',
+	'Blackwind Dungeon','Alpha Engine Sector','Main Engine Sector','Beta Engine Sector','Aft Storage Sector','Central Control Sector','Forward Storage Sector','Main Control Sector',
+	'A1','A2','A3','A4','B1','B2','B3','B4',
+	'C1','C2','C3','C4','D1','D2','D3','D4',
+	'E1','E2','E3','E4','F1','F2','F3','F4',
+	'It\'s a Secret','The Arena',]
+
 
 def convert_maps(in_dir, out_dir):
 	print("convert_maps")
@@ -92,31 +102,34 @@ def convert_maps(in_dir, out_dir):
 		maze_mob = f"MAZE{num}.MOB"
 		maze_txt = f"text{num}.maz"
 
+		# convert/generate DAT, HED, name TXT files
 		if Path(in_dir+"/"+maze_dat).is_file():
 			print(f"found maze DAT file: {maze_dat}")
-			maze_dat_mm4 = f"MAZE{numi:04}.DAT"
+			maze_dat_mm4 = f"MAZE{numi:04}.DAT" if numi < 100 else f"MAZEX{numi:03}.DAT"
 			print(f"target MM4 maze DAT file: {maze_dat_mm4}")
 			parse_mazefile(in_dir+"/"+maze_dat, out_dir+"/"+maze_dat_mm4)
 
-			maze_hed_mm4 = f"AAZE{numi:04}.HED"
+			maze_hed_mm4 = f"AAZE{numi:04}.HED" if numi < 100 else f"AAZEX{numi:03}.HED"
 			hed_data = bytearray(512)
 			with open(out_dir+"/"+maze_hed_mm4, 'wb') as dest:
 				dest.write(hed_data)
 
-			maze_id_mm4 = f"XEEN{numi:04}.TXT"
-			maze_name = f"MM3 MAZE{num}"
+			maze_id_mm4 = f"XEEN{numi:04}.TXT" if numi < 100 else f"XEENX{numi:03}.TXT"
+			if numi <= 66:
+				maze_name = MM3_MAZE_NAMES[numi-1]
+			else:
+				maze_name = f"MM3 MAZE{num}"
 			maze_name_bytes = bytearray(maze_name.encode())
 			maze_name_bytes.append(0x00)
 			with open(out_dir+"/"+maze_id_mm4, 'wb') as dest:
 				dest.write(maze_name_bytes)
-
 
 		else:
 			print("no maze DAT file")
 
 		if Path(in_dir+"/"+maze_evt).is_file():
 			print(f"found maze EVT file: {maze_evt}")
-			maze_evt_mm4 = f"MAZE{numi:04}.EVT"
+			maze_evt_mm4 = f"MAZE{numi:04}.EVT" if numi < 100 else f"MAZEX{numi:03}.EVT"
 			print(f"target MM4 maze EVT file: {maze_evt_mm4}")
 			parse_evt_file(in_dir+"/"+maze_evt, out_dir+"/"+maze_evt_mm4)
 		else:
@@ -124,7 +137,7 @@ def convert_maps(in_dir, out_dir):
 
 		if Path(in_dir+"/"+maze_mob).is_file():
 			print(f"found maze MOB file: {maze_mob}")
-			maze_mob_mm4 = f"MAZE{numi:04}.MOB"
+			maze_mob_mm4 = f"MAZE{numi:04}.MOB" if numi < 100 else f"MAZEX{numi:03}.MOB"
 			print(f"target MM4 maze MOB file: {maze_mob_mm4}")
 			parse_mm3_mob(in_dir+"/"+maze_mob, out_dir+"/"+maze_mob_mm4)
 		else:
@@ -132,7 +145,7 @@ def convert_maps(in_dir, out_dir):
 
 		if Path(in_dir+"/"+maze_txt).is_file():
 			print(f"found maze TXT file: {maze_txt}")
-			maze_txt_mm4 = f"AAZE{numi:04}.TXT"
+			maze_txt_mm4 = f"AAZE{numi:04}.TXT" if numi < 100 else f"AAZEX{numi:03}.EVT"
 			print(f"target MM4 maze TXT file: {maze_txt_mm4}")
 			#straight copy
 			with open(in_dir+"/"+maze_txt, 'rb') as src:

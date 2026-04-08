@@ -201,9 +201,17 @@ MM3 OUT.TIL:
 
 '''
 
+def is_mm3_indoor(maze_id):
+	if maze_id < 41 or maze_id > 64:
+		indoor = True
+	else:
+		indoor = False
+		
+	return indoor
 
-def convert_3to4(map, outpath):
-	indoor = True #temp hack
+
+def convert_3to4(map, outpath, maze_id):
+	indoor = is_mm3_indoor(maze_id) #temp hack
 	mm3to4 = bytearray()
 
 	for y in range(16):#do NOT reverse y
@@ -248,7 +256,7 @@ def convert_3to4(map, outpath):
 	# print(f"mm3to4: {mm3to4}")
 	# print("")
 	mm3to4.extend(bytearray([0x10]) * 256)#cell flags
-	mazeinfo = convert_mazeinfo()#len60
+	mazeinfo = convert_mazeinfo(maze_id)#len60
 	mm3to4.extend(mazeinfo)#properties
 	mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
 	parse_mazedat(mm3to4)
@@ -293,39 +301,51 @@ def parse_mazeinfo(mazeinfo):
 	if (len(mazeinfo)==64):
 		is_mm3 = True
 
-	mm3id = mazeinfo[31]
-	print(f"mm3 map id: {mm3id}")
-	mm4id = mazeinfo[0]
-	print(f"mm4 map id: {mm4id}")
-	# print(f"mm4 map id: {mazeinfo[1]}")
-
 	# if mm3id and not mm4id:
 	# 	#very dumb "detection"
 	# 	is_mm3 = True
 
 	if is_mm3:
 		print("parsing as mm3")
-		i07 = mazeinfo[7]
+		#hopefully in here we can find flags such as:
+		#indoor vs outdoor 
+		#surrounding mazes for outdoor areas
+		#list of monster ids?
+
+		i00 = mazeinfo[0]
+		i01 = mazeinfo[1]
+		i02 = mazeinfo[2]
+		i03 = mazeinfo[3]
+		i04 = mazeinfo[4]
+		i05 = mazeinfo[5]
+		i06 = mazeinfo[6]
+
+		i07 = mazeinfo[7] #0x64
 		# i12~i15 010101
 		i16 = mazeinfo[16]
 		i17 = mazeinfo[17]
 		i18 = mazeinfo[18]
 		i19 = mazeinfo[19]
 		# i20~i23 010101
-		i24 = mazeinfo[24]
-		i25 = mazeinfo[25]
-		i26 = mazeinfo[26]
+		i24 = mazeinfo[24]#0x01
+		i25 = mazeinfo[25]#0x01
+		i26 = mazeinfo[26]#0x01
 		i27 = mazeinfo[27]
 
 		i28 = mazeinfo[28]
 		i29 = mazeinfo[29]
 		i30 = mazeinfo[30]
-		mm3id = mazeinfo[31]
+		maze_id = mazeinfo[31]
+		print(f"mm3 map id: {maze_id}")
 
 		mm3fog = mazeinfo[32:]#seen?
 
 	else:
 		print("parsing as mm4")
+
+		maze_id = mazeinfo[0]
+		print(f"mm4 map id: {maze_id}")
+		# print(f"mm4 map id: {mazeinfo[1]}")
 
 		print(f"mm4 surr N: {mazeinfo[2]}")
 		print(f"mm4 surr E: {mazeinfo[4]}")
@@ -358,19 +378,19 @@ def parse_mazeinfo(mazeinfo):
 		print(f"floorType: {floorType}")
 		print(f"wallKind: {wallKind}")
 
-
 		mm4fog = mazeinfo[60:] #64 bytes (32 seen, 32 stepped on)
 
 	
+	return is_mm3, maze_id
 
-	return is_mm3
 
+def convert_mazeinfo(maze_id):
 
-def convert_mazeinfo():
-	indoor = True
 	mazeinfo = bytearray(60)
 
-	maze_id = 41
+	indoor = is_mm3_indoor(maze_id) #temp hack
+
+	# maze_id = 41
 	maze_surr_N = 0
 	maze_surr_E = 0
 	maze_surr_S = 0
@@ -449,13 +469,13 @@ def parse_mazefile(filepath, outpath='mm3to4dat.bin'):
 		# print(f"mm4 map id: {data[768]}")
 		# print(f"mm4 map id: {mazeinfo[0]}")
 		
-		is_mm3 = parse_mazeinfo(mazeinfo)
+		is_mm3, maze_id = parse_mazeinfo(mazeinfo)
 
 		parse_mazedat(mazedat, is_mm3)
 
 		if is_mm3:
 			print("converting 3to4:")
-			convert_3to4(mazedat, outpath)
+			convert_3to4(mazedat, outpath, maze_id)
 
 
 		print("")

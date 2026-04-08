@@ -202,7 +202,9 @@ Progress notes:
 -Display events not auto triggering, not sure why - needed cell flag for auto execute - sorted! ✅
 -Need to come up with process for entry point and repacking. For example, do I put MM3 maze 01 into MM4 maze 28 (starting level?)
 	lets try to keep the MM3 IDs
+	how does MM4 determine that starting map is 28? seems like in default save file? ⚠️
 -Need to determine if mm3 map is indoor or outdoor ⚠️
+-Need to determine mm3 map names (from exe) ✅
 
 
 
