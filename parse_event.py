@@ -159,6 +159,11 @@ def convert_3to4(event_line):
     #     #mm3 DoorTextLrg -> mm4 DisplayMain
     #     event_line.opcode = 0x35
     #     modified = True
+    elif event_line.opcode==0x1B:
+        if event_line.raw_args[0]==0x54 and len(event_line.raw_args)==2:
+            #temp workaround for setvar script interruption
+            event_line.raw_args = [0x00, 0x00]
+            modified = True
     elif event_line.opcode==0x11:
         #MM3 ID type shop (0:bank/1:blacksmith/2:magicguild/3:inn/4:pub/5:temple/6:training)
         #mm4:
@@ -225,6 +230,10 @@ def parse_evt_file(file_path, out_path="mm3to4evt.bin"):
 # parse_evt_file('WIP_MM3_REPACK/MAZE0028.EVT')
 # parse_evt_file("mm3_default.sav-files/MAZE01.EVT")
 # parse_evt_file("mm3_default.sav-files/MAZE41.EVT")
-parse_evt_file("mm3_default.sav-files/MAZE03.EVT")
+# parse_evt_file("mm3_default.sav-files/MAZE03.EVT")
 
+# parse_evt_file('WIP_MM3_REPACK/MAZE0001.EVT')
 
+# parse_evt_file("ext_cld_world/MAZE0028.EVT")
+
+parse_evt_file('mm3out/MAZE01.EVT')

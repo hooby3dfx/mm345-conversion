@@ -206,7 +206,7 @@ def is_mm3_indoor(maze_id):
 		indoor = True
 	else:
 		indoor = False
-		
+
 	return indoor
 
 
@@ -408,7 +408,7 @@ def convert_mazeinfo(maze_id):
 		surfTypes = [0x00, 0x01, 0x02, 0x03, 0x04, 0x02, 0x01, 0x07, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x02, 0x01, 0x0F]
 
 	floorType = 0
-	runX = 0
+	runX = 2
 	wallNoPass = 7
 	surfNoPass = 0
 	unlockDoor = 0
@@ -417,7 +417,7 @@ def convert_mazeinfo(maze_id):
 	bashGrate = 0
 	bashWall = 0
 	chanceToRun = 0
-	runY = 0
+	runY = 5
 	trapDmg = 0
 	wallKind = 0
 	tavernTips = 0
