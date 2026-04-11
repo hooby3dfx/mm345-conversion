@@ -4,7 +4,7 @@ from PIL import Image
 
 PATTERN_STEPS = [0, 1, 1, 1, 2, 2, 3, 3, 0, -1, -1, -1, -2, -2, -3, -3]
 
-Test = False
+Test = True
 Transcode = False
 
 def decompress_cell(data, offset, is_mm3=False, transcode_data=None):
@@ -299,13 +299,13 @@ parse_sprite("mm3out/witch.mon", "out_witch", mode="mm3")
 # parse_sprite("mm3out/temple.out", "out_temple", mode="mm3")
 
 parse_sprite("MM3-CC-Files/mm3-cc-files/0xf053.ccx", "out_unknown", mode="mm3")
-parse_sprite("mm3out/topa1.vga", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/topa1.vga", "out_mm3_wip", mode="mm3")
 
 parse_sprite("mm3out/out.til", "outmm3_out-til", mode="mm3")
 parse_sprite("mm3out/eface01.out", "outmm3_eface", mode="mm3")
 
-parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
+parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
 
 
 # Usage

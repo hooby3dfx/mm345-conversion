@@ -7,7 +7,7 @@ from parse_maze import parse_mazefile
 from parse_event import parse_evt_file
 from parse_mob import parse_mm3_mob
 from mm3to4_sprite_transcoder2 import convert_sprite_3to4
-
+from hashFileName import hash_file_name_mm4
 
 '''
 OK so here we go.
@@ -56,14 +56,15 @@ this script will do the following:
 	- *.bin (text)
 	- Mon*.dat (Monster stats)
 	outputs:
-	-  XEEN.MON (Monster stats)
+	- XEEN.MON (Monster stats)
+	- CLOUDS.dat (object sprites info)
 	- SPELLS.XEN, MAE.XEEN
 
 5. parse/convert all MM3 "2D" graphics
 	inputs:
 	- *.fac (Portrait sprite)
 	- eface*.out (Animated face)
-	-*.out (Town location animation ie temple, guild, bank)
+	- *.out (Town location animation ie temple, guild, bank)
 	outputs:
 
 6. parse/convert all MM3 media files
@@ -73,6 +74,12 @@ this script will do the following:
 	- *.m (music)
 
 '''
+
+def copy_file(src, dst):
+	with open(src, 'rb') as source:
+		content = source.read()
+		with open(dst, 'wb') as dest:
+			dest.write(content)
 
 
 MM3_MAZE_NAMES = [
@@ -150,10 +157,7 @@ def convert_maps(in_dir, out_dir):
 			maze_txt_mm4 = f"AAZE{numi:04}.TXT" if numi < 100 else f"AAZEX{numi:03}.EVT"
 			print(f"target MM4 maze TXT file: {maze_txt_mm4}")
 			#straight copy
-			with open(in_dir+"/"+maze_txt, 'rb') as src:
-				content = src.read()
-				with open(out_dir+"/"+maze_txt_mm4, 'wb') as dest:
-					dest.write(content)
+			copy_file(in_dir+"/"+maze_txt, out_dir+"/"+maze_txt_mm4)
 		else:
 			print("no maze TXT file")
 
@@ -172,19 +176,25 @@ MM3_OBJ_SPRITE_NAMES = [
 def convert_sprites(in_dir, out_dir):
 	print("convert_sprites")
 
+	#MM3 palette
 	hex_pal = "0000003F 3F3F3C3C 3C3A3A3A 38383835 35353333 33313131 2F2F2F2C 2C2C2A2A 2A282828 25252523 23232121 211F1F1F 1D1D1D1B 1B1B1919 19171717 15151513 13131111 110F0F0F 0D0D0D0B 0B0B0909 09070707 05050503 03030101 01000000 3F3A3A3E 35353D30 303C2C2C 3B28283A 2323391F 1F391B1B 38171737 13133610 10350C0C 34080833 05053202 02320000 2E00002A 00002600 00210000 1D000019 00001500 00110000 0D00003F 1D003719 00301600 28120021 0F00190B 00120800 3F3F363F 3F2E3E3F 263E3F1E 3E3F163D 3F0E3D3F 063B3D00 3B3B0038 37003533 00322E00 2F2A002C 26002922 00261F00 221A001E 16001A12 00160F00 120B000E 08000A05 00060300 363F1631 3B112D38 0D29340A 25310621 2D031D2A 011A2700 15240013 2100121F 00111D00 101B000E 19000D17 000C1500 0B13002F 3E2F273C 26203A1F 17381710 37100B35 0A0A3209 082F0807 2D07062A 06052704 04240403 2203021F 02021C02 011A0101 17010114 00001100 000F0000 0C000009 00000700 3C3C3F38 383F3333 3F2F2F3F 2B2C3F27 283F2323 3F1F203F 1B1C3F17 183F1314 3F0F103F 0B0C3F07 083F0304 3F00013F 00003F00 003B0000 37000033 00002F00 002B0000 27000024 00002000 001C0000 18000014 00001000 000C0000 08000005 3C363F39 2E3F3627 3F341F3F 32173F2F 103F2D08 3F2A003F 26003920 00321B00 2B150023 0F001B0A 00140600 0C020005 333F3F2D 3B3B2738 38223535 1D323219 2F2F142B 2B112828 0D242409 1F1F071B 1B041717 02131301 0F0F000B 0B000707 3A3C3E36 3A3D3137 3D2D353D 29333C25 313C2130 3C1D2E3B 192C3B15 2B3B1129 3A0D283A 0A263A06 25390224 39012136 011F3300 1D30001B 2D00192B 00172800 15250014 2200121F 00101C00 0E18000C 15000A12 00080F00 060C0005 09000306 3F3A373F 37333F35 303F332C 3F31293F 2F253F2D 223F2B1F 3F291B3F 27183C25 173A2416 38221536 21143420 14321F13 2F1D112C 1B10291A 0E26180D 23160C20 150A1D13 091A1108 170F0714 0D06110C 050E0A03 0B080309 06020604 013F3F3F"
 	raw_palette = bytes.fromhex(hex_pal)
 
 	with open(out_dir+"/"+"MM4.PAL", "wb") as f:
 		f.write(raw_palette)
 
+	#TODO generate https://xeen.fandom.com/wiki/CLOUDS.DAT_File
+
 	for i in range(len(MM3_OBJ_SPRITE_NAMES)):
 		mm3_obj = MM3_OBJ_SPRITE_NAMES[i]+".pic"
 		mm4_obj = f"{(i):03}.OBJ"
-		print(f"converting obj sprite {mm3_obj} to {mm4_obj}")
-		#TODO hash mm4_obj to .ccx name for packing
-		#TODO generate https://xeen.fandom.com/wiki/CLOUDS.DAT_File
-		convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj, True)
+		mm4_hash = f"d_{hash_file_name_mm4(mm4_obj)}.ccx"
+
+		print(f"converting obj sprite {mm3_obj} to {mm4_obj} ({mm4_hash})")
+		convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj, False)
+		# hash mm4_obj to .ccx name for packing
+		copy_file(out_dir+"/"+mm4_obj, out_dir+"/"+mm4_hash)
+
 
 
 def convert_all(in_dir, out_dir):

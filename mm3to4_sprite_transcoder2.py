@@ -24,9 +24,10 @@ class MMTranscoder:
 
         # mm4_width_diff = 100 - total_w
         # x_off += mm4_width_diff
-        x_off = 0
+        
+        # x_off = 0
         # mm4_height_diff = 148 - total_h
-        mm4_height_diff = 50
+        mm4_height_diff = 0
         y_off += mm4_height_diff
         # y_off = 0
         #TEMP HACK TO GET A WORKING SPRITE IN XEEN
