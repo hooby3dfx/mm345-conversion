@@ -30,9 +30,10 @@ class MMTranscoder:
         y_off += mm4_height_diff
         # y_off = 0
         #TEMP HACK TO GET A WORKING SPRITE IN XEEN
-        width = 250
+        # width = 250
+
         # height = 100
-        x_skip = 50
+        x_skip = 0
         total_w = x_off + width
         total_h = y_off + height
         print(f"adjusted cell total size: {total_w}x{total_h}")
@@ -104,10 +105,14 @@ class MMTranscoder:
                     # new_cell.extend(data[dp:dp+count]); dp += count
 
                     for _ in range(count):
-                        new_cell.append(0x00)
-                        new_cell.append(data[dp])
-                        # new_cell.append(110)
-                        dp += 1
+                        self.log(f"converting cmd 1 to 0: (dp {dp} count {count} datalen {len(data)})")
+                        if dp < len(data):
+                            new_cell.append(0x00)
+                            new_cell.append(data[dp])
+                            # new_cell.append(110)
+                            dp += 1
+                        else:
+                            print("ERROR - out of bounds")
                 
                 elif cmd == 2: # MM3 Stop
                     # wait = input("MM3 Stop - Press Enter to continue.")
@@ -188,24 +193,16 @@ class MMTranscoder:
             self.log(f"Sanity Check Error: {e}")
             return False
 
+def convert_sprite_3to4(filepath, outpath, verbose=False):
 
-
-
-def main():
-    parser = argparse.ArgumentParser(description="MM3 to MM4 Sprite Transcoder")
-    parser.add_argument("-i", "--input", required=True, help="Input MM3 .MON file")
-    parser.add_argument("-o", "--output", help="Output MM4 .CCX file")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose debug output")
-    parser.add_argument("--relative", action="store_true", help="Toggle relative offsets")
-    
-    args = parser.parse_args()
-    if not args.output:
-        args.output = os.path.splitext(args.input)[0] + ".ccx"
-
-    with open(args.input, "rb") as f:
+    with open(filepath, "rb") as f:
         data = f.read()
 
     num_frames = struct.unpack("<H", data[:2])[0]
+    header_end = 2 + (num_frames * 4)
+    new_file = bytearray(data[:header_end])
+
+    '''
     #TEMP HACK TO GET A WORKING SPRITE IN XEEN
     num_frames = 8
     header_end = 2 + (num_frames * 4)
@@ -215,8 +212,9 @@ def main():
     new_file.append(num_frames)
     new_file.append(0)
     new_file.extend(data[2:header_end])
-    
-    transcoder = MMTranscoder(verbose=args.verbose)
+    '''
+
+    transcoder = MMTranscoder(verbose=verbose)
     offset_map = {}
     write_ptr = len(new_file)
 
@@ -224,9 +222,9 @@ def main():
         off1, off2 = struct.unpack("<HH", data[2+i*4:6+i*4])
         print(f"INPUT frame {i} off1 {off1} off2 {off2}")
         
-        if args.relative:
-            if off1 != 0: off1 += header_end
-            if off2 != 0: off2 += header_end
+        # if args.relative:
+        #     if off1 != 0: off1 += header_end
+        #     if off2 != 0: off2 += header_end
 
         new_offs = []
         for j, old_off in enumerate([off1, off2]):
@@ -249,9 +247,24 @@ def main():
         print(f"writing to TOC: {new_offs}")
         struct.pack_into("<HH", new_file, 2+i*4, *new_offs)
 
-    with open(args.output, "wb") as f:
+    with open(outpath, "wb") as f:
         f.write(new_file)
-    print(f"\nSuccessfully saved to {args.output}")
+    print(f"\nSuccessfully saved to {outpath}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="MM3 to MM4 Sprite Transcoder")
+    parser.add_argument("-i", "--input", required=True, help="Input MM3 .MON file")
+    parser.add_argument("-o", "--output", help="Output MM4 .CCX file")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose debug output")
+    # parser.add_argument("--relative", action="store_true", help="Toggle relative offsets")
+    
+    args = parser.parse_args()
+    if not args.output:
+        args.output = os.path.splitext(args.input)[0] + ".ccx"
+
+    convert_sprite_3to4(args.input, args.output, args.verbose)
+    
 
 if __name__ == "__main__":
     main()

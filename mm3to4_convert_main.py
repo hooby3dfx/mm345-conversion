@@ -6,6 +6,7 @@ import re
 from parse_maze import parse_mazefile
 from parse_event import parse_evt_file
 from parse_mob import parse_mm3_mob
+from mm3to4_sprite_transcoder2 import convert_sprite_3to4
 
 
 '''
@@ -72,6 +73,7 @@ this script will do the following:
 	- *.m (music)
 
 '''
+
 
 MM3_MAZE_NAMES = [
 	'Fountain Head','Baywatch','Wildabar','Swamp Town','Blistering Heights','Fountain Head Cavern','Baywatch Cavern','Wildabar Cavern',
@@ -156,6 +158,15 @@ def convert_maps(in_dir, out_dir):
 			print("no maze TXT file")
 
 
+MM3_OBJ_SPRITE_NAMES = [
+	'ALTRBALL','ALTRCUP','ALTRGEM','ALTRHEAD','BLKBOX','BONES','CAULDRON','CRYSTALS',
+	'DESK','DESK','FLRBEAM','FLRELEC','FLRLEVR','FLRSAFE','FLRSPER','GONG','HORSE',
+	'HOURGLAS','IRONCHST','LION','LEATHSAC','MERMAID','MONSTER','ORNTBOX','PENDLM',
+	'PIT','POOLR','POOLG','RIP','SEAHRS1','SHAKLE','SIGNPOST','SKULPOST',
+	'STONCOFN','THRONE','TRAPDOOR','TRSRPILE','WARRIOR','WDNCHST','WHRLPOOL','WOODCFN',
+	'MIRROR','CASTLE','TOWN','PYRAMID','WAGON','VILLGHUT','LATTERDN','LATTERUP',
+	'DUNGNDOR','CAVEOPN','CEILAXE','FLRFIRE','SEWAGE','VAPOR','BARREL','FOUNTHED',
+	'POOLB','POOLY',]
 
 
 def convert_sprites(in_dir, out_dir):
@@ -165,7 +176,15 @@ def convert_sprites(in_dir, out_dir):
 	raw_palette = bytes.fromhex(hex_pal)
 
 	with open(out_dir+"/"+"MM4.PAL", "wb") as f:
-	    f.write(raw_palette)
+		f.write(raw_palette)
+
+	for i in range(len(MM3_OBJ_SPRITE_NAMES)):
+		mm3_obj = MM3_OBJ_SPRITE_NAMES[i]+".pic"
+		mm4_obj = f"{(i):03}.OBJ"
+		print(f"converting obj sprite {mm3_obj} to {mm4_obj}")
+		#TODO hash mm4_obj to .ccx name for packing
+		#TODO generate https://xeen.fandom.com/wiki/CLOUDS.DAT_File
+		convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj, True)
 
 
 def convert_all(in_dir, out_dir):
@@ -177,9 +196,9 @@ def convert_all(in_dir, out_dir):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Convert MM3 CC file contents to MM4 formats")
-    parser.add_argument("indir", help="Directory containing contents of MM3 CC file")
-    parser.add_argument("outdir", help="Directory to output converted file in MM4 formats")
-    args = parser.parse_args()
+	parser = argparse.ArgumentParser(description="Convert MM3 CC file contents to MM4 formats")
+	parser.add_argument("indir", help="Directory containing contents of MM3 CC file")
+	parser.add_argument("outdir", help="Directory to output converted file in MM4 formats")
+	args = parser.parse_args()
 
-    convert_all(args.indir, args.outdir)
+	convert_all(args.indir, args.outdir)
