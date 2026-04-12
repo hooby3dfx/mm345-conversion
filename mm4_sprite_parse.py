@@ -144,7 +144,9 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 
     for i in range(num_f):
         o1, o2 = struct.unpack("<HH", data[2+i*4:6+i*4])
+        print(f"processing frame {i} cell 1")
         p1, w1, h1, _ = decompress_cell(data, o1, is_mm3)
+        print(f"processing frame {i} cell 2")
         p2, w2, h2, _ = decompress_cell(data, o2, is_mm3)
         
         mw, mh = max(w1, w2 if p2 else 0), max(h1, h2 if p2 else 0)
@@ -167,9 +169,11 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("d_7818.ccx", "out_xeen", mode="xeen")
 
 # parse_sprite("mm3out/troll.ccx", "out_xeen", mode="xeen")
-parse_sprite("check_test.ccx", "out_test_xeen", mode="xeen")
+# parse_sprite("check_test.ccx", "out_test_xeen", mode="xeen")
 # parse_sprite("WIP_MM3_REPACK/d_10336.ccx_og", "out_mm4_og", mode="xeen")
-parse_sprite("WIP_MM3_REPACK/d_7818.ccx_og", "out_mm4_og", mode="xeen")
-parse_sprite("WIP_MM3_REPACK/d_36181.ccx", "out_mm4_outdoor", mode="xeen")#OUTDOOR.TIL 
+# parse_sprite("WIP_MM3_REPACK/d_7818.ccx_og", "out_mm4_og", mode="xeen")
+# parse_sprite("WIP_MM3_REPACK/d_36181.ccx", "out_mm4_outdoor", mode="xeen")#OUTDOOR.TIL 
 
-parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
+# parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
+parse_sprite("founthed_mm4.ccx", "out_mm3to4_sprite_test", mode="xeen")
+

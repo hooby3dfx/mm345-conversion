@@ -4,10 +4,9 @@ from PIL import Image
 
 PATTERN_STEPS = [0, 1, 1, 1, 2, 2, 3, 3, 0, -1, -1, -1, -2, -2, -3, -3]
 
-Test = True
-Transcode = False
+Test = False
 
-def decompress_cell(data, offset, is_mm3=False, transcode_data=None):
+def decompress_cell(data, offset, is_mm3=False):
     if offset == 0 or offset >= len(data): return None, 0, 0, (0,0)
     
     # Cell Header (8 bytes)
@@ -21,9 +20,6 @@ def decompress_cell(data, offset, is_mm3=False, transcode_data=None):
     print(f"total_w: {total_w}")
     print(f"total_h: {total_h}")
 
-    if transcode_data:
-        transcode_data += data[offset:offset+8]
-
     pixels = bytearray([0] * (total_w * total_h))
 
     dp = offset + 8
@@ -35,17 +31,14 @@ def decompress_cell(data, offset, is_mm3=False, transcode_data=None):
         if is_mm3:
             # MM3 uses 16-bit Length and 16-bit X-Skip
             line_len = struct.unpack("<H", data[dp:dp+2])[0]
-            if transcode_data:
-                transcode_data += data[dp:dp+1]
             dp += 2
-            if transcode_data:
-                transcode_data += data[dp:dp+1]
+
             if line_len == 0: # MM3 vertical skip
                 if dp < len(data):
                     print(f"vskip {data[dp]}")
                     if data[dp]:
                         y_pos += data[dp]
-                        dp += 1
+                        dp += 2
                     else:
                         print("ZERO VSKIP, STOPPING")
                         break
@@ -53,11 +46,11 @@ def decompress_cell(data, offset, is_mm3=False, transcode_data=None):
             line_end = dp + line_len
             line_x_off = struct.unpack("<H", data[dp:dp+2])[0]
             x_pos = line_x_off + x_off
+            dp += 2
             print(f"mm3_len {line_len} mm3_off {line_x_off}")
             if x_pos > total_w:
-                print("ERROR - ENDING CELL")
+                print("LINE ERROR - ENDING CELL")
                 break
-            dp += 2
         else:
             # Xeen uses 8-bit Length and 8-bit X-Skip
             line_len = data[dp]
@@ -105,8 +98,13 @@ def decompress_cell(data, offset, is_mm3=False, transcode_data=None):
                         else:
                             put(data[dp]); dp += 1
             elif cmd == 2:
-                print("STOP?")
-                break
+                print("2-STOP?")
+                if Test:
+                    put(202) #blue
+                else:
+                    print("2-STOP?")
+
+                # break
 
                 # color = data[dp]; dp += 1
                 # if Test:
@@ -114,10 +112,18 @@ def decompress_cell(data, offset, is_mm3=False, transcode_data=None):
                 # else:
                 #     put(color, length + 3)
             elif cmd == 3:
-                back_off = struct.unpack("<H", data[dp:dp+2])[0]; dp += 2
-                src = dp - back_off
-                for i in range(length + 4):
-                    if 0 <= src + i < len(data): put(data[src + i]) #stream copy
+                print("3-STOP?")
+                if Test:
+                    put(202) #blue
+                else:
+                    # back_off = struct.unpack("<H", data[dp:dp+2])[0]; dp += 2
+                    # src = dp - back_off
+                    # for i in range(length + 4):
+                    #     if 0 <= src + i < len(data): put(data[src + i]) #stream copy
+                    print("3-STOP?")
+
+                    # continue
+                
             # elif cmd == 4:
             #     c1, c2 = data[dp], data[dp+1]; dp += 2
             #     if Test:
@@ -237,12 +243,6 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
         o1, o2 = struct.unpack("<HH", data[2+i*4:6+i*4])
         print(f"Frame {i} cell {0} at {o1}")
         print(f"Frame {i} cell {1} at {o2}")
-
-    if Transcode:
-        #open out ccx file
-        mm4_cells = []
-        for i in range(num_f*2):
-            mm4_cells.append(bytearray())
         
 
 
@@ -267,19 +267,6 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
             
         img.save(os.path.join(out_dir, f"frame_{i:02d}.png"))
 
-    if Transcode:
-        mm4_out = bytearray()
-        mm4_out += data[0:2]
-        #for each frame,
-        # cell1 offset cell2 offset
-        offset1 = 2+num_f*4
-        # for i in range(num_f):
-        #     mm4_out += offset1
-        #     mm4_out += offset1
-
-
-        with open("transcode.ccx", "wb") as transcode_file:
-            transcode_file.write(mm4_out)
 
     print(f"Done! Extracted {num_f} frames to {out_dir}")
 
@@ -291,18 +278,19 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("WIP_MM3_REPACK/d_7818.ccx", "out_xeen", mode="xeen")
 # parse_sprite("out_witch.mm4", "text_3to4", mode="xeen")
 
-parse_sprite("mm3out/troll.mon", "out_troll", mode="mm3")
-parse_sprite("mm3out/witch.mon", "out_witch", mode="mm3")
+# parse_sprite("mm3out/troll.mon", "out_troll", mode="mm3")
+# parse_sprite("mm3out/witch.mon", "out_witch", mode="mm3")
 
 # parse_sprite("mm3out/town.pic", "out_town", mode="mm3")
 # parse_sprite("mm3out/sci.sky", "out_scisky", mode="mm3")
 # parse_sprite("mm3out/temple.out", "out_temple", mode="mm3")
 
-parse_sprite("MM3-CC-Files/mm3-cc-files/0xf053.ccx", "out_unknown", mode="mm3")
+# parse_sprite("MM3-CC-Files/mm3-cc-files/0xf053.ccx", "out_unknown", mode="mm3")
+
 # parse_sprite("mm3out/topa1.vga", "out_mm3_wip", mode="mm3")
 
-parse_sprite("mm3out/out.til", "outmm3_out-til", mode="mm3")
-parse_sprite("mm3out/eface01.out", "outmm3_eface", mode="mm3")
+# parse_sprite("mm3out/out.til", "outmm3_out-til", mode="mm3")
+# parse_sprite("mm3out/eface01.out", "outmm3_eface", mode="mm3")
 
 # parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
 parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")

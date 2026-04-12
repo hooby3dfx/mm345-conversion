@@ -24,7 +24,7 @@ class MMTranscoder:
 
         # mm4_width_diff = 100 - total_w
         # x_off += mm4_width_diff
-        
+
         # x_off = 0
         # mm4_height_diff = 148 - total_h
         mm4_height_diff = 0
@@ -57,7 +57,7 @@ class MMTranscoder:
                 dp += 2
             else:
                 mm3_off = data[dp]
-                dp += 1
+                dp += 2
 
             self.log(f"mm3_len {mm3_len} mm3_off {mm3_off}")
 
@@ -68,11 +68,20 @@ class MMTranscoder:
                     # print(f"vstop at {y_ptr} of {height}/{total_h} in {cell_id}")
                     # wait = input("MM3 VEND - Press Enter to continue.")
                     break
+                self.log(f"vskip {mm3_off}")
                 new_cell.extend([0, mm3_off]) # MM4 V-Skip
                 y_ptr += mm3_off
                 continue
                 
             # print(f"line_end_src {line_end_src}")
+            x_pos = mm3_off + x_off
+            if x_pos > total_w:
+                print(f"LINE ERROR (x_pos {x_pos}) - writing line skip(s)")
+                # new_cell.extend([0, 1])
+                # y_ptr += 1
+                # dp = line_end_src
+                new_cell.extend([0, total_h-y_ptr])
+                break
             
             # --- START MM4 LINE ---
             len_byte_pos = len(new_cell)
@@ -117,8 +126,9 @@ class MMTranscoder:
                 
                 elif cmd == 2: # MM3 Stop
                     # wait = input("MM3 Stop - Press Enter to continue.")
-                    stop_cell = True
-                    break
+                    # stop_cell = True
+                    # break
+                    continue
                 
                 elif cmd == 4: # MM3 Skip -> MM4 Skip
                     new_cell.append(0xA0 | val) #map to CMD5
@@ -144,8 +154,9 @@ class MMTranscoder:
 
                 #no conversion
                 elif cmd == 3: # Stream CMD3
-                    new_cell.append(opcode)
-                    new_cell.extend(data[dp:dp+2]); dp += 2
+                    # new_cell.append(opcode)
+                    # new_cell.extend(data[dp:dp+2]); dp += 2
+                    continue
                 elif cmd == 7: # Pattern CMD7
                     new_cell.append(opcode); new_cell.append(data[dp]); dp += 1
 
