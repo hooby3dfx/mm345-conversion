@@ -205,8 +205,13 @@ Progress notes:
 	how does MM4 determine that starting map is 28? seems like in default save file? ⚠️
 -Need to determine if mm3 map is indoor or outdoor ⚠️
 -Need to determine mm3 map names (from exe) ✅
-
--items... bone whistle ⚠️
+-Sprites: 
+	-not visibible from all angles
+	-flashing/disappearing (due to missing animation frames?)
+	-...are some of these IDs hardcoded with certain behaviors? seems like yes...
+-Items... bone whistle ⚠️
+-Palette... need to decide if going all-in for MM3 palette (as MM4.PAL/MM4E.pal) ⚠️
+	lets see how things look after more sprites/images are working
 
 
 

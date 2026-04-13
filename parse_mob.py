@@ -6,6 +6,16 @@ list1: monsters
 list2: sprite objects (fountain, chest)
 
 '''
+
+
+def oid3to4(oid3):
+	match oid3:
+		case 8: #desk
+			return 1 #temp
+		case _:
+			return oid3
+
+
 def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 	print(f"parsing {filepath}")
 	with open(filepath, "rb") as f:
@@ -34,11 +44,11 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 
 			if ox==255:
 				# print(f"list_type: {list_type}")
-				oid0 = data[i+1]
-				oid1 = data[i+2]
-				oid2 = data[i+3]
-				oid3 = data[i+4]
-				oid4 = data[i+5]
+				oid0 = oid3to4(data[i+1])
+				oid1 = oid3to4(data[i+2])
+				oid2 = oid3to4(data[i+3])
+				oid3 = oid3to4(data[i+4])
+				oid4 = oid3to4(data[i+5])
 
 				print(f"object list ids: \n0: {oid0:2d}\n1: {oid1:2d}\n2: {oid2:2d}\n3: {oid3:2d}{'' if oid4==255 else f'\n4: {oid4:2d}'}")
 				
@@ -51,9 +61,14 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 				# mm4_oids.extend([0x24, 0x10, 0x28, 0x0B, 0x08])
 				mm4_oids.extend(bytearray([0xFF]) * 11)
 
-				#TODO actually determine the monster IDs from MM3
-				# mm4_mids.extend([mid0, mid1, mid2, mid3, mid4])
-				mm4_mids.extend([0x02, 0x00, 0xFF, 0xFF, 0xFF])
+				#TODO actually determine the monster IDs from MM3. if they are hardcoded in exe just make a table
+				mid0 = 0x17 #mm5 goblin
+				mid1 = 0x17
+				mid2 = 0xFF
+				mid3 = 0xFF
+				mid4 = 0xFF
+				mm4_mids.extend([mid0, mid1, mid2, mid3, mid4])
+				# mm4_mids.extend([0x17, 0x02, 0xFF, 0xFF, 0xFF])
 				mm4_mids.extend(bytearray([0xFF]) * 11)
 
 				skip1 = True
@@ -64,7 +79,8 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 				print(f"({ox:2d}, {oy:2d}) id: {oid}")
 				if mm4_oids:
 					if ox<16 and oy<16 and oid<16:
-						mm4_objects.extend([ox, oy, oid, 0x00])
+						#					x	y	id	facing direction
+						mm4_objects.extend([ox, oy, oid, 0x01])
 				else:
 					if ox<16 and oy<16 and oid<16:
 						mm4_monsters.extend([ox, oy, oid, 0x00])

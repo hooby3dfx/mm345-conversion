@@ -5,12 +5,15 @@ from PIL import Image
 PATTERN_STEPS = [0, 1, 1, 1, 2, 2, 3, 3, 0, -1, -1, -1, -2, -2, -3, -3]
 
 Test = False
+Test = True
+
 
 def decompress_cell(data, offset, is_mm3=False):
     if offset == 0 or offset >= len(data): return None, 0, 0, (0,0)
     
     # Cell Header (8 bytes)
     x_off, width, y_off, height = struct.unpack("<HHHH", data[offset:offset+8])
+    width=300
     total_w, total_h = x_off + width, y_off + height
     print("cell info:")
     print(f"x_off: {x_off}")
@@ -79,7 +82,7 @@ def decompress_cell(data, offset, is_mm3=False):
                     else:
                         print("ERROR put color - out of bounds")
 
-            print("Processing cmd opcode: "+str(cmd)+" ("+str(opcode)+")")
+            print(f"Processing cmd opcode: {cmd} [{length}] ({opcode})")
 
             if cmd == 0:
                 count = (opcode + 1)
@@ -99,30 +102,36 @@ def decompress_cell(data, offset, is_mm3=False):
                             put(data[dp]); dp += 1
             elif cmd == 2:
                 print("2-STOP?")
+                # dp += 3
+                # val = data[dp]; dp += 1
+                # print(f"val {val}")
+                
                 if Test:
                     put(202) #blue
                 else:
                     print("2-STOP?")
 
+
+                # back_off = struct.unpack("<H", data[dp:dp+2])[0]; dp += 2
+                # src = dp - back_off
+                # for i in range(length + 4):
+                #     if 0 <= src + i < len(data): put(data[src + i])
+
                 # break
 
                 # color = data[dp]; dp += 1
                 # if Test:
-                #     put(color, length + 3) # (three pix?)
+                #     put(202, length + 3) # (three pix?)
                 # else:
                 #     put(color, length + 3)
             elif cmd == 3:
-                print("3-STOP?")
-                if Test:
-                    put(202) #blue
-                else:
-                    # back_off = struct.unpack("<H", data[dp:dp+2])[0]; dp += 2
-                    # src = dp - back_off
-                    # for i in range(length + 4):
-                    #     if 0 <= src + i < len(data): put(data[src + i]) #stream copy
-                    print("3-STOP?")
-
-                    # continue
+                count = (opcode + 1)#33?
+                for _ in range(count):
+                    if dp < len(data):
+                        if Test:
+                            put(203); dp += 1 #yellow
+                        else:
+                            put(data[dp]); dp += 1
                 
             # elif cmd == 4:
             #     c1, c2 = data[dp], data[dp+1]; dp += 2
@@ -133,31 +142,39 @@ def decompress_cell(data, offset, is_mm3=False):
             elif cmd == 4:
                 for _ in range(length + 1):
                     if Test:
-                        put(203, 1) #yellow ("mm4 pair") - for mm3 skip 1?
+                        put(204, 1) #cyan ("mm4 pair") - for mm3 skip 1?
                     else:
                         x_pos += 1
             elif cmd == 5:
                 if Test:
-                    put(204, length + 33) #cyan (skip)
+                    put(205, length + 33) #pink (skip)
                 else:
                     x_pos += (length + 33)
             elif cmd == 6:
                 color = data[dp]; dp += 1
                 if Test:
-                    put(205, length + 3) # (three pix?)
+                    put(206, length + 3) # orange (three pix?)
                 else:
                     put(color, length + 3)
             elif cmd == 7:
                 val = data[dp]; dp += 1
-                idx = (opcode >> 2) & 0x0E
-                s1, s2 = PATTERN_STEPS[idx], PATTERN_STEPS[(idx+1)%16]
+                if Test:
+                    put(207, length+35) # violet
+                else:
+                    put(val, length+35)
 
-                for i in range((opcode & 0x07) + 3):
-                    if Test:
-                        put(202) #blue (pattern)
-                    else:
-                        put(val & 0xFF)
-                    val += s1 if (i % 2 == 0) else s2
+
+                # val = data[dp]; dp += 1
+                # idx = (opcode >> 2) & 0x0E
+                # s1, s2 = PATTERN_STEPS[idx], PATTERN_STEPS[(idx+1)%16]
+
+                # for i in range((opcode & 0x07) + 3):
+                #     if Test:
+                #         put(207) #violet (pattern)
+                #     else:
+                #         put(val & 0xFF)
+                #     val += s1 if (i % 2 == 0) else s2
+
             else:
                 print("UNHANDLED OPCODE!")
 
@@ -232,6 +249,14 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
         palette[205*3+0]=255 #red/blue = pink
         palette[205*3+1]=0
         palette[205*3+2]=255
+
+        palette[206*3+0]=255 
+        palette[206*3+1]=165 # ...orange
+        palette[206*3+2]=0
+
+        palette[207*3+0]=127
+        palette[207*3+1]=0 # ...violet
+        palette[207*3+2]=255
     else:
         palette = hex_palette()
         # palette = get_vga_default_palette()
@@ -263,7 +288,7 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
         if p2:
             ovl = Image.new("P", (w2, h2)); ovl.putdata(p2)
             mask = Image.new("L", (w2, h2), 0); mask.putdata([255 if x != 0 else 0 for x in p2])
-            img.paste(ovl, (0,0), mask)
+            # img.paste(ovl, (0,0), mask)
             
         img.save(os.path.join(out_dir, f"frame_{i:02d}.png"))
 
@@ -294,6 +319,7 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 
 # parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
 parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
 
 
 # Usage

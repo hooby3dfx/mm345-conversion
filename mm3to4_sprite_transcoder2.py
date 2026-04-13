@@ -30,11 +30,11 @@ class MMTranscoder:
         mm4_height_diff = 0
         y_off += mm4_height_diff
         # y_off = 0
-        #TEMP HACK TO GET A WORKING SPRITE IN XEEN
-        # width = 250
 
+        width = 250 #MM4 sprites seem to all have a width of 250
         # height = 100
-        x_skip = 0
+        x_skip = 50 #MM4 sprites seem to all be inset 50 px
+
         total_w = x_off + width
         total_h = y_off + height
         print(f"adjusted cell total size: {total_w}x{total_h}")
@@ -152,13 +152,38 @@ class MMTranscoder:
                     # new_cell.append(150)
                     dp += 1
 
-                #no conversion
+                #mystery commands
+
                 elif cmd == 3: # Stream CMD3
                     # new_cell.append(opcode)
                     # new_cell.extend(data[dp:dp+2]); dp += 2
-                    continue
+
+                    # continue
+
+                    count = (opcode + 1)
+                    for _ in range(count):
+                        self.log(f"converting cmd 3 to 0: (dp {dp} count {count} datalen {len(data)})")
+                        if dp < len(data):
+                            new_cell.append(0x00)
+                            new_cell.append(data[dp])
+                            # new_cell.append(110)
+                            dp += 1
+                        else:
+                            print("ERROR - out of bounds")
+
+
                 elif cmd == 7: # Pattern CMD7
-                    new_cell.append(opcode); new_cell.append(data[dp]); dp += 1
+                    # new_cell.append(opcode); 
+                    # new_cell.append(data[dp]); dp += 1
+                    color = data[dp]
+                    dp += 1
+                    lenth = val+35
+                    self.log(f"converting cmd 7 to 0: (color {color} count {lenth})")
+                    for _ in range(lenth):
+                        new_cell.append(0x00)
+                        new_cell.append(color)
+                        
+
 
                 self.log(f"command processed; dp: {dp}")
 
@@ -166,7 +191,16 @@ class MMTranscoder:
 
             # Finalize MM4 Length (MUST be payload bytes only)
             payload_size = len(new_cell) - payload_start + 1
-            new_cell[len_byte_pos] = min(payload_size, 255)
+            if payload_size > 255:
+                #TODO prevent this situation
+                self.log(f"WARNING: LINE PAYLOAD TOO LARGE! ({payload_size})")
+                over_size = payload_size - 255
+                self.log(f"REDUCING SIZE BY {over_size}")
+                del new_cell[-over_size:]
+                payload_size = len(new_cell) - payload_start + 1
+                self.log(f"NEW SIZE: {payload_size}")
+
+            new_cell[len_byte_pos] = payload_size
 
             self.log(f"mm4_len {payload_size} mm4_off {mm3_off}")
 
