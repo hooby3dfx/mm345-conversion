@@ -318,8 +318,9 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("mm3out/eface01.out", "outmm3_eface", mode="mm3")
 
 # parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
-parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
+parse_sprite("mm3out/twnwl4.vga", "out_mm3_wip", mode="mm3")
 
 
 # Usage

@@ -9,7 +9,7 @@ class MMTranscoder:
     def log(self, message):
         if self.verbose: print(message)
 
-    def transcode_cell(self, data, offset, cell_id):
+    def transcode_cell(self, data, offset, cell_id, out_width=0):
         if offset <= 0 or offset >= len(data): return b""
         
         self.log(f"\n--- Transcoding {cell_id} ---")
@@ -30,10 +30,13 @@ class MMTranscoder:
         mm4_height_diff = 0
         y_off += mm4_height_diff
         # y_off = 0
-
-        width = 250 #MM4 sprites seem to all have a width of 250
         # height = 100
-        x_skip = 50 #MM4 sprites seem to all be inset 50 px
+
+        x_skip = 0
+        if out_width:
+            width = out_width #MM4 sprites seem to all have a width of 250
+            x_skip = 50 #MM4 sprites seem to all be inset 50 px
+    
 
         total_w = x_off + width
         total_h = y_off + height
@@ -130,6 +133,23 @@ class MMTranscoder:
                     # break
                     continue
                 
+                elif cmd == 3: # Stream CMD3
+                    # new_cell.append(opcode)
+                    # new_cell.extend(data[dp:dp+2]); dp += 2
+
+                    # continue
+
+                    count = (opcode + 1)
+                    for _ in range(count):
+                        self.log(f"converting cmd 3 to 0: (dp {dp} count {count} datalen {len(data)})")
+                        if dp < len(data):
+                            new_cell.append(0x00)
+                            new_cell.append(data[dp])
+                            # new_cell.append(110)
+                            dp += 1
+                        else:
+                            print("ERROR - out of bounds")
+                
                 elif cmd == 4: # MM3 Skip -> MM4 Skip
                     new_cell.append(0xA0 | val) #map to CMD5
 
@@ -152,36 +172,25 @@ class MMTranscoder:
                     # new_cell.append(150)
                     dp += 1
 
-                #mystery commands
-
-                elif cmd == 3: # Stream CMD3
-                    # new_cell.append(opcode)
-                    # new_cell.extend(data[dp:dp+2]); dp += 2
-
-                    # continue
-
-                    count = (opcode + 1)
-                    for _ in range(count):
-                        self.log(f"converting cmd 3 to 0: (dp {dp} count {count} datalen {len(data)})")
-                        if dp < len(data):
-                            new_cell.append(0x00)
-                            new_cell.append(data[dp])
-                            # new_cell.append(110)
-                            dp += 1
-                        else:
-                            print("ERROR - out of bounds")
-
-
                 elif cmd == 7: # Pattern CMD7
                     # new_cell.append(opcode); 
                     # new_cell.append(data[dp]); dp += 1
-                    color = data[dp]
+
+                    #map to CMD2
+                    new_cell.append(0x40 | 31) #map to CMD2
+                    new_cell.append(data[dp])
+                    new_cell.append(0x40 | val) #map to CMD2
+                    new_cell.append(data[dp])
                     dp += 1
-                    lenth = val+35
-                    self.log(f"converting cmd 7 to 0: (color {color} count {lenth})")
-                    for _ in range(lenth):
-                        new_cell.append(0x00)
-                        new_cell.append(color)
+
+
+                    # color = data[dp]
+                    # dp += 1
+                    # lenth = val+35
+                    # self.log(f"converting cmd 7 to 0: (color {color} count {lenth})")
+                    # for _ in range(lenth):
+                    #     new_cell.append(0x00)
+                    #     new_cell.append(color)
                         
 
 
@@ -239,14 +248,27 @@ class MMTranscoder:
             self.log(f"Sanity Check Error: {e}")
             return False
 
-def convert_sprite_3to4(filepath, outpath, verbose=False):
+def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_width=0):
 
     with open(filepath, "rb") as f:
         data = f.read()
 
-    num_frames = struct.unpack("<H", data[:2])[0]
-    header_end = 2 + (num_frames * 4)
-    new_file = bytearray(data[:header_end])
+    new_file = bytearray()
+
+    if frame_number >= 0:
+        #we want to trascode only one frame from the input into the output
+        num_frames = 1
+        new_file.append(num_frames)
+        new_file.append(0)
+        header_start = 2 + (frame_number * 4)
+        header_end = 2 + ((frame_number+1) * 4)
+        print(f"transcoding only frame #{frame_number}, header_start {header_start} header_end {header_end}")
+        new_file.extend(data[header_start:header_end])
+    else:
+        #transcode all frames from input into output
+        num_frames = struct.unpack("<H", data[:2])[0]
+        header_end = 2 + (num_frames * 4)
+        new_file.extend(data[:header_end])
 
     '''
     #TEMP HACK TO GET A WORKING SPRITE IN XEEN
@@ -264,9 +286,15 @@ def convert_sprite_3to4(filepath, outpath, verbose=False):
     offset_map = {}
     write_ptr = len(new_file)
 
-    for i in range(num_frames):
-        off1, off2 = struct.unpack("<HH", data[2+i*4:6+i*4])
-        print(f"INPUT frame {i} off1 {off1} off2 {off2}")
+    for index in range(num_frames):
+        i_in_frame = index
+        i_out_frame = index
+        if frame_number >= 0 and num_frames == 1:
+            #this is ugly but should work
+            i_in_frame = frame_number
+
+        off1, off2 = struct.unpack("<HH", data[2+i_in_frame*4:6+i_in_frame*4])
+        print(f"INPUT frame {i_in_frame} off1 {off1} off2 {off2}")
         
         # if args.relative:
         #     if off1 != 0: off1 += header_end
@@ -280,8 +308,12 @@ def convert_sprite_3to4(filepath, outpath, verbose=False):
             if old_off in offset_map:
                 new_offs.append(offset_map[old_off])
             else:
-                cid = f"Frame{i}_Cell{j+1}"
-                res = transcoder.transcode_cell(data, old_off, cid)
+                cid = f"Frame{i_in_frame}_Cell{j+1}"
+                if out_width:
+                    res = transcoder.transcode_cell(data, old_off, cid, out_width)
+                else:
+                    res = transcoder.transcode_cell(data, old_off, cid)
+
                 if res:
                     offset_map[old_off] = write_ptr
                     new_offs.append(write_ptr)
@@ -291,7 +323,8 @@ def convert_sprite_3to4(filepath, outpath, verbose=False):
                     new_offs.append(0)
 
         print(f"writing to TOC: {new_offs}")
-        struct.pack_into("<HH", new_file, 2+i*4, *new_offs)
+        struct.pack_into("<HH", new_file, 2+i_out_frame*4, *new_offs)
+
 
     with open(outpath, "wb") as f:
         f.write(new_file)

@@ -40,16 +40,16 @@ this script will do the following:
 
 3. parse/convert all MM3 environment graphics related data to MM4 format and save to output folder
 	inputs:
-	- *.vga
-	- *.til
-	- *.sky
+	- *.vga (cavwl1.vga; twnwl4.vga; dirt.vga)
+	- *.til (cave.til)
+	- *.sky (cav.sky)
 	outputs:
-	- *.GND	
-	- *.SKY	
+	- *.GND	ground (1 frame 'skymap' for ground)
+	- *.SKY	(2 frames)
 	- *.TIL	environment minimap
-	- *.FWL	
-	- *.SWL
-	- *.SRF	ground sprites
+	- *.FWL	front walls
+	- *.SWL side walls
+	- *.SRF	surface (25 frames for ground)
 
 4. parse/convert all MM3 meta info
 	inputs:
@@ -76,6 +76,7 @@ this script will do the following:
 '''
 
 def copy_file(src, dst):
+	print(f"copy_file: {src} to {dst}")
 	with open(src, 'rb') as source:
 		content = source.read()
 		with open(dst, 'wb') as dest:
@@ -195,7 +196,8 @@ def convert_sprites(in_dir, out_dir):
 		mm4_hash = hash_filename(mm4_obj)
 
 		print(f"converting obj sprite {mm3_obj} to {mm4_obj} ({mm4_hash})")
-		convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj, False)
+		sprite_width = 250
+		convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj, False, out_width=sprite_width)
 		# hash mm4_obj to .ccx name for packing
 		copy_file(out_dir+"/"+mm4_obj, out_dir+"/"+mm4_hash)
 
@@ -207,11 +209,22 @@ def convert_sprites(in_dir, out_dir):
 	# 	dest.write(sprite_dat_data)
 	# copy_file(out_dir+"/"+sprite_dat_mm4, out_dir+"/"+mm4_hash)
 
+
+def convert_environments(in_dir, out_dir):
+	print("convert_environments")
+	mm3_town_gnd = "twnwl4.vga" #frame 29
+	mm4_town_gnd = "TOWN.GND"
+	frame_number = 29
+	convert_sprite_3to4(in_dir+"/"+mm3_town_gnd, out_dir+"/"+mm4_town_gnd, True, frame_number=frame_number)
+	mm4_hash = hash_filename(mm4_town_gnd)
+	copy_file(out_dir+"/"+mm4_town_gnd, out_dir+"/"+mm4_hash)
+
+
 def convert_all(in_dir, out_dir):
 	print("here we gooo!")
 	convert_maps(in_dir, out_dir)
 	convert_sprites(in_dir, out_dir)
-
+	convert_environments(in_dir, out_dir)
 
 
 

@@ -174,7 +174,7 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("WIP_MM3_REPACK/d_7818.ccx_og", "out_mm4_og", mode="xeen")
 # parse_sprite("WIP_MM3_REPACK/d_36181.ccx", "out_mm4_outdoor", mode="xeen")#OUTDOOR.TIL 
 
-parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
+# parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
 
 # parse_sprite("founthed_mm4.ccx", "out_mm3to4_sprite_test", mode="xeen")
 # parse_sprite("WIP_MM3_REPACK/d_42222.ccx_og", "out_mm3to4_sprite_test", mode="xeen")
@@ -182,5 +182,6 @@ parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
 # parse_sprite("mm3to4_out/008.OBJ", "out_mm3to4_sprite_test", mode="xeen")
 # parse_sprite("wipmm5to3repack/d_42222.ccx", "out_mm3to4_sprite_test", mode="xeen")
 
-parse_sprite("ext_drk/d_1294.ccx", "out_mm4_og", mode="xeen")
+# parse_sprite("ext_drk/d_27886.ccx", "out_mm4_og", mode="xeen")
 
+parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")
