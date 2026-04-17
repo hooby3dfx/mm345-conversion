@@ -111,6 +111,9 @@ def decompress_cell(data, offset, is_mm3=False):
                 else:
                     print("2-STOP?")
 
+                #fill the rest of the line??
+                # break
+
 
                 # back_off = struct.unpack("<H", data[dp:dp+2])[0]; dp += 2
                 # src = dp - back_off
@@ -320,7 +323,9 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
-parse_sprite("mm3out/twnwl4.vga", "out_mm3_wip", mode="mm3")
+
+# parse_sprite("mm3out/twnwl4.vga", "out_mm3_wip", mode="mm3")
+parse_sprite("mm3out/day.vga", "out_mm3_wip", mode="mm3")
 
 
 # Usage

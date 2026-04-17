@@ -7,6 +7,7 @@ from parse_maze import parse_mazefile
 from parse_event import parse_evt_file
 from parse_mob import parse_mm3_mob
 from mm3to4_sprite_transcoder2 import convert_sprite_3to4
+from mm4_sprite_merge import merge_mm4_sprites
 from hashFileName import hash_file_name_mm4
 
 '''
@@ -40,7 +41,9 @@ this script will do the following:
 
 3. parse/convert all MM3 environment graphics related data to MM4 format and save to output folder
 	inputs:
-	- *.vga (cavwl1.vga; twnwl4.vga; dirt.vga)
+	- *.vga 
+		walls, ground: cavwl1.vga; twnwl4.vga; dirt.vga
+		sky: day.vga
 	- *.til (cave.til)
 	- *.sky (cav.sky)
 	outputs:
@@ -212,12 +215,28 @@ def convert_sprites(in_dir, out_dir):
 
 def convert_environments(in_dir, out_dir):
 	print("convert_environments")
+
 	mm3_town_gnd = "twnwl4.vga" #frame 29
 	mm4_town_gnd = "TOWN.GND"
 	frame_number = 29
 	convert_sprite_3to4(in_dir+"/"+mm3_town_gnd, out_dir+"/"+mm4_town_gnd, True, frame_number=frame_number)
 	mm4_hash = hash_filename(mm4_town_gnd)
 	copy_file(out_dir+"/"+mm4_town_gnd, out_dir+"/"+mm4_hash)
+
+
+	mm3_sky_sky = "day.vga"
+	mm4_sky_skya = "SKY.SKYa"
+	mm4_sky_skyb = "SKY.SKYb"
+	mm4_sky_sky = "SKY.SKY"
+	# mm4_town_skyo = "TOWN.SKYo"
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_sky, out_dir+"/"+mm4_town_skyo, True)
+
+	convert_sprite_3to4(in_dir+"/"+mm3_sky_sky, out_dir+"/"+mm4_sky_skya, True, y_end=17)
+	convert_sprite_3to4(in_dir+"/"+mm3_sky_sky, out_dir+"/"+mm4_sky_skyb, True, y_start=17)
+	# now to put the two frames together into one file...
+	merge_mm4_sprites(out_dir+"/"+mm4_sky_skya, out_dir+"/"+mm4_sky_skyb, out_dir+"/"+mm4_sky_sky)
+	mm4_hash = hash_filename(mm4_sky_sky)
+	copy_file(out_dir+"/"+mm4_sky_sky, out_dir+"/"+mm4_hash)
 
 
 def convert_all(in_dir, out_dir):

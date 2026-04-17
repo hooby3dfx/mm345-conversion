@@ -9,7 +9,7 @@ class MMTranscoder:
     def log(self, message):
         if self.verbose: print(message)
 
-    def transcode_cell(self, data, offset, cell_id, out_width=0):
+    def transcode_cell(self, data, offset, cell_id, out_width=0, y_start=0, y_end=0):
         if offset <= 0 or offset >= len(data): return b""
         
         self.log(f"\n--- Transcoding {cell_id} ---")
@@ -36,11 +36,19 @@ class MMTranscoder:
         if out_width:
             width = out_width #MM4 sprites seem to all have a width of 250
             x_skip = 50 #MM4 sprites seem to all be inset 50 px
-    
 
+        if y_end:
+            height = y_end
+    
         total_w = x_off + width
         total_h = y_off + height
-        print(f"adjusted cell total size: {total_w}x{total_h}")
+        print(f"adjusted input cell total size: {total_w}x{total_h}")
+
+        if y_start:
+            # y_ptr = y_start
+            height = height - y_start
+
+        print(f"adjusted output cell total size: {x_off + width}x{y_off + height}")
 
         header = struct.pack("<HHHH", x_off, width, y_off, height)
         # struct.pack_into("<H", header, 0, x_off)
@@ -63,6 +71,11 @@ class MMTranscoder:
                 dp += 2
 
             self.log(f"mm3_len {mm3_len} mm3_off {mm3_off}")
+            if y_start > y_ptr:
+                self.log(f"skipping input line {y_ptr} because starting at {y_start}")
+                dp = line_end_src
+                y_ptr += 1
+                continue
 
             # MM3 Stop/V-Skip Logic
             if mm3_len == 0:
@@ -114,24 +127,32 @@ class MMTranscoder:
                 elif cmd == 1: # Raw
                     # wait = input("MM3 CMD1 - Press Enter to continue.")
                     # new_cell.append(0x00 | (val)) #map to CMD0
-                    count = (opcode + 1) #if cmd == 0 else (val + 33)
+                    # count = (opcode + 1) #if cmd == 0 else (val + 33)
                     # new_cell.extend(data[dp:dp+count]); dp += count
 
-                    for _ in range(count):
-                        self.log(f"converting cmd 1 to 0: (dp {dp} count {count} datalen {len(data)})")
-                        if dp < len(data):
-                            new_cell.append(0x00)
-                            new_cell.append(data[dp])
-                            # new_cell.append(110)
-                            dp += 1
-                        else:
-                            print("ERROR - out of bounds")
+                    # count = (opcode + 1)
+                    # for _ in range(count):
+                    #     self.log(f"converting cmd 1 to 0: (dp {dp} count {count} datalen {len(data)})")
+                    #     if dp < len(data):
+                    #         new_cell.append(0x00)
+                    #         new_cell.append(data[dp])
+                    #         # new_cell.append(110)
+                    #         dp += 1
+                    #     else:
+                    #         print("ERROR - out of bounds")
+
+                    #map cmd 1 to cmd 1
+                    count = (opcode + 1)
+                    self.log(f"converting cmd 1 to 1: (dp {dp} val {val} count {count})")
+                    new_cell.append(0x20 | val)
+                    new_cell.extend(data[dp:dp+count])
+                    dp += count
                 
                 elif cmd == 2: # MM3 Stop
                     # wait = input("MM3 Stop - Press Enter to continue.")
                     # stop_cell = True
                     # break
-                    continue
+                    self.log(f"skipping cmd 2 val {val}")
                 
                 elif cmd == 3: # Stream CMD3
                     # new_cell.append(opcode)
@@ -139,16 +160,24 @@ class MMTranscoder:
 
                     # continue
 
-                    count = (opcode + 1)
-                    for _ in range(count):
-                        self.log(f"converting cmd 3 to 0: (dp {dp} count {count} datalen {len(data)})")
-                        if dp < len(data):
-                            new_cell.append(0x00)
-                            new_cell.append(data[dp])
-                            # new_cell.append(110)
-                            dp += 1
-                        else:
-                            print("ERROR - out of bounds")
+                    # count = (opcode + 1)
+                    # for _ in range(count):
+                    #     self.log(f"converting cmd 3 to 0: (dp {dp} count {count} datalen {len(data)})")
+                    #     if dp < len(data):
+                    #         new_cell.append(0x00)
+                    #         new_cell.append(data[dp])
+                    #         # new_cell.append(110)
+                    #         dp += 1
+                    #     else:
+                    #         print("ERROR - out of bounds")
+
+                    #map cmd 3 to cmd 1
+                    count = (val + 33)
+                    self.log(f"converting cmd 3 to 1: (dp {dp} val {val} count {count})")
+                    new_cell.append(0x20 | val)
+                    new_cell.extend(data[dp:dp+count])
+                    dp += count
+
                 
                 elif cmd == 4: # MM3 Skip -> MM4 Skip
                     new_cell.append(0xA0 | val) #map to CMD5
@@ -181,6 +210,8 @@ class MMTranscoder:
                     new_cell.append(data[dp])
                     new_cell.append(0x40 | val) #map to CMD2
                     new_cell.append(data[dp])
+                    # new_cell.append(0x40 | 2) #map to CMD2
+                    # new_cell.append(data[dp])
                     dp += 1
 
 
@@ -248,7 +279,9 @@ class MMTranscoder:
             self.log(f"Sanity Check Error: {e}")
             return False
 
-def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_width=0):
+def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_width=0, y_start=0, y_end=0):
+
+    print(f"convert_sprite_3to4 {filepath} to {outpath}")
 
     with open(filepath, "rb") as f:
         data = f.read()
@@ -309,10 +342,7 @@ def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_w
                 new_offs.append(offset_map[old_off])
             else:
                 cid = f"Frame{i_in_frame}_Cell{j+1}"
-                if out_width:
-                    res = transcoder.transcode_cell(data, old_off, cid, out_width)
-                else:
-                    res = transcoder.transcode_cell(data, old_off, cid)
+                res = transcoder.transcode_cell(data, old_off, cid, out_width, y_start, y_end)
 
                 if res:
                     offset_map[old_off] = write_ptr

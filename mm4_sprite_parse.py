@@ -80,7 +80,7 @@ def decompress_cell(data, offset, is_mm3=False):
             cell_stats[cmd] = cell_stats[cmd]+1
 
             if cmd == 0 or cmd == 1:
-                count = (opcode + 1) #if cmd == 0 else (opcode + 33)
+                count = (opcode + 1) if cmd == 0 else (length + 33)
                 for _ in range(count):
                     if dp < len(data):
                         put(data[dp]); dp += 1
@@ -183,5 +183,11 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("wipmm5to3repack/d_42222.ccx", "out_mm3to4_sprite_test", mode="xeen")
 
 # parse_sprite("ext_drk/d_27886.ccx", "out_mm4_og", mode="xeen")
+# parse_sprite("ext_drk/d_124.ccx", "out_mm4_og", mode="xeen")
+parse_sprite("ext_drk/d_33280.ccx", "out_mm4_og", mode="xeen")
 
-parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")
+# parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")
+# parse_sprite("mm3to4_out/TOWN.SKYo", "out_mm3to4_sprite_test", mode="xeen")
+# parse_sprite("mm3to4_out/TOWN.SKYa", "out_mm3to4_sprite_test", mode="xeen")
+# parse_sprite("mm3to4_out/TOWN.SKYb", "out_mm3to4_sprite_test", mode="xeen")
+# parse_sprite("mm3to4_out/TOWN.SKY", "out_mm3to4_sprite_test", mode="xeen")
