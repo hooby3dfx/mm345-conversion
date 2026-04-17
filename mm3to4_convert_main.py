@@ -38,8 +38,9 @@ this script will do the following:
 	- *.pic (object sprites)
 	outputs:
 	-YYY.OBJ (object sprites)
-	-YYY.ATT (monster sprites)
-	-YYY.MOB (monster sprites)
+	-YYY.MON (monster sprites, 8 frames)
+	-YYY.ATT (monster sprites, 4 frames)
+	NOTE: DARK.CC skips a bunch of numbers. nice. 
 
 3. parse/convert all MM3 environment graphics related data to MM4 format and save to output folder
 	inputs:
@@ -90,8 +91,8 @@ this script will do the following:
 	- *.out (Town location animation ie temple, guild, bank)
 	outputs:
 	- *.fac
-		CHAR01.FAC (5 frames)
-		FACE01.FAC (4 frames)
+		CHAR01.FAC (5 frames) 24 sprites
+		FACE01.FAC (4 frames) 44 sprites
 
 6. parse/convert all MM3 media files
 	inputs:
@@ -204,7 +205,17 @@ MM3_OBJ_SPRITE_NAMES = [
 	'DUNGNDOR','CAVEOPN','CEILAXE','FLRFIRE','SEWAGE','VAPOR','BARREL','FOUNTHED',
 	'POOLB','POOLY',]
 
-MM3_MON_SPRITE_NAMES = ['bat','bublman','goblin','orc','skel','head','wasp','rat','shriek','zombie','candle','dwarf','ninja','mantis','hamr','bugeye','repthed','spider','sprite','beetle','cobra','scorpia','flytrap','jester','minidrgn','plasmoid','hand','ghoul','gatekepr','phantom','pirana','ranger','thief','treeglum','witch','robo2','dthlocus','archer','ballface','barbaran','cleric','firelzrd','firemon','gargoyle','ghost','lizard','sonicnja','beholder','cris','paladin','pegasus','reaper','sorc','lich','shield','troll','demon','dino','robo','blknight','martface','mummy','powsorc','cataplr','undragon','cyclop','devil','grndrgn','wizard','worm','vampire','werewolf','termnatr','hydra','roc','kudo','medusa','minotaur','octobest','draglord']
+MM3_MON_SPRITE_NAMES = [
+	'bat','bublman','goblin','orc','skel','head','wasp','rat',
+	'shriek','zombie','candle','dwarf','ninja','mantis','hamr','bugeye',
+	'repthed','spider','sprite','beetle','cobra','scorpia','flytrap','jester',
+	'minidrgn','plasmoid','hand','ghoul','gatekepr','phantom','pirana','ranger',
+	'thief','treeglum','witch','robo2','dthlocus','archer','ballface','barbaran',
+	'cleric','firelzrd','firemon','gargoyle','ghost','lizard','sonicnja','beholder',
+	'cris','paladin','pegasus','reaper','sorc','lich','shield','troll',
+	# 'demon','dino','robo','blknight','martface','mummy','powsorc','cataplr',
+	'undragon','cyclop','devil','grndrgn','wizard','worm','vampire','werewolf',
+	'termnatr','hydra','roc','kudo','medusa','minotaur','octobest','draglord',]
 
 
 def convert_sprites(in_dir, out_dir):
@@ -239,7 +250,35 @@ def convert_sprites(in_dir, out_dir):
 	# copy_file(out_dir+"/"+sprite_dat_mm4, out_dir+"/"+mm4_hash)
 
 	#monster sprites
+	for i in range(len(MM3_MON_SPRITE_NAMES)):
+		mm3_mon = MM3_MON_SPRITE_NAMES[i]+".mon"
+		mm4_mon = f"{(i):03}.MON"
+		mm4_att = f"{(i):03}.ATT"
+		mm4_mon_hash = hash_filename(mm4_mon)
+		mm4_att_hash = hash_filename(mm4_att)
 
+		print(f"converting mon sprite {mm3_mon} to {mm4_mon} and {mm4_att}")
+		sprite_width = 250
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"00", False, out_width=sprite_width, frame_number=0)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"01", False, out_width=sprite_width, frame_number=1)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"02", False, out_width=sprite_width, frame_number=2)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"03", False, out_width=sprite_width, frame_number=3)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"04", False, out_width=sprite_width, frame_number=0)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"05", False, out_width=sprite_width, frame_number=1)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"06", False, out_width=sprite_width, frame_number=2)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"07", False, out_width=sprite_width, frame_number=3)
+
+		merge_mm4_optimized(out_dir+"/"+mm4_mon+"00", out_dir+"/"+mm4_mon+"01", out_dir+"/"+mm4_mon+"a")
+		merge_mm4_optimized(out_dir+"/"+mm4_mon+"a", out_dir+"/"+mm4_mon+"02", out_dir+"/"+mm4_mon+"b")
+		merge_mm4_optimized(out_dir+"/"+mm4_mon+"b", out_dir+"/"+mm4_mon+"03", out_dir+"/"+mm4_mon+"c")
+		merge_mm4_optimized(out_dir+"/"+mm4_mon+"c", out_dir+"/"+mm4_mon+"04", out_dir+"/"+mm4_mon+"d")
+		merge_mm4_optimized(out_dir+"/"+mm4_mon+"d", out_dir+"/"+mm4_mon+"05", out_dir+"/"+mm4_mon+"e")
+		merge_mm4_optimized(out_dir+"/"+mm4_mon+"e", out_dir+"/"+mm4_mon+"06", out_dir+"/"+mm4_mon+"f")
+		merge_mm4_optimized(out_dir+"/"+mm4_mon+"f", out_dir+"/"+mm4_mon+"07", out_dir+"/"+mm4_mon)
+
+		# convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_att, False, out_width=sprite_width)
+		copy_file(out_dir+"/"+mm4_mon, out_dir+"/"+mm4_mon_hash)
+		# copy_file(out_dir+"/"+mm4_att, out_dir+"/"+mm4_att_hash)
 
 
 def convert_environments(in_dir, out_dir):
@@ -299,7 +338,14 @@ def convert_environments(in_dir, out_dir):
 	copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
 
 
-MM3_FACE_SPRITE_NAMES = []
+MM3_FACE_SPRITE_NAMES = [
+	'human1.fac','human2.fac','human3.fac','human4.fac',
+	'dwarf1.fac','dwarf2.fac','dwarf3.fac','dwarf4.fac',
+	'elf1.fac','elf2.fac','elf3.fac','elf4.fac',
+	'gnome1.fac','gnome2.fac','gnome3.fac','gnome4.fac',
+	'horc1.fac','horc2.fac','horc3.fac','horc4.fac',
+	'hire0.fac','hire1.fac','hire2.fac','hire3.fac',
+	'hire4.fac','hire5.fac','hire6.fac','hire7.fac','hire8.fac','hire9.fac']
 
 def convert_2d_graphics(in_dir, out_dir):
 	print("convert_2d_graphics")
@@ -311,6 +357,15 @@ def convert_2d_graphics(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_face)
 	convert_sprite_3to4(in_dir+"/"+mm3_face, out_dir+"/"+mm4_face)
 	copy_file(out_dir+"/"+mm4_face, out_dir+"/"+mm4_hash)
+
+	#character portraits (24)
+	for i in range(24):
+		mm3_fac = MM3_FACE_SPRITE_NAMES[i]
+		mm4_fac = f"CHAR{(i+1):02}.FAC"
+		mm4_hash = hash_filename(mm4_fac)
+
+		convert_sprite_3to4(in_dir+"/"+mm3_fac, out_dir+"/"+mm4_fac)
+		copy_file(out_dir+"/"+mm4_fac, out_dir+"/"+mm4_hash)
 
 
 
