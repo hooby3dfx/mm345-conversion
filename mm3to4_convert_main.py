@@ -8,6 +8,8 @@ from parse_event import parse_evt_file
 from parse_mob import parse_mm3_mob
 from mm3to4_sprite_transcoder2 import convert_sprite_3to4
 from mm4_sprite_merge import merge_mm4_sprites
+from mm4_sprite_merge2 import merge_mm4_multi_frame
+from mm4_sprite_merge3 import merge_mm4_optimized
 from hashFileName import hash_file_name_mm4
 
 '''
@@ -42,17 +44,35 @@ this script will do the following:
 3. parse/convert all MM3 environment graphics related data to MM4 format and save to output folder
 	inputs:
 	- *.vga 
-		walls, ground: cavwl1.vga; twnwl4.vga; dirt.vga
+		walls, ground: cavwl1.vga; twnwl4.vga; 
+		surface: dirt.vga
 		sky: day.vga
+	twnwl1.vga
+		frame 00	front
+		frame 01	front
+		frame 02	front
+		frame 03	front
+		frame 04	side
+		frame 05	side
+		frame 06	front
+		frame 07	front
+		frame 08	front
+		frame 09	front
+		frame 10	front pillars
+		frame 11	side pillars
+		frame 12	side pillars
+
 	- *.til (cave.til)
 	- *.sky (cav.sky)
+
 	outputs:
 	- *.GND	ground (1 frame 'skymap' for ground)
 	- *.SKY	(2 frames)
 	- *.TIL	environment minimap
-	- *.FWL	front walls
-	- *.SWL side walls
 	- *.SRF	surface (25 frames for ground)
+	- *.SWL side walls (48 frames, all in 1 file)
+	- *.FWL	front walls (split into 4 files; #frames: 8, 11, 34, 17)
+		
 
 4. parse/convert all MM3 meta info
 	inputs:
@@ -184,6 +204,8 @@ MM3_OBJ_SPRITE_NAMES = [
 	'DUNGNDOR','CAVEOPN','CEILAXE','FLRFIRE','SEWAGE','VAPOR','BARREL','FOUNTHED',
 	'POOLB','POOLY',]
 
+MM3_MON_SPRITE_NAMES = ['bat','bublman','goblin','orc','skel','head','wasp','rat','shriek','zombie','candle','dwarf','ninja','mantis','hamr','bugeye','repthed','spider','sprite','beetle','cobra','scorpia','flytrap','jester','minidrgn','plasmoid','hand','ghoul','gatekepr','phantom','pirana','ranger','thief','treeglum','witch','robo2','dthlocus','archer','ballface','barbaran','cleric','firelzrd','firemon','gargoyle','ghost','lizard','sonicnja','beholder','cris','paladin','pegasus','reaper','sorc','lich','shield','troll','demon','dino','robo','blknight','martface','mummy','powsorc','cataplr','undragon','cyclop','devil','grndrgn','wizard','worm','vampire','werewolf','termnatr','hydra','roc','kudo','medusa','minotaur','octobest','draglord']
+
 
 def convert_sprites(in_dir, out_dir):
 	print("convert_sprites")
@@ -196,6 +218,7 @@ def convert_sprites(in_dir, out_dir):
 		f.write(raw_palette)
 	copy_file(out_dir+"/"+f"{pal_name}.PAL", out_dir+"/"+hash_filename(f"{pal_name}.PAL"))
 
+	#object sprites
 	for i in range(len(MM3_OBJ_SPRITE_NAMES)):
 		mm3_obj = MM3_OBJ_SPRITE_NAMES[i]+".pic"
 		mm4_obj = f"{(i):03}.OBJ"
@@ -215,10 +238,14 @@ def convert_sprites(in_dir, out_dir):
 	# 	dest.write(sprite_dat_data)
 	# copy_file(out_dir+"/"+sprite_dat_mm4, out_dir+"/"+mm4_hash)
 
+	#monster sprites
+
+
 
 def convert_environments(in_dir, out_dir):
 	print("convert_environments")
 
+	#ground
 	mm3_town_gnd = "twnwl4.vga" #frame 29
 	mm4_town_gnd = "TOWN.GND"
 	frame_number = 29
@@ -226,20 +253,51 @@ def convert_environments(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_town_gnd)
 	copy_file(out_dir+"/"+mm4_town_gnd, out_dir+"/"+mm4_hash)
 
-
+	#sky
 	mm3_sky_sky = "day.vga"
 	mm4_sky_skya = "SKY.SKYa"
 	mm4_sky_skyb = "SKY.SKYb"
 	mm4_sky_sky = "SKY.SKY"
 	# mm4_town_skyo = "TOWN.SKYo"
 	# convert_sprite_3to4(in_dir+"/"+mm3_town_sky, out_dir+"/"+mm4_town_skyo, True)
-
 	convert_sprite_3to4(in_dir+"/"+mm3_sky_sky, out_dir+"/"+mm4_sky_skya, y_end=17)
 	convert_sprite_3to4(in_dir+"/"+mm3_sky_sky, out_dir+"/"+mm4_sky_skyb, y_start=17)
 	# now to put the two frames together into one file...
 	merge_mm4_sprites(out_dir+"/"+mm4_sky_skya, out_dir+"/"+mm4_sky_skyb, out_dir+"/"+mm4_sky_sky)
 	mm4_hash = hash_filename(mm4_sky_sky)
 	copy_file(out_dir+"/"+mm4_sky_sky, out_dir+"/"+mm4_hash)
+
+	#side walls
+	mm3_town_swl_1 = "twnwl1.vga" #"twnwl1.vga","twnwl2.vga","twnwl3.vga","twnwl4.vga"
+	mm4_town_swl = "STOWN.SWL" #48 frames
+	#remap, then merge back together...
+	
+
+
+	#front walls
+	mm3_town_fwl_1 = "twnwl1.vga"
+	mm4_town_fwl_1 = "FTOWN1.FWL"
+	#4 distance levels...
+	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"00", frame_number=0)
+	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"01", frame_number=1)
+	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"02", frame_number=2)
+	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"03", frame_number=3)
+	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"04", frame_number=2)
+	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"05", frame_number=3)
+	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"06", frame_number=0)
+	convert_sprite_3to4(in_dir+"/"+mm3_town_gnd, out_dir+"/"+mm4_town_fwl_1+"07", frame_number=29, y_end=4)
+
+	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"00", out_dir+"/"+mm4_town_fwl_1+"01", out_dir+"/"+mm4_town_fwl_1+"a")
+	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"a", out_dir+"/"+mm4_town_fwl_1+"02", out_dir+"/"+mm4_town_fwl_1+"b")
+	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"b", out_dir+"/"+mm4_town_fwl_1+"03", out_dir+"/"+mm4_town_fwl_1+"c")
+	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"c", out_dir+"/"+mm4_town_fwl_1+"04", out_dir+"/"+mm4_town_fwl_1+"d")
+	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"d", out_dir+"/"+mm4_town_fwl_1+"05", out_dir+"/"+mm4_town_fwl_1+"e")
+	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"e", out_dir+"/"+mm4_town_fwl_1+"06", out_dir+"/"+mm4_town_fwl_1+"f")
+	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"f", out_dir+"/"+mm4_town_fwl_1+"07", out_dir+"/"+mm4_town_fwl_1)
+
+	mm4_hash = hash_filename(mm4_town_fwl_1)
+	copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
+
 
 MM3_FACE_SPRITE_NAMES = []
 

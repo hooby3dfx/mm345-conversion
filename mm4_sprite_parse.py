@@ -186,7 +186,9 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("ext_drk/d_124.ccx", "out_mm4_og", mode="xeen")
 # parse_sprite("ext_drk/d_33280.ccx", "out_mm4_og", mode="xeen")
 # parse_sprite("ext_drk/d_54169.ccx", "out_mm4_og", mode="xeen")
-parse_sprite("ext_drk/d_51552.ccx", "out_mm4_og", mode="xeen")
+# parse_sprite("ext_drk/d_27503.ccx", "out_mm4_og", mode="xeen")
+parse_sprite("ext_drk/d_52515.ccx", "out_mm4_og", mode="xeen")
+
 
 # parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")
 # parse_sprite("mm3to4_out/TOWN.SKYo", "out_mm3to4_sprite_test", mode="xeen")

@@ -5,7 +5,7 @@ from PIL import Image
 PATTERN_STEPS = [0, 1, 1, 1, 2, 2, 3, 3, 0, -1, -1, -1, -2, -2, -3, -3]
 
 Test = False
-Test = True
+# Test = True
 
 
 def decompress_cell(data, offset, is_mm3=False):
@@ -13,7 +13,7 @@ def decompress_cell(data, offset, is_mm3=False):
     
     # Cell Header (8 bytes)
     x_off, width, y_off, height = struct.unpack("<HHHH", data[offset:offset+8])
-    width=300
+    # width=300
     total_w, total_h = x_off + width, y_off + height
     print("cell info:")
     print(f"x_off: {x_off}")
@@ -291,7 +291,7 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
         if p2:
             ovl = Image.new("P", (w2, h2)); ovl.putdata(p2)
             mask = Image.new("L", (w2, h2), 0); mask.putdata([255 if x != 0 else 0 for x in p2])
-            # img.paste(ovl, (0,0), mask)
+            img.paste(ovl, (0,0), mask)
             
         img.save(os.path.join(out_dir, f"frame_{i:02d}.png"))
 
@@ -324,8 +324,8 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
 
-# parse_sprite("mm3out/twnwl4.vga", "out_mm3_wip", mode="mm3")
-parse_sprite("mm3out/day.vga", "out_mm3_wip", mode="mm3")
+parse_sprite("mm3out/twnwl4.vga", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/day.vga", "out_mm3_wip", mode="mm3")
 
 
 # Usage
