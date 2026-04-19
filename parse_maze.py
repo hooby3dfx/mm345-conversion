@@ -210,7 +210,7 @@ def is_mm3_indoor(maze_id):
 	return indoor
 
 
-def convert_3to4(map, outpath, maze_id):
+def convert_dat_3to4(map, maze_id):
 	indoor = is_mm3_indoor(maze_id) #temp hack
 	mm3to4 = bytearray()
 
@@ -255,13 +255,12 @@ def convert_3to4(map, outpath, maze_id):
 
 	# print(f"mm3to4: {mm3to4}")
 	# print("")
+
+	#mm3 is always auto execute...?
 	mm3to4.extend(bytearray([0x10]) * 256)#cell flags
-	mazeinfo = convert_mazeinfo(maze_id)#len60
-	mm3to4.extend(mazeinfo)#properties
-	mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
-	parse_mazedat(mm3to4)
-	with open(outpath, "wb") as f:
-		f.write(mm3to4)
+
+	return mm3to4
+
 
 
 def parse_mazedat(map, is_mm3=False):
@@ -316,11 +315,22 @@ def parse_mazeinfo(mazeinfo):
 		i01 = mazeinfo[1]
 		i02 = mazeinfo[2]
 		i03 = mazeinfo[3]
+
 		i04 = mazeinfo[4]
 		i05 = mazeinfo[5]
 		i06 = mazeinfo[6]
-
 		i07 = mazeinfo[7] #0x64
+
+		i08 = mazeinfo[8] #N
+		i09 = mazeinfo[9] #E
+		i10 = mazeinfo[10]#S
+		i11 = mazeinfo[11]#W
+
+		i12 = mazeinfo[12]
+		i13 = mazeinfo[13]
+		i14 = mazeinfo[14]
+		i15 = mazeinfo[15]
+
 		# i12~i15 010101
 		i16 = mazeinfo[16]
 		i17 = mazeinfo[17]
@@ -384,17 +394,19 @@ def parse_mazeinfo(mazeinfo):
 	return is_mm3, maze_id
 
 
-def convert_mazeinfo(maze_id):
+def convert_info_3to4(mm3_info):
 
 	mazeinfo = bytearray(60)
+
+	maze_id = mm3_info[31]
 
 	indoor = is_mm3_indoor(maze_id) #temp hack
 
 	# maze_id = 41
-	maze_surr_N = 0
-	maze_surr_E = 0
-	maze_surr_S = 0
-	maze_surr_W = 0
+	maze_surr_N = mm3_info[8]
+	maze_surr_E = mm3_info[9]
+	maze_surr_S = mm3_info[10]
+	maze_surr_W = mm3_info[11]
 	maze_flags00 = 0
 	maze_flags01 = 0
 	maze_flags02 = 0
@@ -408,7 +420,7 @@ def convert_mazeinfo(maze_id):
 		surfTypes = [0x00, 0x01, 0x02, 0x03, 0x04, 0x02, 0x01, 0x07, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x02, 0x01, 0x0F]
 
 	floorType = 0
-	runX = 2
+	runX = 2 #TODO parse these
 	wallNoPass = 7
 	surfNoPass = 0
 	unlockDoor = 0
@@ -417,7 +429,7 @@ def convert_mazeinfo(maze_id):
 	bashGrate = 0
 	bashWall = 0
 	chanceToRun = 0
-	runY = 5
+	runY = 5 #TODO parse these
 	trapDmg = 0
 	wallKind = 0
 	tavernTips = 0
@@ -474,8 +486,16 @@ def parse_mazefile(filepath, outpath='mm3to4dat.bin'):
 		parse_mazedat(mazedat, is_mm3)
 
 		if is_mm3:
-			print("converting 3to4:")
-			convert_3to4(mazedat, outpath, maze_id)
+			print("converting 3to4")
+			mm3to4 = bytearray()
+			mm3to4.extend(convert_dat_3to4(mazedat, maze_id))
+			mm3to4.extend(convert_info_3to4(mazeinfo))
+			mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
+
+			# parse_mazedat(mm3to4)
+
+			with open(outpath, "wb") as f:
+				f.write(mm3to4)
 
 
 		print("")
@@ -491,4 +511,7 @@ parse_mazefile("ext_cld_world/MAZE0023.DAT")
 parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
 # parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
 # parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
+
+parse_mazefile("mm3to4_out/MAZE0016.DAT")
+parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
 

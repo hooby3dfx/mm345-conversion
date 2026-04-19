@@ -203,7 +203,7 @@ MM3_OBJ_SPRITE_NAMES = [
 	'STONCOFN','THRONE','TRAPDOOR','TRSRPILE','WARRIOR','WDNCHST','WHRLPOOL','WOODCFN',
 	'MIRROR','CASTLE','TOWN','PYRAMID','WAGON','VILLGHUT','LATTERDN','LATTERUP',
 	'DUNGNDOR','CAVEOPN','CEILAXE','FLRFIRE','SEWAGE','VAPOR','BARREL','FOUNTHED',
-	'POOLB','POOLY',]
+	'POOLB','POOLY','well','tube','town2','dcastle']
 
 MM3_MON_SPRITE_NAMES = [
 	'bat','bublman','goblin','orc','skel','head','wasp','rat',
@@ -236,6 +236,11 @@ def convert_sprites(in_dir, out_dir):
 		mm4_hash = hash_filename(mm4_obj)
 
 		print(f"converting obj sprite {mm3_obj} to {mm4_obj} ({mm4_hash})")
+
+		#some slots seem to be hardcoded with certain animations or properties.
+		#idea: as a workaround, add dummy frames?
+		#also - some of these slots dont exist (like 059.obj in xeen)
+
 		sprite_width = 250
 		convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj, False, out_width=sprite_width)
 		# hash mm4_obj to .ccx name for packing
@@ -259,6 +264,8 @@ def convert_sprites(in_dir, out_dir):
 
 		print(f"converting mon sprite {mm3_mon} to {mm4_mon} and {mm4_att}")
 		sprite_width = 250
+		#Xeen mon sprites are 8 frames, att sprites are 4 frames
+		#...can there be more?
 		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"00", False, out_width=sprite_width, frame_number=0)
 		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"01", False, out_width=sprite_width, frame_number=1)
 		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"02", False, out_width=sprite_width, frame_number=2)
@@ -368,6 +375,17 @@ def convert_2d_graphics(in_dir, out_dir):
 		copy_file(out_dir+"/"+mm4_fac, out_dir+"/"+mm4_hash)
 
 
+def convert_media(in_dir, out_dir):
+	print("convert_media")
+	#main screen background/logo image
+	mm3_logo = "logy5.raw" #CGA colors???
+	mm4_logo = "INTRO.RAW"
+	mm4_hash = hash_filename(mm4_logo)
+	copy_file(in_dir+"/"+mm3_logo, out_dir+"/"+mm4_logo)
+	copy_file(out_dir+"/"+mm4_logo, out_dir+"/"+mm4_hash)	
+
+
+
 
 def convert_all(in_dir, out_dir):
 	print("here we gooo!")
@@ -375,6 +393,7 @@ def convert_all(in_dir, out_dir):
 	convert_sprites(in_dir, out_dir)
 	convert_environments(in_dir, out_dir)
 	convert_2d_graphics(in_dir, out_dir)
+	convert_media(in_dir, out_dir)
 
 
 

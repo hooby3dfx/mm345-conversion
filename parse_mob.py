@@ -11,9 +11,17 @@ list2: sprite objects (fountain, chest)
 def oid3to4(oid3):
 	match oid3:
 		case 8: #desk
-			return 1 #temp
+			print(f"converting oid3 {oid3}")
+			return 1 #temp remapping to workaround sprite issue
+		case 45: #wagon
+			print(f"converting oid3 {oid3}")
+			return 1 #temp remapping to workaround sprite issue
+		case 49: #DUNGNDOR
+			print(f"converting oid3 {oid3}")
+			return 1 #temp remapping to workaround sprite issue
 		case _:
-			return oid3
+			return 1
+			# return oid3
 
 
 def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
@@ -62,8 +70,9 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 				mm4_oids.extend(bytearray([0xFF]) * 11)
 
 				#TODO actually determine the monster IDs from MM3. if they are hardcoded in exe just make a table
-				mid0 = 0x17 #mm5 goblin
-				mid1 = 0x17
+				# mid0 = 0x17 #mm5 goblin
+				mid0 = 0x00
+				mid1 = 0x02
 				mid2 = 0xFF
 				mid3 = 0xFF
 				mid4 = 0xFF
@@ -117,5 +126,10 @@ parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE09.MOB")
 
 # parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
+# parse_mm3_mob("mm3_default.sav-files/MAZE40.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE41.MOB")
+# parse_mm3_mob("mm3_default.sav-files/MAZE42.MOB")
+# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
+parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
 

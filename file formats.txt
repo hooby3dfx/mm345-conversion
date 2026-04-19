@@ -212,6 +212,7 @@ Progress notes:
 -Items... bone whistle ⚠️
 -Palette... need to decide if going all-in for MM3 palette (as MM4.PAL/MM4E.pal) ⚠️
 	lets see how things look after more sprites/images are working
-
+-Interlocking mazes ⚠️
+-Maze16
 
 
