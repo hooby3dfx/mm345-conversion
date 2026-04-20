@@ -11,6 +11,7 @@ from mm4_sprite_merge import merge_mm4_sprites
 from mm4_sprite_merge2 import merge_mm4_multi_frame
 from mm4_sprite_merge3 import merge_mm4_optimized
 from hashFileName import hash_file_name_mm4
+from sprite_inspect import inspect_sprite
 
 '''
 OK so here we go.
@@ -235,7 +236,10 @@ def convert_sprites(in_dir, out_dir):
 		mm4_obj = f"{(i):03}.OBJ"
 		mm4_hash = hash_filename(mm4_obj)
 
-		print(f"converting obj sprite {mm3_obj} to {mm4_obj} ({mm4_hash})")
+		mm3_frame_ct = inspect_sprite(in_dir+"/"+mm3_obj, True)
+		mm4_frame_ct = inspect_sprite("ext_cld"+"/"+mm4_hash, True)
+
+		print(f"converting obj sprite {mm3_obj} ({mm3_frame_ct} frames) to {mm4_obj} ({mm4_frame_ct} frames) [{mm4_hash}]")
 
 		#some slots seem to be hardcoded with certain animations or properties.
 		#idea: as a workaround, add dummy frames?
@@ -243,6 +247,16 @@ def convert_sprites(in_dir, out_dir):
 
 		sprite_width = 250
 		convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj, False, out_width=sprite_width)
+
+		if mm4_frame_ct and mm3_frame_ct < mm4_frame_ct:
+			#fill missing frames with frame 0
+			num_frame_diff = mm4_frame_ct - mm3_frame_ct
+			print(f"adding {num_frame_diff} extra frames")
+			convert_sprite_3to4(in_dir+"/"+mm3_obj, out_dir+"/"+mm4_obj+"0", False, out_width=sprite_width, frame_number=0)
+			for j in range(num_frame_diff):
+				merge_mm4_optimized(out_dir+"/"+mm4_obj, out_dir+"/"+mm4_obj+"0", out_dir+"/"+mm4_obj)
+
+
 		# hash mm4_obj to .ccx name for packing
 		copy_file(out_dir+"/"+mm4_obj, out_dir+"/"+mm4_hash)
 

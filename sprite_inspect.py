@@ -2,7 +2,7 @@ import struct
 import argparse
 import os
 
-def inspect_sprite(filename):
+def inspect_sprite(filename, frame_count=False):
     if not os.path.exists(filename):
         print(f"Error: File {filename} not found.")
         return
@@ -12,6 +12,10 @@ def inspect_sprite(filename):
 
     file_size = len(data)
     num_frames = struct.unpack("<H", data[0:2])[0]
+
+    if frame_count:
+        return num_frames
+
     # The frame table consists of 2 offsets (Cell1, Cell2) per frame
     table_end = 2 + (num_frames * 4)
 
@@ -62,6 +66,7 @@ def inspect_sprite(filename):
                 print(f"0x{off:04X} ({off:<4}) | ERROR PARSING")
         else:
             print(f"0x{off:04X} ({off:<4}) | OUT OF BOUNDS")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Inspect MM3/MM4 Sprite Metadata")

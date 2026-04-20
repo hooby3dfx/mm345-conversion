@@ -214,6 +214,8 @@ Progress notes:
 	lets see how things look after more sprites/images are working
 -Interlocking mazes ✅
 -UI images like backgrounds for menus ⚠️
+-pow13948.icn (temple of moo) ⚠️
+-Arachnoid Caverns math quiz with max party size of 8 ⚠️
 
 
 

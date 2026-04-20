@@ -10,18 +10,18 @@ list2: sprite objects (fountain, chest)
 
 def oid3to4(oid3):
 	match oid3:
-		case 8: #desk
-			print(f"converting oid3 {oid3}")
-			return 1 #temp remapping to workaround sprite issue
-		case 45: #wagon
-			print(f"converting oid3 {oid3}")
-			return 1 #temp remapping to workaround sprite issue
-		case 49: #DUNGNDOR
-			print(f"converting oid3 {oid3}")
-			return 1 #temp remapping to workaround sprite issue
+		# case 8: #desk
+		# 	print(f"converting oid3 {oid3}")
+		# 	return 1 #temp remapping to workaround sprite issue
+		# case 45: #wagon
+		# 	print(f"converting oid3 {oid3}")
+		# 	return 1 #temp remapping to workaround sprite issue
+		# case 49: #DUNGNDOR
+		# 	print(f"converting oid3 {oid3}")
+		# 	return 1 #temp remapping to workaround sprite issue
 		case _:
-			return 1
-			# return oid3
+			# return 1
+			return oid3
 
 
 def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
