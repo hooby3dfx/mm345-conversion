@@ -30,9 +30,11 @@ Again, this is a preview of current work in progress. The below issues will be f
 -Names of everything (maps, monsters, etc) are coming from MM4 still
 -If you get to MM3 Castle Blackwind (maze 28), it will be the same as MM3 Fountain Head
 -The main menu / title screen is using what seems to be the CGA title screen from MM3 and has some animations on top from the MM4 title screen
+-All maps tiles are set as "explored" for testing, so the mini map will show everything
 -Every map tile does an "auto execute" for the events which is close to the way MM3 works but this will also re-trigger when you turn direction for example and may show "nothing here" message
 -Items, quests, spells, stats, etc not touched yet so still coming from MM4
-
+-Support for DARK.CC and WoX
+-Music files and other cutscenes
 
 The rest is highly untested and anything not described above that you notice, please let me know!
 
