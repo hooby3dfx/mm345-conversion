@@ -26,6 +26,7 @@ Again, this is a preview of current work in progress. The below issues will be f
 	-Outdoor environment graphics will still be the MM4 sprites
 	-UI menus etc are still using MM4 graphics
 	-Some sprites have conversion errors like missing pixels or lines that overrun
+	-Sprite positions may be offset / not center aligned properly
 -The monsters in all areas are currently only ("Slime" with MM3 bat sprite, and "Doom Bug" as MM3 goblin sprite)
 -Names of everything (maps, monsters, etc) are coming from MM4 still
 -If you get to MM3 Castle Blackwind (maze 28), it will be the same as MM3 Fountain Head

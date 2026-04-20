@@ -90,10 +90,12 @@ this script will do the following:
 	- *.fac (Portrait sprite)
 	- eface*.out (Animated face)
 	- *.out (Town location animation ie temple, guild, bank)
+	- *.icn (icons)
 	outputs:
 	- *.fac
 		CHAR01.FAC (5 frames) 24 sprites
 		FACE01.FAC (4 frames) 44 sprites
+	- *.icn (icons)
 
 6. parse/convert all MM3 media files
 	inputs:
@@ -473,6 +475,39 @@ def convert_environments(in_dir, out_dir):
 	#TODO outdoors
 
 
+def convert_meta_data(in_dir, out_dir):
+	print("convert_meta_data")
+	#MM3:
+	# award.bin
+	# copy.bin
+	# corak.bin
+	# jester.bin
+	# quest.bin
+	# spldesc.bin
+	# tavern.bin
+	#MM4:
+	# AWARD.BIN
+	# QNOTES.BIN
+	# SPECIAL.BIN
+	# SPLDESC.BIN
+	# TAVERN.BIN
+	# VIEWTEXT.BIN
+
+	mm3_bin = "award.bin"
+	mm4_bin = "AWARD.BIN"
+	mm4_hash = hash_filename(mm4_bin)
+	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
+	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
+
+	mm3_bin = "tavern.bin"
+	mm4_bin = "TAVERN.BIN"
+	mm4_hash = hash_filename(mm4_bin)
+	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
+	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
+
+
+
+
 MM3_FACE_SPRITE_NAMES = [
 	'human1.fac','human2.fac','human3.fac','human4.fac',
 	'dwarf1.fac','dwarf2.fac','dwarf3.fac','dwarf4.fac',
@@ -482,25 +517,52 @@ MM3_FACE_SPRITE_NAMES = [
 	'hire0.fac','hire1.fac','hire2.fac','hire3.fac',
 	'hire4.fac','hire5.fac','hire6.fac','hire7.fac','hire8.fac','hire9.fac']
 
+MM3_ICONS = [
+'bank.icn','bank2.icn','buy.icn','cast.icn','charpow.icn','combat.icn','confirm.icn','confirm2.icn','cpanel.icn','create.icn','detctmon.icn','detect.icn','duplicat.icn','element.icn','equip.icn','esc.icn','global.icn','hpbars.icn','inn.icn','items.icn','lloyds.icn','main.icn','mouse.icn','pow0.icn','pow10.icn','pow11.icn','pow12.icn','pow13.icn','pow14.icn','pow2.icn','pow3.icn','pow4.icn','pow5.icn','pow7.icn','pow8.icn','pow9.icn','protect.icn','restore.icn','scroll.icn','sell.icn','start.icn','train.icn','view.icn'
+]
+
 def convert_2d_graphics(in_dir, out_dir):
 	print("convert_2d_graphics")
-	#portraits
+	#character portraits (24)
 	#in: human1.fac (32x32)
 	#out: CHAR01.FAC (32x32)
-	mm3_face = "human1.fac"
-	mm4_face = "CHAR01.FAC"
-	mm4_hash = hash_filename(mm4_face)
-	convert_sprite_3to4(in_dir+"/"+mm3_face, out_dir+"/"+mm4_face)
-	copy_file(out_dir+"/"+mm4_face, out_dir+"/"+mm4_hash)
-
-	#character portraits (24)
+	# mm3_face = "human1.fac"
+	# mm4_face = "CHAR01.FAC"
+	# mm4_hash = hash_filename(mm4_face)
+	# convert_sprite_3to4(in_dir+"/"+mm3_face, out_dir+"/"+mm4_face)
+	# copy_file(out_dir+"/"+mm4_face, out_dir+"/"+mm4_hash)
 	for i in range(24):
 		mm3_fac = MM3_FACE_SPRITE_NAMES[i]
 		mm4_fac = f"CHAR{(i+1):02}.FAC"
 		mm4_hash = hash_filename(mm4_fac)
-
 		convert_sprite_3to4(in_dir+"/"+mm3_fac, out_dir+"/"+mm4_fac)
 		copy_file(out_dir+"/"+mm4_fac, out_dir+"/"+mm4_hash)
+
+	#npc faces (44)
+	for i in range(30):
+		mm3_fac = f"eface{(i+1):02}.out"
+		mm4_fac = f"FACE{(i+1):02}.FAC"
+		mm4_hash = hash_filename(mm4_fac)
+		convert_sprite_3to4(in_dir+"/"+mm3_fac, out_dir+"/"+mm4_fac)
+		copy_file(out_dir+"/"+mm4_fac, out_dir+"/"+mm4_hash)
+
+	#icons, mostly 1:1
+	for i in range(len(MM3_ICONS)):
+		mm3_icn = MM3_ICONS[i]
+		mm4_icon = mm3_icn.upper()
+		mm4_hash = hash_filename(mm4_icon)
+
+		mm3_frame_ct = inspect_sprite(in_dir+"/"+mm3_icn, True)
+		mm4_frame_ct = inspect_sprite("ext_cld"+"/"+mm4_hash, True)
+
+		if mm3_frame_ct == mm4_frame_ct or not mm4_frame_ct:
+			convert_sprite_3to4(in_dir+"/"+mm3_icn, out_dir+"/"+mm4_icon)
+			copy_file(out_dir+"/"+mm4_icon, out_dir+"/"+mm4_hash)
+		else:
+			print(f"skipping icon {mm4_icon} ({mm4_frame_ct} frames)")
+
+
+
 
 
 def convert_media(in_dir, out_dir):
@@ -510,7 +572,7 @@ def convert_media(in_dir, out_dir):
 	mm4_logo = "INTRO.RAW"
 	mm4_hash = hash_filename(mm4_logo)
 	copy_file(in_dir+"/"+mm3_logo, out_dir+"/"+mm4_logo)
-	copy_file(out_dir+"/"+mm4_logo, out_dir+"/"+mm4_hash)	
+	copy_file(out_dir+"/"+mm4_logo, out_dir+"/"+mm4_hash)
 
 
 
@@ -520,6 +582,7 @@ def convert_all(in_dir, out_dir):
 	convert_maps(in_dir, out_dir)
 	convert_sprites(in_dir, out_dir)
 	convert_environments(in_dir, out_dir)
+	convert_meta_data(in_dir, out_dir)
 	convert_2d_graphics(in_dir, out_dir)
 	convert_media(in_dir, out_dir)
 
