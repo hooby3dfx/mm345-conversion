@@ -1,0 +1,55 @@
+Release Notes
+=============
+
+4/20 2026 Preview v0.01
+
+This is a demonstration / proof-of-concept for this data conversion approach.
+
+How to use:
+1. Install Clouds of Xeen (for example in dosbox)
+2. Update the XEEN.CC file with the one from this release
+3. Launch the game and then start a new game. You will start off "out of bounds" - press tab to use "Mr Wizards" help, which will then teleport you to the correct starting location
+4. Have fun!
+
+
+What "Works"
+-Map structure and objects
+-Map event scripting and text
+-Character portraits (although probably in wrong slots)
+
+
+KNOWN ISSUES/TODO LIST (READ ME!)
+Again, this is a preview of current work in progress. The below issues will be fixed in future releases.
+-Graphics/sprites:
+	-General note: only some graphic assets have been brought over from MM3, but the palette from MM3 is being used, so MANY things will look like you are on acid. That is to be expected for now :D
+	-Indoor environment graphics are limited to the "town" environment and also only the front wall nearest distance
+	-Outdoor environment graphics will still be the MM4 sprites
+	-UI menus etc are still using MM4 graphics
+	-Some sprites have conversion errors like missing pixels or lines that overrun
+-The monsters in all areas are currently only ("Slime" with MM3 bat sprite, and "Doom Bug" as MM3 goblin sprite)
+-Names of everything (maps, monsters, etc) are coming from MM4 still
+-If you get to MM3 Castle Blackwind (maze 28), it will be the same as MM3 Fountain Head
+-The main menu / title screen is using what seems to be the CGA title screen from MM3 and has some animations on top from the MM4 title screen
+-Every map tile does an "auto execute" for the events which is close to the way MM3 works but this will also re-trigger when you turn direction for example and may show "nothing here" message
+-Items, quests, spells, stats, etc not touched yet so still coming from MM4
+
+
+The rest is highly untested and anything not described above that you notice, please let me know!
+
+
+Roadmap:
+-Get to a fully playable and completable state, and then also officially supported in ScummVM
+
+
+For the technically inclined, here is how to generate your own MM 3-to-4 CC file:
+1. Use mm3_cc_dumper to extract the MM3 CC file http://blog.rewolf.pl/blog/?p=1202
+2. Use XeenCCPacker to extract the MM4 CC file http://games.playazlounge.net/#CCPacker
+3. From this project run python mm3to4_convert_main.py
+4. Overlay the output from this project onto the extracted MM4 files
+5. Use XeenCCPacker to re-pack the Xeen CC file
+6. Copy the Xeen CC file to your game directory
+
+
+
+THANK YOU!
+☮
