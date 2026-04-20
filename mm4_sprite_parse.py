@@ -186,10 +186,10 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("ext_drk/d_124.ccx", "out_mm4_og", mode="xeen")
 # parse_sprite("ext_drk/d_33280.ccx", "out_mm4_og", mode="xeen")
 # parse_sprite("ext_drk/d_54169.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_drk/d_27503.ccx", "out_mm4_og", mode="xeen")
+parse_sprite("ext_drk/d_27503.ccx", "out_mm4_og", mode="xeen")
 # parse_sprite("ext_drk/d_54185.ccx", "out_mm4_og", mode="xeen")
 #63609, 49308, 46575, 44055
-parse_sprite("ext_cld/d_49308.ccx", "out_mm4_og", mode="xeen")
+# parse_sprite("ext_cld/d_49308.ccx", "out_mm4_og", mode="xeen")
 #43071, 36523, 46616, 20382
 # parse_sprite("ext_cld/d_20382.ccx", "out_mm4_og", mode="xeen")
 

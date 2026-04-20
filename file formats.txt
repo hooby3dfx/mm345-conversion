@@ -209,10 +209,11 @@ Progress notes:
 	-not visibible from all angles
 	-flashing/disappearing (due to missing animation frames?)
 	-...are some of these IDs hardcoded with certain behaviors? seems like yes...
--Items... bone whistle ⚠️
--Palette... need to decide if going all-in for MM3 palette (as MM4.PAL/MM4E.pal) ⚠️
+-Items... like bone whistle ⚠️
+-Palette... need to decide if going all-in for MM3 palette (as MM4.PAL/MM4E.pal)
 	lets see how things look after more sprites/images are working
--Interlocking mazes ⚠️
--Maze16
+-Interlocking mazes ✅
+-UI images like backgrounds for menus ⚠️
+
 
 
