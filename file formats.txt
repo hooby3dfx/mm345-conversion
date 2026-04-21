@@ -193,6 +193,21 @@ MM3 sprite format differences:
 
 
 
+EXE/DAT File Contents:
+There are strings and other bits inside both XEEN.EXE and XEEN.DAT.
+XEEN.EXE is a DOS exe and XEEN.DAT seems like a dll.
+Both are compressed with "PKLITE" but can be decompressed with UNP 4.11, and then viewed with a hex editor and/or IDA 5.0.
+
+The background color for UI menus is in XEEN.DAT at uncompressed offset 0x41A7C as 0x9999, as the palette index for MM4 is 0x99 (153). In the MM3 palette this is a dark blue; a better tan color for MM3 palette is 0xE9E9.
+
+
+
+
+
+
+
+
+
 
 Progress notes:
 -Indoor map parsing working, need to do sprites
@@ -203,6 +218,7 @@ Progress notes:
 -Need to come up with process for entry point and repacking. For example, do I put MM3 maze 01 into MM4 maze 28 (starting level?)
 	lets try to keep the MM3 IDs
 	how does MM4 determine that starting map is 28? seems like in default save file? ⚠️
+	...does it actually use maze0079.evt...???
 -Need to determine if mm3 map is indoor or outdoor ⚠️
 -Need to determine mm3 map names (from exe) ✅
 -Sprites: 

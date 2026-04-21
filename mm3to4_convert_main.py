@@ -473,6 +473,7 @@ def convert_environments(in_dir, out_dir):
 	copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
 
 	#TODO outdoors
+	
 
 
 def convert_meta_data(in_dir, out_dir):
