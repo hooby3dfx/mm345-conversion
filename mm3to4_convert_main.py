@@ -308,8 +308,29 @@ def convert_sprites(in_dir, out_dir):
 		copy_file(out_dir+"/"+mm4_att, out_dir+"/"+mm4_att_hash)
 
 
+MM3TO4_OUTDOOR_TERRAIN = [
+	#'swmtree.vga'
+	# ('dtree.vga','DEDLTREE.WAL'),
+
+	('dtree.vga','DTREE.WAL'),
+	('lavamtn.vga','LAVAMNT.WAL'),
+	('ltree.vga','LTREE.WAL'),
+	('mount.vga','MOUNT.WAL'),
+	('palms.vga','PALM.WAL'),
+	('snomtn.vga','SNOMNT.WAL'),
+	('snotree.vga','SNOTREE.WAL'),
+]
+
 def convert_environments(in_dir, out_dir):
 	print("convert_environments")
+
+	for pairmap in MM3TO4_OUTDOOR_TERRAIN:
+		mm3_terrain = pairmap[0]
+		mm4_terrain = pairmap[1]
+		convert_sprite_3to4(in_dir+"/"+mm3_terrain, out_dir+"/"+mm4_terrain)
+		mm4_hash = hash_filename(mm4_terrain)
+		copy_file(out_dir+"/"+mm4_terrain, out_dir+"/"+mm4_hash)
+
 
 	#ground
 	mm3_town_gnd = "twnwl4.vga" #frame 29
@@ -447,7 +468,6 @@ def convert_environments(in_dir, out_dir):
 	copy_file(out_dir+"/"+mm4_town_swl, out_dir+"/"+mm4_hash)
 
 
-
 	#front walls
 	mm3_town_fwl_1 = "twnwl1.vga"
 	mm4_town_fwl_1 = "FTOWN1.FWL"
@@ -472,8 +492,23 @@ def convert_environments(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_town_fwl_1)
 	copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
 
-	#TODO outdoors
-	
+
+	#TODO outdoors SRF
+	# CLOUD.SRF
+	# DESERT.SRF
+	# DIRT.SRF
+	# DWATER.SRF
+	# GRASS.SRF
+	# LAVA.SRF
+	# ROAD.SRF
+	# SCORTCH.SRF
+	# SKY.SRF
+	# SNOW.SRF
+	# SPACE.SRF
+	# SWAMP.SRF
+	# TFLR.SRF
+	# WATER.SRF
+
 
 
 def convert_meta_data(in_dir, out_dir):
@@ -519,7 +554,13 @@ MM3_FACE_SPRITE_NAMES = [
 	'hire4.fac','hire5.fac','hire6.fac','hire7.fac','hire8.fac','hire9.fac']
 
 MM3_ICONS = [
-'bank.icn','bank2.icn','buy.icn','cast.icn','charpow.icn','combat.icn','confirm.icn','confirm2.icn','cpanel.icn','create.icn','detctmon.icn','detect.icn','duplicat.icn','element.icn','equip.icn','esc.icn','global.icn','hpbars.icn','inn.icn','items.icn','lloyds.icn','main.icn','mouse.icn','pow0.icn','pow10.icn','pow11.icn','pow12.icn','pow13.icn','pow14.icn','pow2.icn','pow3.icn','pow4.icn','pow5.icn','pow7.icn','pow8.icn','pow9.icn','protect.icn','restore.icn','scroll.icn','sell.icn','start.icn','train.icn','view.icn'
+	'bank.icn','bank2.icn','buy.icn','cast.icn','charpow.icn','combat.icn','confirm.icn',
+	'confirm2.icn','cpanel.icn','create.icn','detctmon.icn','detect.icn','duplicat.icn',
+	'element.icn','equip.icn','esc.icn','global.icn','hpbars.icn','inn.icn','items.icn',
+	'lloyds.icn','main.icn','mouse.icn','pow0.icn','pow10.icn','pow11.icn','pow12.icn',
+	'pow13.icn','pow14.icn','pow2.icn','pow3.icn','pow4.icn','pow5.icn','pow7.icn',
+	'pow8.icn','pow9.icn','protect.icn','restore.icn','scroll.icn','sell.icn','start.icn',
+	'train.icn','view.icn'
 ]
 
 def convert_2d_graphics(in_dir, out_dir):

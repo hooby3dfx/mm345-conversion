@@ -1,6 +1,19 @@
 Release Notes
 =============
 
+
+v0.02
+Whats new:
+-More 2D graphics properly converted
+-
+
+
+
+
+
+
+
+
 4/20 2026 Preview v0.01
 
 This is a demonstration / proof-of-concept for this data conversion approach.

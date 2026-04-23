@@ -115,7 +115,7 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 
 
 
-parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
+# parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
@@ -131,5 +131,5 @@ parse_mm3_mob("mm3_default.sav-files/MAZE41.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE42.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
-parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
+# parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
 
