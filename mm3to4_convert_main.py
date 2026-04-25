@@ -216,6 +216,7 @@ MM3_MON_SPRITE_NAMES = [
 	'thief','treeglum','witch','robo2','dthlocus','archer','ballface','barbaran',
 	'cleric','firelzrd','firemon','gargoyle','ghost','lizard','sonicnja','beholder',
 	'cris','paladin','pegasus','reaper','sorc','lich','shield','troll',
+	# TODO use all the frames available
 	# 'demon','dino','robo','blknight','martface','mummy','powsorc','cataplr',
 	'undragon','cyclop','devil','grndrgn','wizard','worm','vampire','werewolf',
 	'termnatr','hydra','roc','kudo','medusa','minotaur','octobest','draglord',]
@@ -240,6 +241,10 @@ def convert_sprites(in_dir, out_dir):
 
 		mm3_frame_ct = inspect_sprite(in_dir+"/"+mm3_obj, True)
 		mm4_frame_ct = inspect_sprite("ext_cld"+"/"+mm4_hash, True)
+		if not mm4_frame_ct:
+			# mm4_frame_ct = 3
+			if mm3_obj == "TOWN.pic":
+				mm4_frame_ct = 3
 
 		print(f"converting obj sprite {mm3_obj} ({mm3_frame_ct} frames) to {mm4_obj} ({mm4_frame_ct} frames) [{mm4_hash}]")
 
@@ -309,9 +314,8 @@ def convert_sprites(in_dir, out_dir):
 
 
 MM3TO4_OUTDOOR_TERRAIN = [
-	#'swmtree.vga'
-	# ('dtree.vga','DEDLTREE.WAL'),
-
+	# WAL files
+	# ('swmtree.vga','DEDLTREE.WAL'),
 	('dtree.vga','DTREE.WAL'),
 	('lavamtn.vga','LAVAMNT.WAL'),
 	('ltree.vga','LTREE.WAL'),
@@ -320,6 +324,29 @@ MM3TO4_OUTDOOR_TERRAIN = [
 	('snomtn.vga','SNOMNT.WAL'),
 	('snotree.vga','SNOTREE.WAL'),
 ]
+
+MM3TO4_OUTDOOR_SURFACE_TEMP = [
+	# SRF files
+	# ('','CLOUD.SRF'),
+	('desert.vga','DESERT.SRF'),
+	('dirt.vga','DIRT.SRF'),#need to fix sprite
+	# ('water.vga','DWATER.SRF'),
+	('grass.vga','GRASS.SRF'),
+	('lava.vga','LAVA.SRF'),
+	('road.vga','ROAD.SRF'),
+	# ('','SCORTCH.SRF'),
+	# ('','SKY.SRF'),
+	('snow.vga','SNOW.SRF'),
+	# ('','SPACE.SRF'),
+	('swamp.vga','SWAMP.SRF'),
+	# ('','TFLR.SRF'),
+	# ('water.vga','WATER.SRF'),
+]
+MM3TO4_OUTDOOR_SURFACE = [
+	('road.vga','ROAD.SRF'),
+	# ('grass.vga','GRASS.SRF'),
+]
+
 
 def convert_environments(in_dir, out_dir):
 	print("convert_environments")
@@ -493,21 +520,67 @@ def convert_environments(in_dir, out_dir):
 	copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
 
 
-	#TODO outdoors SRF
-	# CLOUD.SRF
-	# DESERT.SRF
-	# DIRT.SRF
-	# DWATER.SRF
-	# GRASS.SRF
-	# LAVA.SRF
-	# ROAD.SRF
-	# SCORTCH.SRF
-	# SKY.SRF
-	# SNOW.SRF
-	# SPACE.SRF
-	# SWAMP.SRF
-	# TFLR.SRF
-	# WATER.SRF
+	for pairmap in MM3TO4_OUTDOOR_SURFACE:
+		mm3_surface = pairmap[0]
+		mm4_surface = pairmap[1]
+
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"00", frame_number=1)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"01", frame_number=0)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"02", frame_number=2)
+
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"03", frame_number=4)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"04", frame_number=3)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"05", frame_number=5)
+
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"06", frame_number=8)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"07", frame_number=7)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"08", frame_number=6)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"09", frame_number=9)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"10", frame_number=10)
+
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"11", frame_number=21)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"12", frame_number=13)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"13", frame_number=12)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"14", frame_number=11)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"15", frame_number=14)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"16", frame_number=15)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"17", frame_number=24)
+
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"18", frame_number=20)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"19", frame_number=18)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"20", frame_number=17)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"21", frame_number=16)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"22", frame_number=19)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"23", frame_number=22)
+		convert_sprite_3to4(in_dir+"/"+mm3_surface, out_dir+"/"+mm4_surface+"24", frame_number=23)
+
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"00", out_dir+"/"+mm4_surface+"01", out_dir+"/"+mm4_surface+"a")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"a", out_dir+"/"+mm4_surface+"02", out_dir+"/"+mm4_surface+"b")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"b", out_dir+"/"+mm4_surface+"03", out_dir+"/"+mm4_surface+"c")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"c", out_dir+"/"+mm4_surface+"04", out_dir+"/"+mm4_surface+"d")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"d", out_dir+"/"+mm4_surface+"05", out_dir+"/"+mm4_surface+"e")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"e", out_dir+"/"+mm4_surface+"06", out_dir+"/"+mm4_surface+"f")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"f", out_dir+"/"+mm4_surface+"07", out_dir+"/"+mm4_surface+"g")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"g", out_dir+"/"+mm4_surface+"08", out_dir+"/"+mm4_surface+"h")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"h", out_dir+"/"+mm4_surface+"09", out_dir+"/"+mm4_surface+"i")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"i", out_dir+"/"+mm4_surface+"10", out_dir+"/"+mm4_surface+"j")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"j", out_dir+"/"+mm4_surface+"11", out_dir+"/"+mm4_surface+"k")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"k", out_dir+"/"+mm4_surface+"12", out_dir+"/"+mm4_surface+"l")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"l", out_dir+"/"+mm4_surface+"13", out_dir+"/"+mm4_surface+"m")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"m", out_dir+"/"+mm4_surface+"14", out_dir+"/"+mm4_surface+"n")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"n", out_dir+"/"+mm4_surface+"15", out_dir+"/"+mm4_surface+"o")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"o", out_dir+"/"+mm4_surface+"16", out_dir+"/"+mm4_surface+"p")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"p", out_dir+"/"+mm4_surface+"17", out_dir+"/"+mm4_surface+"q")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"q", out_dir+"/"+mm4_surface+"18", out_dir+"/"+mm4_surface+"r")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"r", out_dir+"/"+mm4_surface+"19", out_dir+"/"+mm4_surface+"s")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"s", out_dir+"/"+mm4_surface+"20", out_dir+"/"+mm4_surface+"t")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"t", out_dir+"/"+mm4_surface+"21", out_dir+"/"+mm4_surface+"u")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"u", out_dir+"/"+mm4_surface+"22", out_dir+"/"+mm4_surface+"v")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"v", out_dir+"/"+mm4_surface+"23", out_dir+"/"+mm4_surface+"w")
+		merge_mm4_optimized(out_dir+"/"+mm4_surface+"w", out_dir+"/"+mm4_surface+"24", out_dir+"/"+mm4_surface)
+
+		mm4_hash = hash_filename(mm4_surface)
+		copy_file(out_dir+"/"+mm4_surface, out_dir+"/"+mm4_hash)
 
 
 

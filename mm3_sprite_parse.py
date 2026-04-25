@@ -5,7 +5,7 @@ from PIL import Image
 PATTERN_STEPS = [0, 1, 1, 1, 2, 2, 3, 3, 0, -1, -1, -1, -2, -2, -3, -3]
 
 Test = False
-# Test = True
+Test = True
 
 
 def decompress_cell(data, offset, is_mm3=False):
@@ -101,32 +101,10 @@ def decompress_cell(data, offset, is_mm3=False):
                         else:
                             put(data[dp]); dp += 1
             elif cmd == 2:
-                print("2-STOP?")
-                # dp += 3
-                # val = data[dp]; dp += 1
-                # print(f"val {val}")
-                
                 if Test:
-                    put(202) #blue
-                else:
-                    print("2-STOP?")
-
-                #fill the rest of the line??
+                    put(202);
                 # break
 
-
-                # back_off = struct.unpack("<H", data[dp:dp+2])[0]; dp += 2
-                # src = dp - back_off
-                # for i in range(length + 4):
-                #     if 0 <= src + i < len(data): put(data[src + i])
-
-                # break
-
-                # color = data[dp]; dp += 1
-                # if Test:
-                #     put(202, length + 3) # (three pix?)
-                # else:
-                #     put(color, length + 3)
             elif cmd == 3:
                 count = (opcode + 1)#33?
                 for _ in range(count):
@@ -324,7 +302,8 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/scroll.icn", "out_mm3_wip", mode="mm3")
-parse_sprite("mm3out/ltree.vga", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/grass.vga", "out_mm3_wip", mode="mm3")
+parse_sprite("mm3out/dirt.vga", "out_mm3_wip", mode="mm3")
 
 
 # parse_sprite("mm3out/twnwl3.vga", "out_mm3_wip", mode="mm3")

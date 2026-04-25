@@ -151,8 +151,8 @@ class MMTranscoder:
                 elif cmd == 2: # MM3 Stop
                     # wait = input("MM3 Stop - Press Enter to continue.")
                     # stop_cell = True
-                    # break
                     self.log(f"skipping cmd 2 val {val}")
+                    # break
                 
                 elif cmd == 3: # Stream CMD3
                     # new_cell.append(opcode)
