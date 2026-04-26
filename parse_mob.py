@@ -72,8 +72,8 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 				#TODO actually determine the monster IDs from MM3. if they are hardcoded in exe just make a table
 				# mid0 = 0x17 #mm5 goblin
 				mid0 = 0x00
-				mid1 = 0x02
-				mid2 = 0xFF
+				mid1 = 0x01
+				mid2 = 0x02
 				mid3 = 0xFF
 				mid4 = 0xFF
 				mm4_mids.extend([mid0, mid1, mid2, mid3, mid4])
@@ -127,9 +127,9 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 
 # parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE40.MOB")
-parse_mm3_mob("mm3_default.sav-files/MAZE41.MOB")
+# parse_mm3_mob("mm3_default.sav-files/MAZE41.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE42.MOB")
 # parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
-# parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
+parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
 

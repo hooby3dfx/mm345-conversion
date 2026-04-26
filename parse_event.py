@@ -238,8 +238,8 @@ def parse_evt_file(file_path, out_path="mm3to4evt.bin"):
 
 # parse_evt_file('mm3out/MAZE01.EVT')
 # parse_evt_file('mm3out/MAZE41.EVT')
-# parse_evt_file('mm3out/MAZE16.EVT')
+parse_evt_file('mm3out/MAZE16.EVT')
 
-parse_evt_file("ext_cld/MAZE0079.EVT")
+# parse_evt_file("ext_cld/MAZE0079.EVT")
 
 
