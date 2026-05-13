@@ -614,6 +614,11 @@ def convert_meta_data(in_dir, out_dir):
 	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
 
+	#TODO stuff in exe/dat files:
+	#items
+	#stats
+
+
 
 
 

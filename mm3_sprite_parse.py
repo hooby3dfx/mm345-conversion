@@ -35,7 +35,6 @@ def decompress_cell(data, offset, is_mm3=False):
             # MM3 uses 16-bit Length and 16-bit X-Skip
             line_len = struct.unpack("<H", data[dp:dp+2])[0]
             dp += 2
-
             if line_len == 0: # MM3 vertical skip
                 if dp < len(data):
                     print(f"vskip {data[dp]}")
@@ -48,8 +47,8 @@ def decompress_cell(data, offset, is_mm3=False):
                 continue
             line_end = dp + line_len
             line_x_off = struct.unpack("<H", data[dp:dp+2])[0]
-            x_pos = line_x_off + x_off
             dp += 2
+            x_pos = line_x_off + x_off
             print(f"mm3_len {line_len} mm3_off {line_x_off}")
             if x_pos > total_w:
                 print("LINE ERROR - ENDING CELL")
@@ -65,6 +64,8 @@ def decompress_cell(data, offset, is_mm3=False):
             line_end = dp + line_len
             x_pos = data[dp] + x_off
             dp += 1
+
+        TMP_STORED_LEN = 0
 
         while dp < line_end and dp < len(data):
             opcode = data[dp]
@@ -85,25 +86,35 @@ def decompress_cell(data, offset, is_mm3=False):
             print(f"Processing cmd opcode: {cmd} [{length}] ({opcode})")
 
             if cmd == 0:
-                count = (opcode + 1)
+                count = (length + 1)
                 for _ in range(count):
                     if dp < len(data):
                         if Test:
                             put(200); dp += 1 #red (one pix)
                         else:
                             put(data[dp]); dp += 1
+                # if length==15:
+                #     dp-=1
+
             elif cmd == 1:
-                count = (opcode + 1)#33?
+                count = (length + 33)
                 for _ in range(count):
                     if dp < len(data):
                         if Test:
                             put(201); dp += 1 #green (multi pix)
                         else:
                             put(data[dp]); dp += 1
+
             elif cmd == 2:
-                if Test:
-                    put(202);
-                # break
+                # wait = input("MM3 cmd2 - Press Enter to continue.")
+                TMP_STORED_LEN = 2
+                for _ in range(length + 1):
+                    if Test:
+                        put(202); #blue
+                    else:
+                        put(data[dp]);
+                    if length:
+                        dp += 1
 
             elif cmd == 3:
                 count = (opcode + 1)#33?
@@ -126,23 +137,35 @@ def decompress_cell(data, offset, is_mm3=False):
                         put(204, 1) #cyan ("mm4 pair") - for mm3 skip 1?
                     else:
                         x_pos += 1
+
             elif cmd == 5:
                 if Test:
                     put(205, length + 33) #pink (skip)
                 else:
                     x_pos += (length + 33)
+
             elif cmd == 6:
                 color = data[dp]; dp += 1
                 if Test:
                     put(206, length + 3) # orange (three pix?)
                 else:
                     put(color, length + 3)
+
             elif cmd == 7:
-                val = data[dp]; dp += 1
+
+                color = data[dp]; dp += 1
+                count = TMP_STORED_LEN if TMP_STORED_LEN else length+35
+                print(f"cmd7 count: {count}")
+                print(f"cmd7 color: {color}")
+                # print(f"cmd7 key: {(opcode >> 2) & 0x0E}")
+                # print(f"cmd7 count: {(opcode & 0x07) + 3}")
+
+                # wait = input("MM3 cmd7 - Press Enter to continue.")
+
                 if Test:
-                    put(207, length+35) # violet
+                    put(207, count) # violet
                 else:
-                    put(val, length+35)
+                    put(color, count)
 
 
                 # val = data[dp]; dp += 1
@@ -303,9 +326,9 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/scroll.icn", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/grass.vga", "out_mm3_wip", mode="mm3")
-parse_sprite("mm3out/dirt.vga", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/dirt.vga", "out_mm3_wip", mode="mm3")
 
-parse_sprite("mm3out/pow11.icn", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/ina.vga", "out_mm3_wip", mode="mm3")
 
 
 
@@ -313,6 +336,16 @@ parse_sprite("mm3out/pow11.icn", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/day.vga", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/itit0.vga", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/topj.vga", "out_mm3_wip", mode="mm3")
+
+#tests:
+parse_sprite("mm3out/town.pic", "out_mm3_test01", mode="mm3")
+parse_sprite("mm3out/town2.pic", "out_mm3_test02", mode="mm3")
+parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_test03", mode="mm3")
+parse_sprite("mm3out/DESK.pic", "out_mm3_test04", mode="mm3")
+parse_sprite("mm3out/troll.mon", "out_mm3_test05", mode="mm3")
+parse_sprite("mm3out/bublman.mon", "out_mm3_test06", mode="mm3")
+parse_sprite("mm3out/road.vga", "out_mm3_test07", mode="mm3")
+parse_sprite("mm3out/dirt.vga", "out_mm3_test08", mode="mm3")
 
 
 # Usage

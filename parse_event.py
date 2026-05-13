@@ -193,6 +193,14 @@ def convert_3to4(event_line):
         if event_line.raw_args[0] > 3:
             event_line.raw_args = [event_line.raw_args[0]-1]
             modified = True
+    elif event_line.opcode==0x14:
+        if event_line.raw_args[0]==0x15 and event_line.raw_args[1]==0x64:
+            #extended give; TEST instead of giving 0x64 (mm4 bone whistle), give 0x49 (mm3 rope)
+            args_copy = bytearray(event_line.raw_args)
+            args_copy[1] = 0x49
+            event_line.raw_args = bytes(args_copy)
+            modified = True
+
 
     
     # Event facing: 0(N),1(E),2(S),3(W),4(any) -> E&S are swapped!
@@ -237,8 +245,8 @@ def parse_evt_file(file_path, out_path="mm3to4evt.bin"):
 # parse_evt_file("ext_cld_world/MAZE0028.EVT")
 
 # parse_evt_file('mm3out/MAZE01.EVT')
-# parse_evt_file('mm3out/MAZE41.EVT')
-parse_evt_file('mm3out/MAZE16.EVT')
+parse_evt_file('mm3out/MAZE41.EVT')
+# parse_evt_file('mm3out/MAZE16.EVT')
 
 # parse_evt_file("ext_cld/MAZE0079.EVT")
 

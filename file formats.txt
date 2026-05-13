@@ -225,13 +225,22 @@ Progress notes:
 	-not visibible from all angles
 	-flashing/disappearing (due to missing animation frames?)
 	-...are some of these IDs hardcoded with certain behaviors? seems like yes...
--Items... like bone whistle ⚠️
 -Palette... need to decide if going all-in for MM3 palette (as MM4.PAL/MM4E.pal)
 	lets see how things look after more sprites/images are working
 -Interlocking mazes ✅
 -UI images like backgrounds for menus ⚠️
 -pow13948.icn (temple of moo) ✅ (due to missing monster id)
+
+
+Gameplay items:
+-Items... 
+	outdoor area 41 is giving bone whistle instead of might potion ⚠️
+	party should start with rope and hook so to climb down pit ⚠️
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
+-How to display Coraks notes ⚠️
+-some sprites causing crashes:
+	-grass, bubleman
+
 
 
 
