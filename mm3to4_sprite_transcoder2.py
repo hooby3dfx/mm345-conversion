@@ -59,6 +59,7 @@ class MMTranscoder:
         
         while y_ptr < total_h and dp < len(data):
             self.log(f"line: {y_ptr}")
+            new_line = bytearray()
             mm3_len = struct.unpack("<H", data[dp:dp+2])[0]
             dp += 2
             line_end_src = dp + mm3_len
@@ -189,7 +190,7 @@ class MMTranscoder:
                     #map cmd 3 to cmd 1
                     count = opcode+1
                     extraval = count - 97
-                    print(f"val {val} extraval {extraval}")
+                    # print(f"val {val} extraval {extraval}")
                     assert extraval==val
                     self.log(f"converting cmd 3 to 1: (dp {dp} val {val} count {count})")
                     new_cmd.append(0x20 | 31)
@@ -228,9 +229,17 @@ class MMTranscoder:
 
                     if TMP_STORED_LEN:
                         #map to CMD2
-                        new_cmd.append(0x40 | 0) #map to CMD2
+                        # new_cmd.append(0x40 | 0) #map to CMD2
+                        # new_cmd.append(data[dp])
+                        # dp += 1
+
+                        #map to CMD0!
+                        new_cmd.append(0x00 | 0)
+                        new_cmd.append(data[dp])
+                        new_cmd.append(0x00 | 0)
                         new_cmd.append(data[dp])
                         dp += 1
+
                     else:
                         #map to CMD2
                         #(length+35)
@@ -256,18 +265,27 @@ class MMTranscoder:
                 self.log(f"command processed; dp: {dp}")
 
                 if dp<=line_end_src:
-                    new_cell.extend(new_cmd)
-                else:
-                    self.log(f"WARNING: THIS COMMAND WOULD EXCEED LINE LEN! dp:{dp} line_end_src:{line_end_src}")
 
+                    if len(new_cmd)+len(new_line)<256:
+                        new_line.extend(new_cmd)
+                    else:
+                        print(f"WARNING: THIS CMD WOULD EXCEED MAX LINE LEN! line#: {y_ptr} dp:{dp} line_end_src:{line_end_src}")
+
+                else:
+                    print(f"WARNING: THIS COMMAND EXCEEDED SRC LINE LEN! line#: {y_ptr} dp:{dp} line_end_src:{line_end_src}")
+
+                
                 # wait = input("Press Enter to continue.")
+
+            new_cell.extend(new_line)
 
             # Finalize MM4 Length (MUST be payload bytes only)
             payload_size = len(new_cell) - payload_start + 1
             # assert payload_size < 256
             if payload_size > 255:
                 #TODO prevent this situation
-                self.log(f"WARNING: LINE PAYLOAD TOO LARGE! ({payload_size})")
+                print(f"WARNING: LINE PAYLOAD TOO LARGE! line# {y_ptr} ({payload_size})")
+                # self.log(f"WARNING: LINE PAYLOAD TOO LARGE! ({payload_size})")
                 over_size = payload_size - 255
                 self.log(f"REDUCING SIZE BY {over_size}")
                 del new_cell[-over_size:]
@@ -276,7 +294,7 @@ class MMTranscoder:
 
             new_cell[len_byte_pos] = payload_size
 
-            self.log(f"updated cell: mm4_len {payload_size} mm4_off {mm3_off}")
+            self.log(f"updated line: mm4_len {payload_size} mm4_off {mm3_off}")
 
             dp = line_end_src
             y_ptr += 1
@@ -400,13 +418,27 @@ def main():
     parser.add_argument("-i", "--input", required=True, help="Input MM3 .MON file")
     parser.add_argument("-o", "--output", help="Output MM4 .CCX file")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose debug output")
-    # parser.add_argument("--relative", action="store_true", help="Toggle relative offsets")
     
     args = parser.parse_args()
     if not args.output:
         args.output = os.path.splitext(args.input)[0] + ".ccx"
 
-    convert_sprite_3to4(args.input, args.output, args.verbose)
+    if args.input=="runtests":
+        runtests()
+    else:
+        convert_sprite_3to4(args.input, args.output, args.verbose)
+
+
+def runtests():
+    # parse_sprite("mm3out/town.pic", "out_mm3_test01", mode="mm3")
+    # parse_sprite("mm3out/town2.pic", "out_mm3_test02", mode="mm3")
+    # parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_test03", mode="mm3")
+    # parse_sprite("mm3out/DESK.pic", "out_mm3_test04", mode="mm3")
+    # parse_sprite("mm3out/troll.mon", "out_mm3_test05", mode="mm3")
+    # parse_sprite("mm3out/bublman.mon", "out_mm3_test06", mode="mm3")
+    # parse_sprite("mm3out/road.vga", "out_mm3_test07", mode="mm3")
+    # parse_sprite("mm3out/dirt.vga", "out_mm3_test08", mode="mm3")
+    convert_sprite_3to4("mm3out/FOUNTHED.pic", "out_mm3to4_sprite_test/03_FOUNTHED.pic.ccx", True)
     
 
 if __name__ == "__main__":

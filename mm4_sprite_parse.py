@@ -197,7 +197,7 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 # parse_sprite("ext_cld/d_41000.ccx", "out_mm4_og", mode="xeen")
 # parse_sprite("ext_cld/d_39771.ccx", "out_mm4_og", mode="xeen")
 
-#tests:
+#tests for mm3to4:
 parse_sprite("mm3to4_out/043.OBJ", "out_mm4_test01", mode="xeen")#town.pic
 parse_sprite("mm3to4_out/061.OBJ", "out_mm4_test02", mode="xeen")#town2.pic
 parse_sprite("mm3to4_out/056.OBJ", "out_mm4_test03", mode="xeen")#FOUNTHED.pic
@@ -207,7 +207,9 @@ parse_sprite("mm3to4_out/001.MON", "out_mm4_test06", mode="xeen")#bublman.mon
 parse_sprite("mm3to4_out/ROAD.SRF", "out_mm4_test07", mode="xeen")#road.vga
 parse_sprite("mm3to4_out/DIRT.SRF", "out_mm4_test08", mode="xeen")#dirt.vga
 
-
+#test for xeen
+parse_sprite("ext_cld/d_7818.ccx", "out_xeen_test01", mode="xeen")
+parse_sprite("ext_cld/d_7834.ccx", "out_xeen_test02", mode="xeen")
 
 
 # parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")

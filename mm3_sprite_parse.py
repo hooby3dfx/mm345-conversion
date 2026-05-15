@@ -5,7 +5,7 @@ from PIL import Image
 PATTERN_STEPS = [0, 1, 1, 1, 2, 2, 3, 3, 0, -1, -1, -1, -2, -2, -3, -3]
 
 Test = False
-# Test = True
+Test = True
 
 
 def decompress_cell(data, offset, is_mm3=False):

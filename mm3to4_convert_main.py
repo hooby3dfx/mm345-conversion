@@ -647,11 +647,6 @@ def convert_2d_graphics(in_dir, out_dir):
 	#character portraits (24)
 	#in: human1.fac (32x32)
 	#out: CHAR01.FAC (32x32)
-	# mm3_face = "human1.fac"
-	# mm4_face = "CHAR01.FAC"
-	# mm4_hash = hash_filename(mm4_face)
-	# convert_sprite_3to4(in_dir+"/"+mm3_face, out_dir+"/"+mm4_face)
-	# copy_file(out_dir+"/"+mm4_face, out_dir+"/"+mm4_hash)
 	for i in range(24):
 		mm3_fac = MM3_FACE_SPRITE_NAMES[i]
 		mm4_fac = f"CHAR{(i+1):02}.FAC"
