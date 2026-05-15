@@ -217,9 +217,10 @@ MM3_MON_SPRITE_NAMES = [
 	'cleric','firelzrd','firemon','gargoyle','ghost','lizard','sonicnja','beholder',
 	'cris','paladin','pegasus','reaper','sorc','lich','shield','troll',
 	# TODO use all the frames available
-	# 'demon','dino','robo','blknight','martface','mummy','powsorc','cataplr',
+	'demon','dino',#'robo',
+	'blknight','martface','mummy','powsorc','cataplr',
 	'undragon','cyclop','devil','grndrgn','wizard','worm','vampire','werewolf',
-	'termnatr','hydra','roc','kudo','medusa','minotaur','octobest','draglord',]
+	'termnatr','hydra','roc','kudo','medusa','minotaur','octobest',]#'draglord',]
 
 
 def convert_sprites(in_dir, out_dir):
@@ -325,7 +326,7 @@ MM3TO4_OUTDOOR_TERRAIN = [
 	('snotree.vga','SNOTREE.WAL'),
 ]
 
-MM3TO4_OUTDOOR_SURFACE_TEMP = [
+MM3TO4_OUTDOOR_SURFACE = [
 	# SRF files
 	# ('','CLOUD.SRF'),
 	('desert.vga','DESERT.SRF'),
@@ -342,10 +343,10 @@ MM3TO4_OUTDOOR_SURFACE_TEMP = [
 	# ('','TFLR.SRF'),
 	# ('water.vga','WATER.SRF'),
 ]
-MM3TO4_OUTDOOR_SURFACE = [
-	('road.vga','ROAD.SRF'),
-	# ('grass.vga','GRASS.SRF'),
-]
+# MM3TO4_OUTDOOR_SURFACE = [
+# 	('road.vga','ROAD.SRF'),
+# 	# ('grass.vga','GRASS.SRF'),
+# ]
 
 
 def convert_environments(in_dir, out_dir):

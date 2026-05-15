@@ -118,6 +118,7 @@ def decompress_cell(data, offset, is_mm3=False):
 
             elif cmd == 3:
                 count = (opcode + 1)#33?
+                # count = 96 + length + 1
                 for _ in range(count):
                     if dp < len(data):
                         if Test:
@@ -182,7 +183,7 @@ def decompress_cell(data, offset, is_mm3=False):
             else:
                 print("UNHANDLED OPCODE!")
 
-            print(f"command processed; dp: {dp}")
+            print(f"command processed; dp: {dp} line_end: {line_end}")
         
         dp = line_end
         y_pos += 1
@@ -223,6 +224,7 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
     is_mm3 = (mode.lower() == "mm3")
     with open(filepath, "rb") as f:
         data = f.read()
+        print(f"parsing {filepath}")
     
     num_f = struct.unpack("<H", data[:2])[0]
     os.makedirs(out_dir, exist_ok=True)

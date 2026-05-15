@@ -108,6 +108,8 @@ class MMTranscoder:
             payload_start = len(new_cell)
             
             stop_cell = False
+            TMP_STORED_LEN = 0
+
             while dp < line_end_src and dp < len(data):
                 opcode = data[dp]
                 dp += 1
@@ -116,10 +118,12 @@ class MMTranscoder:
                 
                 self.log("Processing cmd opcode: "+str(cmd)+" ("+str(opcode)+")")
 
+                new_cmd = bytearray()
+
                 if cmd == 0: # Raw
-                    new_cell.append(opcode)#0x00 | (val)) #map to CMD0
-                    count = (opcode + 1) #if cmd == 0 else (val + 33)
-                    new_cell.extend(data[dp:dp+count])
+                    new_cmd.append(opcode)#0x00 | (val)) #map to CMD0
+                    count = (val + 1) #if cmd == 0 else (val + 33)
+                    new_cmd.extend(data[dp:dp+count])
                     # for _ in range(count):
                     #     new_cell.append(100)
                     dp += count
@@ -142,17 +146,28 @@ class MMTranscoder:
                     #         print("ERROR - out of bounds")
 
                     #map cmd 1 to cmd 1
-                    count = (opcode + 1)
+                    count = (val + 33)
                     self.log(f"converting cmd 1 to 1: (dp {dp} val {val} count {count})")
-                    new_cell.append(0x20 | val)
-                    new_cell.extend(data[dp:dp+count])
+                    new_cmd.append(0x20 | val)
+                    new_cmd.extend(data[dp:dp+count])
                     dp += count
                 
                 elif cmd == 2: # MM3 Stop
                     # wait = input("MM3 Stop - Press Enter to continue.")
                     # stop_cell = True
-                    self.log(f"skipping cmd 2 val {val}")
+                    # self.log(f"skipping cmd 2 val {val}")
                     # break
+
+                    TMP_STORED_LEN = 2
+
+                    #map cmd 2 to cmd 0
+                    count = (val + 1)
+                    self.log(f"converting cmd 2 to 0: (dp {dp} val {val} count {count})")
+                    new_cmd.append(0x00 | val)
+                    new_cmd.extend(data[dp:dp+count])
+                    if val:
+                        dp += count
+
                 
                 elif cmd == 3: # Stream CMD3
                     # new_cell.append(opcode)
@@ -172,23 +187,29 @@ class MMTranscoder:
                     #         print("ERROR - out of bounds")
 
                     #map cmd 3 to cmd 1
-                    count = (val + 33)
+                    count = opcode+1
+                    extraval = count - 97
+                    print(f"val {val} extraval {extraval}")
+                    assert extraval==val
                     self.log(f"converting cmd 3 to 1: (dp {dp} val {val} count {count})")
-                    new_cell.append(0x20 | val)
-                    new_cell.extend(data[dp:dp+count])
-                    dp += count
+                    new_cmd.append(0x20 | 31)
+                    new_cmd.extend(data[dp:dp+64])
+                    dp += 64
+                    new_cmd.append(0x20 | extraval)
+                    new_cmd.extend(data[dp:dp+extraval+33])
+                    dp += (extraval+33)
 
                 
                 elif cmd == 4: # MM3 Skip -> MM4 Skip
-                    new_cell.append(0xA0 | val) #map to CMD5
+                    new_cmd.append(0xA0 | val) #map to CMD5
 
                     # new_cell.append(0x00 | val) #map to CMD2
                     # for _ in range(val+1):
                     #     new_cell.append(120)
 
                 elif cmd == 5: # MM3 Long Skip
-                    new_cell.append(0xA0 | 31); #map to CMD5
-                    new_cell.append(0xA0 | (val))
+                    new_cmd.append(0xA0 | 31); #map to CMD5
+                    new_cmd.append(0xA0 | (val))
 
                     # new_cell.append(0x40 | 27) #map to CMD2
                     # new_cell.append(130)
@@ -196,23 +217,30 @@ class MMTranscoder:
                     # new_cell.append(140)
                 
                 elif cmd == 6: # MM3 RLE -> MM4 RLE
-                    new_cell.append(0x40 | val) #map to CMD2
-                    new_cell.append(data[dp])
+                    new_cmd.append(0x40 | val) #map to CMD2
+                    new_cmd.append(data[dp])
                     # new_cell.append(150)
                     dp += 1
 
-                elif cmd == 7: # Pattern CMD7
+                elif cmd == 7: # -Pattern CMD7-
                     # new_cell.append(opcode); 
                     # new_cell.append(data[dp]); dp += 1
 
-                    #map to CMD2
-                    new_cell.append(0x40 | 31) #map to CMD2
-                    new_cell.append(data[dp])
-                    new_cell.append(0x40 | val) #map to CMD2
-                    new_cell.append(data[dp])
-                    # new_cell.append(0x40 | 2) #map to CMD2
-                    # new_cell.append(data[dp])
-                    dp += 1
+                    if TMP_STORED_LEN:
+                        #map to CMD2
+                        new_cmd.append(0x40 | 0) #map to CMD2
+                        new_cmd.append(data[dp])
+                        dp += 1
+                    else:
+                        #map to CMD2
+                        #(length+35)
+                        new_cmd.append(0x40 | 29) #map to CMD2
+                        new_cmd.append(data[dp])
+                        new_cmd.append(0x40 | val) #map to CMD2
+                        new_cmd.append(data[dp])
+                        # new_cell.append(0x40 | 2) #map to CMD2
+                        # new_cell.append(data[dp])
+                        dp += 1
 
 
                     # color = data[dp]
@@ -227,10 +255,16 @@ class MMTranscoder:
 
                 self.log(f"command processed; dp: {dp}")
 
+                if dp<=line_end_src:
+                    new_cell.extend(new_cmd)
+                else:
+                    self.log(f"WARNING: THIS COMMAND WOULD EXCEED LINE LEN! dp:{dp} line_end_src:{line_end_src}")
+
                 # wait = input("Press Enter to continue.")
 
             # Finalize MM4 Length (MUST be payload bytes only)
             payload_size = len(new_cell) - payload_start + 1
+            # assert payload_size < 256
             if payload_size > 255:
                 #TODO prevent this situation
                 self.log(f"WARNING: LINE PAYLOAD TOO LARGE! ({payload_size})")
@@ -242,7 +276,7 @@ class MMTranscoder:
 
             new_cell[len_byte_pos] = payload_size
 
-            self.log(f"mm4_len {payload_size} mm4_off {mm3_off}")
+            self.log(f"updated cell: mm4_len {payload_size} mm4_off {mm3_off}")
 
             dp = line_end_src
             y_ptr += 1
