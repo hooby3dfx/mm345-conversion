@@ -343,10 +343,6 @@ MM3TO4_OUTDOOR_SURFACE = [
 	# ('','TFLR.SRF'),
 	# ('water.vga','WATER.SRF'),
 ]
-# MM3TO4_OUTDOOR_SURFACE = [
-# 	('road.vga','ROAD.SRF'),
-# 	# ('grass.vga','GRASS.SRF'),
-# ]
 
 
 def convert_environments(in_dir, out_dir):
@@ -497,28 +493,96 @@ def convert_environments(in_dir, out_dir):
 
 
 	#front walls
-	mm3_town_fwl_1 = "twnwl1.vga"
-	mm4_town_fwl_1 = "FTOWN1.FWL"
 	#4 distance levels...
-	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"00", frame_number=0)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"01", frame_number=1)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"02", frame_number=2)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"03", frame_number=3)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"04", frame_number=2)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"05", frame_number=3)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"06", frame_number=0)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_gnd, out_dir+"/"+mm4_town_fwl_1+"07", frame_number=29, y_end=4)
+	mm3_town_fwl_1 = "twnwl1.vga"#13 frames
+	mm4_town_fwl_1 = "FTOWN1.FWL"#8 frames
+	mm3_town_fwl_2 = "twnwl2.vga"#13 frames
+	mm4_town_fwl_2 = "FTOWN2.FWL"#11 frames
+	mm3_town_fwl_3 = "twnwl3.vga"#15 frames
+	mm4_town_fwl_3 = "FTOWN3.FWL"#34 frames
+	mm3_town_fwl_4 = "twnwl4.vga"#31 frames
+	mm4_town_fwl_4 = "FTOWN4.FWL"#17 frames
 
-	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"00", out_dir+"/"+mm4_town_fwl_1+"01", out_dir+"/"+mm4_town_fwl_1+"a")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"a", out_dir+"/"+mm4_town_fwl_1+"02", out_dir+"/"+mm4_town_fwl_1+"b")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"b", out_dir+"/"+mm4_town_fwl_1+"03", out_dir+"/"+mm4_town_fwl_1+"c")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"c", out_dir+"/"+mm4_town_fwl_1+"04", out_dir+"/"+mm4_town_fwl_1+"d")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"d", out_dir+"/"+mm4_town_fwl_1+"05", out_dir+"/"+mm4_town_fwl_1+"e")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"e", out_dir+"/"+mm4_town_fwl_1+"06", out_dir+"/"+mm4_town_fwl_1+"f")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"f", out_dir+"/"+mm4_town_fwl_1+"07", out_dir+"/"+mm4_town_fwl_1)
+	mm4_fwl_1_map = [
+		#src_file; src_frame; y_end
+		(mm3_town_fwl_1, 0),#0
+		(mm3_town_fwl_1, 1),#1
+		(mm3_town_fwl_1, 2),#2
+		(mm3_town_fwl_1, 3),#3
+		(mm3_town_fwl_1, 2),#4
+		(mm3_town_fwl_1, 3),#5
+		(mm3_town_fwl_1, 0),#6
+		(mm3_town_gnd, 29, 4),#7
+	]
 
-	mm4_hash = hash_filename(mm4_town_fwl_1)
-	copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
+	mm4_fwl_2_map = [
+		#src_file; src_frame; y_end
+		(mm3_town_fwl_1, 6),#0
+		(mm3_town_fwl_1, 7),#1
+		(mm3_town_fwl_1, 8),#2
+		(mm3_town_fwl_1, 9),#3
+		(mm3_town_fwl_1, 0),#4
+		(mm3_town_fwl_1, 0),#5
+		(mm3_town_fwl_1, 0),#6
+		(mm3_town_fwl_1, 7),#7
+		(mm3_town_fwl_1, 8),#8
+		(mm3_town_fwl_1, 10),#9
+		(mm3_town_fwl_1, 7),#10
+	]
+
+	mm4_fwl_files = [
+		(mm4_town_fwl_1, mm4_fwl_1_map),
+		(mm4_town_fwl_2, mm4_fwl_2_map),
+	]
+
+
+	for filemap in mm4_fwl_files:
+		dst_file = filemap[0]
+		mapping = filemap[1]
+
+		for i in range(len(mapping)):
+
+			src_file = mapping[i][0]
+			src_frame = mapping[i][1]
+			if len(mapping[i])==2:
+				convert_sprite_3to4(in_dir+"/"+src_file, out_dir+"/"+dst_file+f"{i:02}", frame_number=src_frame)
+			elif len(mapping[i])==3:
+				src_y_end = mapping[i][2]
+				convert_sprite_3to4(in_dir+"/"+src_file, out_dir+"/"+dst_file+f"{i:02}", frame_number=src_frame, y_end=src_y_end)
+			if i==0:
+				#for first file, copy/rename as a merged file
+				copy_file(out_dir+"/"+dst_file+f"{i:02}", out_dir+"/"+dst_file+f"m{i:02}")
+			if i>0:
+				#after the first file, merge previous and current
+				merge_mm4_optimized(out_dir+"/"+dst_file+f"m{i-1:02}", out_dir+"/"+dst_file+f"{i:02}", out_dir+"/"+dst_file+f"m{i:02}")
+			if i==len(mapping)-1:
+				#if last file, we are done and can rename current/last file as the final output
+				mm4_hash = hash_filename(dst_file)
+				copy_file(out_dir+"/"+dst_file+f"m{i:02}", out_dir+"/"+mm4_hash)
+
+
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"00", frame_number=0)
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"01", frame_number=1)
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"02", frame_number=2)
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"03", frame_number=3)
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"04", frame_number=2)
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"05", frame_number=3)
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"06", frame_number=0)
+	# convert_sprite_3to4(in_dir+"/"+mm3_town_gnd, out_dir+"/"+mm4_town_fwl_1+"07", frame_number=29, y_end=4)
+
+	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"00", out_dir+"/"+mm4_town_fwl_1+"01", out_dir+"/"+mm4_town_fwl_1+"a")
+	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"a", out_dir+"/"+mm4_town_fwl_1+"02", out_dir+"/"+mm4_town_fwl_1+"b")
+	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"b", out_dir+"/"+mm4_town_fwl_1+"03", out_dir+"/"+mm4_town_fwl_1+"c")
+	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"c", out_dir+"/"+mm4_town_fwl_1+"04", out_dir+"/"+mm4_town_fwl_1+"d")
+	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"d", out_dir+"/"+mm4_town_fwl_1+"05", out_dir+"/"+mm4_town_fwl_1+"e")
+	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"e", out_dir+"/"+mm4_town_fwl_1+"06", out_dir+"/"+mm4_town_fwl_1+"f")
+	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"f", out_dir+"/"+mm4_town_fwl_1+"07", out_dir+"/"+mm4_town_fwl_1)
+
+	# mm4_hash = hash_filename(mm4_town_fwl_1)
+	# copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
+
+	
+
 
 
 	for pairmap in MM3TO4_OUTDOOR_SURFACE:
