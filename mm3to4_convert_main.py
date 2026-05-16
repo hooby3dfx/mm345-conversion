@@ -530,9 +530,70 @@ def convert_environments(in_dir, out_dir):
 		(mm3_town_fwl_1, 7),#10
 	]
 
+	mm4_fwl_3_map = [
+		#src_file; src_frame; y_end
+		(mm3_town_fwl_2, 0),#0
+		(mm3_town_fwl_2, 0),#1
+		(mm3_town_fwl_2, 1),#2
+		(mm3_town_fwl_2, 2),#3
+		(mm3_town_fwl_2, 3),#4
+		(mm3_town_fwl_2, 2),#5
+		(mm3_town_fwl_2, 0),#6
+		(mm3_town_fwl_2, 6),#7
+		(mm3_town_fwl_2, 7),#8
+		(mm3_town_fwl_2, 8),#9
+		(mm3_town_fwl_2, 9),#10
+		(mm3_town_fwl_2, 0),#11
+		(mm3_town_fwl_2, 0),#12
+		(mm3_town_fwl_2, 0),#13
+		(mm3_town_fwl_2, 7),#14
+		(mm3_town_fwl_2, 8),#15
+		(mm3_town_fwl_2, 10),#16
+		(mm3_town_fwl_3, 0),#17
+		(mm3_town_fwl_3, 0),#18
+		(mm3_town_fwl_3, 1),#19
+		(mm3_town_fwl_3, 2),#20
+		(mm3_town_fwl_3, 3),#21
+		(mm3_town_fwl_3, 2),#22
+		(mm3_town_fwl_3, 0),#23
+		(mm3_town_fwl_3, 7),#24
+		(mm3_town_fwl_3, 8),#25
+		(mm3_town_fwl_3, 9),#26
+		(mm3_town_fwl_3, 10),#27
+		(mm3_town_fwl_3, 0),#28
+		(mm3_town_fwl_3, 0),#29
+		(mm3_town_fwl_3, 0),#30
+		(mm3_town_fwl_3, 8),#31
+		(mm3_town_fwl_3, 9),#32
+		(mm3_town_fwl_3, 11),#33
+	]
+
+	mm4_fwl_4_map = [
+		#src_file; src_frame; y_end
+		(mm3_town_fwl_4, 0),#0
+		(mm3_town_fwl_4, 0),#1
+		(mm3_town_fwl_4, 1),#2
+		(mm3_town_fwl_4, 2),#3
+		(mm3_town_fwl_4, 3),#4
+		(mm3_town_fwl_4, 2),#5
+		(mm3_town_fwl_4, 0),#6
+		(mm3_town_fwl_4, 14),#7
+		(mm3_town_fwl_4, 15),#8
+		(mm3_town_fwl_4, 16),#9
+		(mm3_town_fwl_4, 17),#10
+		(mm3_town_fwl_4, 0),#11
+		(mm3_town_fwl_4, 0),#12
+		(mm3_town_fwl_4, 0),#13
+		(mm3_town_fwl_4, 15),#14
+		(mm3_town_fwl_4, 16),#15
+		(mm3_town_fwl_4, 18),#16
+	]
+
 	mm4_fwl_files = [
 		(mm4_town_fwl_1, mm4_fwl_1_map),
 		(mm4_town_fwl_2, mm4_fwl_2_map),
+		(mm4_town_fwl_3, mm4_fwl_3_map),
+		(mm4_town_fwl_4, mm4_fwl_4_map),
 	]
 
 
