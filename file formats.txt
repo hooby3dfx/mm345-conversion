@@ -239,7 +239,7 @@ Gameplay items:
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
 -How to display Coraks notes ⚠️
 -some sprites causing crashes:
-	-grass, bubleman
+	-dirt
 
 
 

@@ -340,14 +340,14 @@ parse_sprite("mm3out/twnwl2.vga", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/topj.vga", "out_mm3_wip", mode="mm3")
 
 #tests:
-parse_sprite("mm3out/town.pic", "out_mm3_test01", mode="mm3")
-parse_sprite("mm3out/town2.pic", "out_mm3_test02", mode="mm3")
-parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_test03", mode="mm3")
-parse_sprite("mm3out/DESK.pic", "out_mm3_test04", mode="mm3")
-parse_sprite("mm3out/troll.mon", "out_mm3_test05", mode="mm3")
-parse_sprite("mm3out/bublman.mon", "out_mm3_test06", mode="mm3")
-parse_sprite("mm3out/road.vga", "out_mm3_test07", mode="mm3")
-parse_sprite("mm3out/dirt.vga", "out_mm3_test08", mode="mm3")
+parse_sprite("mm3out/town.pic", "test/out_mm3_test01", mode="mm3")
+parse_sprite("mm3out/town2.pic", "test/out_mm3_test02", mode="mm3")
+parse_sprite("mm3out/FOUNTHED.pic", "test/out_mm3_test03", mode="mm3")
+parse_sprite("mm3out/DESK.pic", "test/out_mm3_test04", mode="mm3")
+parse_sprite("mm3out/troll.mon", "test/out_mm3_test05", mode="mm3")
+parse_sprite("mm3out/bublman.mon", "test/out_mm3_test06", mode="mm3")
+parse_sprite("mm3out/road.vga", "test/out_mm3_test07", mode="mm3")
+parse_sprite("mm3out/dirt.vga", "test/out_mm3_test08", mode="mm3")
 
 
 # Usage

@@ -115,6 +115,31 @@ def copy_file(src, dst):
 def hash_filename(name):
 	return f"d_{hash_file_name_mm4(name)}.ccx"
 
+def remap_sprites(filemaps, in_dir, out_dir):
+	for filemap in filemaps:
+		dst_file = filemap[0]
+		mapping = filemap[1]
+
+		for i in range(len(mapping)):
+
+			src_file = mapping[i][0]
+			src_frame = mapping[i][1]
+			if len(mapping[i])==2:
+				convert_sprite_3to4(in_dir+"/"+src_file, out_dir+"/"+dst_file+f"{i:02}", frame_number=src_frame)
+			elif len(mapping[i])==3:
+				src_y_end = mapping[i][2]
+				convert_sprite_3to4(in_dir+"/"+src_file, out_dir+"/"+dst_file+f"{i:02}", frame_number=src_frame, y_end=src_y_end)
+			if i==0:
+				#for first file, copy/rename as a merged file
+				copy_file(out_dir+"/"+dst_file+f"{i:02}", out_dir+"/"+dst_file+f"m{i:02}")
+			if i>0:
+				#after the first file, merge previous and current
+				merge_mm4_optimized(out_dir+"/"+dst_file+f"m{i-1:02}", out_dir+"/"+dst_file+f"{i:02}", out_dir+"/"+dst_file+f"m{i:02}")
+			if i==len(mapping)-1:
+				#if last file, we are done and can rename current/last file as the final output
+				mm4_hash = hash_filename(dst_file)
+				copy_file(out_dir+"/"+dst_file+f"m{i:02}", out_dir+"/"+mm4_hash)
+
 
 MM3_MAZE_NAMES = [
 	'Fountain Head','Baywatch','Wildabar','Swamp Town','Blistering Heights','Fountain Head Cavern','Baywatch Cavern','Wildabar Cavern',
@@ -330,7 +355,8 @@ MM3TO4_OUTDOOR_SURFACE = [
 	# SRF files
 	# ('','CLOUD.SRF'),
 	('desert.vga','DESERT.SRF'),
-	('dirt.vga','DIRT.SRF'),#need to fix sprite
+	# ('dirt.vga','DIRT.SRF'),#need to fix sprite
+	('desert.vga','DIRT.SRF'),
 	# ('water.vga','DWATER.SRF'),
 	('grass.vga','GRASS.SRF'),
 	('lava.vga','LAVA.SRF'),
@@ -391,105 +417,64 @@ def convert_environments(in_dir, out_dir):
 	mm3_town_swl_4 = "twnwl4.vga"
 	mm4_town_swl = "STOWN.SWL" #48 frames
 	#remap, then merge back together...
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_1, out_dir+"/"+mm4_town_swl+"00", frame_number=4)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_1, out_dir+"/"+mm4_town_swl+"01", frame_number=5)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_2, out_dir+"/"+mm4_town_swl+"02", frame_number=4)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_2, out_dir+"/"+mm4_town_swl+"03", frame_number=5)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"04", frame_number=4)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"05", frame_number=5)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"06", frame_number=6)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"07", frame_number=6)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"08", frame_number=4)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"09", frame_number=5)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"10", frame_number=8)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"11", frame_number=8)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"12", frame_number=10)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"13", frame_number=10)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"14", frame_number=12)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"15", frame_number=12)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"16", frame_number=6)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"17", frame_number=7)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"18", frame_number=9)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"19", frame_number=9)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"20", frame_number=11)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"21", frame_number=11)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"22", frame_number=13)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"23", frame_number=13)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_1, out_dir+"/"+mm4_town_swl+"24", frame_number=11)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_1, out_dir+"/"+mm4_town_swl+"25", frame_number=12)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_2, out_dir+"/"+mm4_town_swl+"26", frame_number=11)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_2, out_dir+"/"+mm4_town_swl+"27", frame_number=12)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"28", frame_number=12)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"29", frame_number=13)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"30", frame_number=6)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_3, out_dir+"/"+mm4_town_swl+"31", frame_number=6)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"32", frame_number=19)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"33", frame_number=20)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"34", frame_number=23)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"35", frame_number=23)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"36", frame_number=10)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"37", frame_number=10)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"38", frame_number=12)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"39", frame_number=12)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"40", frame_number=21)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"41", frame_number=22)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"42", frame_number=24)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"43", frame_number=24)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"44", frame_number=26)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"45", frame_number=26)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"46", frame_number=28)
-	convert_sprite_3to4(in_dir+"/"+mm3_town_swl_4, out_dir+"/"+mm4_town_swl+"47", frame_number=28)
 
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"00", out_dir+"/"+mm4_town_swl+"01", out_dir+"/"+mm4_town_swl+"a")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"a", out_dir+"/"+mm4_town_swl+"02", out_dir+"/"+mm4_town_swl+"b")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"b", out_dir+"/"+mm4_town_swl+"03", out_dir+"/"+mm4_town_swl+"c")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"c", out_dir+"/"+mm4_town_swl+"04", out_dir+"/"+mm4_town_swl+"d")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"d", out_dir+"/"+mm4_town_swl+"05", out_dir+"/"+mm4_town_swl+"e")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"e", out_dir+"/"+mm4_town_swl+"06", out_dir+"/"+mm4_town_swl+"f")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"f", out_dir+"/"+mm4_town_swl+"07", out_dir+"/"+mm4_town_swl+"g")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"g", out_dir+"/"+mm4_town_swl+"08", out_dir+"/"+mm4_town_swl+"h")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"h", out_dir+"/"+mm4_town_swl+"09", out_dir+"/"+mm4_town_swl+"i")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"i", out_dir+"/"+mm4_town_swl+"10", out_dir+"/"+mm4_town_swl+"j")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"j", out_dir+"/"+mm4_town_swl+"11", out_dir+"/"+mm4_town_swl+"k")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"k", out_dir+"/"+mm4_town_swl+"12", out_dir+"/"+mm4_town_swl+"l")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"l", out_dir+"/"+mm4_town_swl+"13", out_dir+"/"+mm4_town_swl+"m")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"m", out_dir+"/"+mm4_town_swl+"14", out_dir+"/"+mm4_town_swl+"n")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"n", out_dir+"/"+mm4_town_swl+"15", out_dir+"/"+mm4_town_swl+"o")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"o", out_dir+"/"+mm4_town_swl+"16", out_dir+"/"+mm4_town_swl+"p")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"p", out_dir+"/"+mm4_town_swl+"17", out_dir+"/"+mm4_town_swl+"q")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"q", out_dir+"/"+mm4_town_swl+"18", out_dir+"/"+mm4_town_swl+"r")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"r", out_dir+"/"+mm4_town_swl+"19", out_dir+"/"+mm4_town_swl+"s")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"s", out_dir+"/"+mm4_town_swl+"20", out_dir+"/"+mm4_town_swl+"t")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"t", out_dir+"/"+mm4_town_swl+"21", out_dir+"/"+mm4_town_swl+"u")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"u", out_dir+"/"+mm4_town_swl+"22", out_dir+"/"+mm4_town_swl+"v")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"v", out_dir+"/"+mm4_town_swl+"23", out_dir+"/"+mm4_town_swl+"w")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"w", out_dir+"/"+mm4_town_swl+"24", out_dir+"/"+mm4_town_swl+"x")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"x", out_dir+"/"+mm4_town_swl+"25", out_dir+"/"+mm4_town_swl+"y")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"y", out_dir+"/"+mm4_town_swl+"26", out_dir+"/"+mm4_town_swl+"z")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"z", out_dir+"/"+mm4_town_swl+"27", out_dir+"/"+mm4_town_swl+"aa")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"aa", out_dir+"/"+mm4_town_swl+"28", out_dir+"/"+mm4_town_swl+"bb")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"bb", out_dir+"/"+mm4_town_swl+"29", out_dir+"/"+mm4_town_swl+"cc")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"cc", out_dir+"/"+mm4_town_swl+"30", out_dir+"/"+mm4_town_swl+"dd")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"dd", out_dir+"/"+mm4_town_swl+"31", out_dir+"/"+mm4_town_swl+"ee")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"ee", out_dir+"/"+mm4_town_swl+"32", out_dir+"/"+mm4_town_swl+"ff")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"ff", out_dir+"/"+mm4_town_swl+"33", out_dir+"/"+mm4_town_swl+"gg")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"gg", out_dir+"/"+mm4_town_swl+"34", out_dir+"/"+mm4_town_swl+"hh")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"hh", out_dir+"/"+mm4_town_swl+"35", out_dir+"/"+mm4_town_swl+"ii")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"ii", out_dir+"/"+mm4_town_swl+"36", out_dir+"/"+mm4_town_swl+"jj")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"jj", out_dir+"/"+mm4_town_swl+"37", out_dir+"/"+mm4_town_swl+"kk")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"kk", out_dir+"/"+mm4_town_swl+"38", out_dir+"/"+mm4_town_swl+"ll")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"ll", out_dir+"/"+mm4_town_swl+"39", out_dir+"/"+mm4_town_swl+"mm")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"mm", out_dir+"/"+mm4_town_swl+"40", out_dir+"/"+mm4_town_swl+"nn")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"nn", out_dir+"/"+mm4_town_swl+"41", out_dir+"/"+mm4_town_swl+"oo")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"oo", out_dir+"/"+mm4_town_swl+"42", out_dir+"/"+mm4_town_swl+"pp")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"pp", out_dir+"/"+mm4_town_swl+"43", out_dir+"/"+mm4_town_swl+"qq")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"qq", out_dir+"/"+mm4_town_swl+"44", out_dir+"/"+mm4_town_swl+"rr")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"rr", out_dir+"/"+mm4_town_swl+"45", out_dir+"/"+mm4_town_swl+"ss")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"ss", out_dir+"/"+mm4_town_swl+"46", out_dir+"/"+mm4_town_swl+"tt")
-	merge_mm4_optimized(out_dir+"/"+mm4_town_swl+"tt", out_dir+"/"+mm4_town_swl+"47", out_dir+"/"+mm4_town_swl)
+	mm4_swl_map = [
+		#src_file; src_frame; y_end
+		(mm3_town_swl_1, 4),#0
+		(mm3_town_swl_1, 5),#1
+		(mm3_town_swl_2, 4),#2
+		(mm3_town_swl_2, 5),#3
+		(mm3_town_swl_3, 4),#4
+		(mm3_town_swl_3, 5),#5
+		(mm3_town_swl_3, 6),#6
+		(mm3_town_swl_3, 6),#7
+		(mm3_town_swl_4, 4),#8
+		(mm3_town_swl_4, 5),#9
+		(mm3_town_swl_4, 8),#10
+		(mm3_town_swl_4, 8),#11
+		(mm3_town_swl_4, 10),#12
+		(mm3_town_swl_4, 10),#13
+		(mm3_town_swl_4, 12),#14
+		(mm3_town_swl_4, 12),#15
+		(mm3_town_swl_4, 6),#16
+		(mm3_town_swl_4, 7),#17
+		(mm3_town_swl_4, 9),#18
+		(mm3_town_swl_4, 9),#19
+		(mm3_town_swl_4, 11),#20
+		(mm3_town_swl_4, 11),#21
+		(mm3_town_swl_4, 13),#22
+		(mm3_town_swl_4, 13),#23
+		(mm3_town_swl_1, 11),#24
+		(mm3_town_swl_1, 12),#25
+		(mm3_town_swl_2, 11),#26
+		(mm3_town_swl_2, 12),#27
+		(mm3_town_swl_3, 12),#28
+		(mm3_town_swl_3, 13),#29
+		(mm3_town_swl_3, 6),#30
+		(mm3_town_swl_3, 6),#31
+		(mm3_town_swl_4, 19),#32
+		(mm3_town_swl_4, 20),#33
+		(mm3_town_swl_4, 23),#34
+		(mm3_town_swl_4, 23),#35
+		(mm3_town_swl_4, 10),#36
+		(mm3_town_swl_4, 10),#37
+		(mm3_town_swl_4, 12),#38
+		(mm3_town_swl_4, 12),#39
+		(mm3_town_swl_4, 21),#40	
+		(mm3_town_swl_4, 22),#41
+		(mm3_town_swl_4, 24),#42
+		(mm3_town_swl_4, 24),#43
+		(mm3_town_swl_4, 26),#44
+		(mm3_town_swl_4, 26),#45
+		(mm3_town_swl_4, 28),#46
+		(mm3_town_swl_4, 28),#47
+	]
 
-	mm4_hash = hash_filename(mm4_town_swl)
-	copy_file(out_dir+"/"+mm4_town_swl, out_dir+"/"+mm4_hash)
+	mm4_swl_files = [
+		(mm4_town_swl, mm4_swl_map),
+	]
+
+	remap_sprites(mm4_swl_files, in_dir, out_dir)
 
 
 	#front walls
@@ -597,50 +582,7 @@ def convert_environments(in_dir, out_dir):
 	]
 
 
-	for filemap in mm4_fwl_files:
-		dst_file = filemap[0]
-		mapping = filemap[1]
-
-		for i in range(len(mapping)):
-
-			src_file = mapping[i][0]
-			src_frame = mapping[i][1]
-			if len(mapping[i])==2:
-				convert_sprite_3to4(in_dir+"/"+src_file, out_dir+"/"+dst_file+f"{i:02}", frame_number=src_frame)
-			elif len(mapping[i])==3:
-				src_y_end = mapping[i][2]
-				convert_sprite_3to4(in_dir+"/"+src_file, out_dir+"/"+dst_file+f"{i:02}", frame_number=src_frame, y_end=src_y_end)
-			if i==0:
-				#for first file, copy/rename as a merged file
-				copy_file(out_dir+"/"+dst_file+f"{i:02}", out_dir+"/"+dst_file+f"m{i:02}")
-			if i>0:
-				#after the first file, merge previous and current
-				merge_mm4_optimized(out_dir+"/"+dst_file+f"m{i-1:02}", out_dir+"/"+dst_file+f"{i:02}", out_dir+"/"+dst_file+f"m{i:02}")
-			if i==len(mapping)-1:
-				#if last file, we are done and can rename current/last file as the final output
-				mm4_hash = hash_filename(dst_file)
-				copy_file(out_dir+"/"+dst_file+f"m{i:02}", out_dir+"/"+mm4_hash)
-
-
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"00", frame_number=0)
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"01", frame_number=1)
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"02", frame_number=2)
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"03", frame_number=3)
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"04", frame_number=2)
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"05", frame_number=3)
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_fwl_1, out_dir+"/"+mm4_town_fwl_1+"06", frame_number=0)
-	# convert_sprite_3to4(in_dir+"/"+mm3_town_gnd, out_dir+"/"+mm4_town_fwl_1+"07", frame_number=29, y_end=4)
-
-	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"00", out_dir+"/"+mm4_town_fwl_1+"01", out_dir+"/"+mm4_town_fwl_1+"a")
-	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"a", out_dir+"/"+mm4_town_fwl_1+"02", out_dir+"/"+mm4_town_fwl_1+"b")
-	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"b", out_dir+"/"+mm4_town_fwl_1+"03", out_dir+"/"+mm4_town_fwl_1+"c")
-	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"c", out_dir+"/"+mm4_town_fwl_1+"04", out_dir+"/"+mm4_town_fwl_1+"d")
-	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"d", out_dir+"/"+mm4_town_fwl_1+"05", out_dir+"/"+mm4_town_fwl_1+"e")
-	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"e", out_dir+"/"+mm4_town_fwl_1+"06", out_dir+"/"+mm4_town_fwl_1+"f")
-	# merge_mm4_optimized(out_dir+"/"+mm4_town_fwl_1+"f", out_dir+"/"+mm4_town_fwl_1+"07", out_dir+"/"+mm4_town_fwl_1)
-
-	# mm4_hash = hash_filename(mm4_town_fwl_1)
-	# copy_file(out_dir+"/"+mm4_town_fwl_1, out_dir+"/"+mm4_hash)
+	remap_sprites(mm4_fwl_files, in_dir, out_dir)
 
 	
 
