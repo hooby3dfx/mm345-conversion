@@ -209,6 +209,27 @@ def is_mm3_indoor(maze_id):
 
 	return indoor
 
+def get_wallkind(maze_id):
+	#TODO confirm accuracy and types
+	if maze_id < 6:
+		return 0
+	elif maze_id < 16:
+		return 1
+	elif maze_id < 24:
+		return 2
+	elif maze_id < 29:
+		return 3
+	elif maze_id < 34:
+		return 4
+	elif maze_id < 41:
+		return 5
+	elif maze_id == 65:
+		return 0
+	elif maze_id == 66:
+		return 0
+
+	return 0
+
 
 def convert_dat_3to4(map, maze_id):
 	indoor = is_mm3_indoor(maze_id) #temp hack
@@ -431,7 +452,7 @@ def convert_info_3to4(mm3_info):
 	chanceToRun = 0
 	runY = 5 #TODO parse these
 	trapDmg = 0
-	wallKind = 0
+	wallKind = get_wallkind(maze_id)
 	tavernTips = 0
 
 

@@ -115,14 +115,14 @@ def copy_file(src, dst):
 def hash_filename(name):
 	return f"d_{hash_file_name_mm4(name)}.ccx"
 
-def remap_sprites(filemaps, in_dir, out_dir):
+def remap_sprites(filemaps, in_dir, out_dir, mm3_prefix="", mm4_prefix=""):
 	for filemap in filemaps:
-		dst_file = filemap[0]
+		dst_file = mm4_prefix+filemap[0]
 		mapping = filemap[1]
 
 		for i in range(len(mapping)):
 
-			src_file = mapping[i][0]
+			src_file = mm3_prefix+mapping[i][0]
 			src_frame = mapping[i][1]
 			if len(mapping[i])==2:
 				convert_sprite_3to4(in_dir+"/"+src_file, out_dir+"/"+dst_file+f"{i:02}", frame_number=src_frame)
@@ -382,14 +382,6 @@ def convert_environments(in_dir, out_dir):
 		copy_file(out_dir+"/"+mm4_terrain, out_dir+"/"+mm4_hash)
 
 
-	#ground
-	mm3_town_gnd = "twnwl4.vga" #frame 29
-	mm4_town_gnd = "TOWN.GND"
-	frame_number = 29
-	convert_sprite_3to4(in_dir+"/"+mm3_town_gnd, out_dir+"/"+mm4_town_gnd, frame_number=frame_number)
-	mm4_hash = hash_filename(mm4_town_gnd)
-	copy_file(out_dir+"/"+mm4_town_gnd, out_dir+"/"+mm4_hash)
-
 	#sky (day)
 	mm3_sky_sky = "day.vga"
 	mm4_sky_sky = "SKY.SKY"
@@ -410,180 +402,223 @@ def convert_environments(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_night_sky)
 	copy_file(out_dir+"/"+mm4_night_sky, out_dir+"/"+mm4_hash)
 
+	# cav.sky
+	# dun.sky
+	# sci.sky
+	
+
+	#GROUND/WALLS!
+
+	#"twnwl1.vga","twnwl2.vga","twnwl3.vga","twnwl4.vga"
+
+	#env sets:
+	#twnwl, cavwl, dunwl, caswl, sciwl, 
+
+	#mm4:
+	# Cave (CAVE)
+	# Castle (CSTL)
+	# Dungeon (DUNG)
+	# Sci-Fi, used for example in the crashed escape pods (SCFI)
+	# Town (TOWN)
+	# Tower (TOWR)
+
 	#side walls
-	mm3_town_swl_1 = "twnwl1.vga" #"twnwl1.vga","twnwl2.vga","twnwl3.vga","twnwl4.vga"
-	mm3_town_swl_2 = "twnwl2.vga"
-	mm3_town_swl_3 = "twnwl3.vga"
-	mm3_town_swl_4 = "twnwl4.vga"
-	mm4_town_swl = "STOWN.SWL" #48 frames
+	# mm4_town_swl = "STOWN.SWL" #48 frames
+	# mm4_cave_swl = "SCAVE.SWL"
+
 	#remap, then merge back together...
+
+	mm3_wall_1 = "1.vga" 
+	mm3_wall_2 = "2.vga"
+	mm3_wall_3 = "3.vga"
+	mm3_wall_4 = "4.vga"
+
+
+	mm4_gnd_map = [
+		(mm3_wall_4, 29),
+	]
+
+	mm4_gnd_files = [
+		(".GND", mm4_gnd_map),
+	]
+
+	remap_sprites(mm4_gnd_files, in_dir, out_dir, mm3_prefix="twnwl", mm4_prefix="TOWN")
+	remap_sprites(mm4_gnd_files, in_dir, out_dir, mm3_prefix="cavwl", mm4_prefix="CAVE")
+	remap_sprites(mm4_gnd_files, in_dir, out_dir, mm3_prefix="dunwl", mm4_prefix="DUNG")
+	remap_sprites(mm4_gnd_files, in_dir, out_dir, mm3_prefix="caswl", mm4_prefix="CSTL")
+	remap_sprites(mm4_gnd_files, in_dir, out_dir, mm3_prefix="sciwl", mm4_prefix="SCFI")
+
+
+	# SCAVE.SWL
 
 	mm4_swl_map = [
 		#src_file; src_frame; y_end
-		(mm3_town_swl_1, 4),#0
-		(mm3_town_swl_1, 5),#1
-		(mm3_town_swl_2, 4),#2
-		(mm3_town_swl_2, 5),#3
-		(mm3_town_swl_3, 4),#4
-		(mm3_town_swl_3, 5),#5
-		(mm3_town_swl_3, 6),#6
-		(mm3_town_swl_3, 6),#7
-		(mm3_town_swl_4, 4),#8
-		(mm3_town_swl_4, 5),#9
-		(mm3_town_swl_4, 8),#10
-		(mm3_town_swl_4, 8),#11
-		(mm3_town_swl_4, 10),#12
-		(mm3_town_swl_4, 10),#13
-		(mm3_town_swl_4, 12),#14
-		(mm3_town_swl_4, 12),#15
-		(mm3_town_swl_4, 6),#16
-		(mm3_town_swl_4, 7),#17
-		(mm3_town_swl_4, 9),#18
-		(mm3_town_swl_4, 9),#19
-		(mm3_town_swl_4, 11),#20
-		(mm3_town_swl_4, 11),#21
-		(mm3_town_swl_4, 13),#22
-		(mm3_town_swl_4, 13),#23
-		(mm3_town_swl_1, 11),#24
-		(mm3_town_swl_1, 12),#25
-		(mm3_town_swl_2, 11),#26
-		(mm3_town_swl_2, 12),#27
-		(mm3_town_swl_3, 12),#28
-		(mm3_town_swl_3, 13),#29
-		(mm3_town_swl_3, 6),#30
-		(mm3_town_swl_3, 6),#31
-		(mm3_town_swl_4, 19),#32
-		(mm3_town_swl_4, 20),#33
-		(mm3_town_swl_4, 23),#34
-		(mm3_town_swl_4, 23),#35
-		(mm3_town_swl_4, 10),#36
-		(mm3_town_swl_4, 10),#37
-		(mm3_town_swl_4, 12),#38
-		(mm3_town_swl_4, 12),#39
-		(mm3_town_swl_4, 21),#40	
-		(mm3_town_swl_4, 22),#41
-		(mm3_town_swl_4, 24),#42
-		(mm3_town_swl_4, 24),#43
-		(mm3_town_swl_4, 26),#44
-		(mm3_town_swl_4, 26),#45
-		(mm3_town_swl_4, 28),#46
-		(mm3_town_swl_4, 28),#47
+		(mm3_wall_1, 4),#0
+		(mm3_wall_1, 5),#1
+		(mm3_wall_2, 4),#2
+		(mm3_wall_2, 5),#3
+		(mm3_wall_3, 4),#4
+		(mm3_wall_3, 5),#5
+		(mm3_wall_3, 6),#6
+		(mm3_wall_3, 6),#7
+		(mm3_wall_4, 4),#8
+		(mm3_wall_4, 5),#9
+		(mm3_wall_4, 8),#10
+		(mm3_wall_4, 8),#11
+		(mm3_wall_4, 10),#12
+		(mm3_wall_4, 10),#13
+		(mm3_wall_4, 12),#14
+		(mm3_wall_4, 12),#15
+		(mm3_wall_4, 6),#16
+		(mm3_wall_4, 7),#17
+		(mm3_wall_4, 9),#18
+		(mm3_wall_4, 9),#19
+		(mm3_wall_4, 11),#20
+		(mm3_wall_4, 11),#21
+		(mm3_wall_4, 13),#22
+		(mm3_wall_4, 13),#23
+		(mm3_wall_1, 11),#24
+		(mm3_wall_1, 12),#25
+		(mm3_wall_2, 11),#26
+		(mm3_wall_2, 12),#27
+		(mm3_wall_3, 12),#28
+		(mm3_wall_3, 13),#29
+		(mm3_wall_3, 6),#30
+		(mm3_wall_3, 6),#31
+		(mm3_wall_4, 19),#32
+		(mm3_wall_4, 20),#33
+		(mm3_wall_4, 23),#34
+		(mm3_wall_4, 23),#35
+		(mm3_wall_4, 10),#36
+		(mm3_wall_4, 10),#37
+		(mm3_wall_4, 12),#38
+		(mm3_wall_4, 12),#39
+		(mm3_wall_4, 21),#40	
+		(mm3_wall_4, 22),#41
+		(mm3_wall_4, 24),#42
+		(mm3_wall_4, 24),#43
+		(mm3_wall_4, 26),#44
+		(mm3_wall_4, 26),#45
+		(mm3_wall_4, 28),#46
+		(mm3_wall_4, 28),#47
 	]
 
 	mm4_swl_files = [
-		(mm4_town_swl, mm4_swl_map),
+		(".SWL", mm4_swl_map),
 	]
 
-	remap_sprites(mm4_swl_files, in_dir, out_dir)
-
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="twnwl", mm4_prefix="STOWN")
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="cavwl", mm4_prefix="SCAVE")
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="dunwl", mm4_prefix="DUNG")
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="caswl", mm4_prefix="CSTL")
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="sciwl", mm4_prefix="SCFI")
 
 	#front walls
 	#4 distance levels...
-	mm3_town_fwl_1 = "twnwl1.vga"#13 frames
-	mm4_town_fwl_1 = "FTOWN1.FWL"#8 frames
-	mm3_town_fwl_2 = "twnwl2.vga"#13 frames
-	mm4_town_fwl_2 = "FTOWN2.FWL"#11 frames
-	mm3_town_fwl_3 = "twnwl3.vga"#15 frames
-	mm4_town_fwl_3 = "FTOWN3.FWL"#34 frames
-	mm3_town_fwl_4 = "twnwl4.vga"#31 frames
-	mm4_town_fwl_4 = "FTOWN4.FWL"#17 frames
+	# mm4_town_fwl_1 = "FTOWN1.FWL"#8 frames
+	# mm4_town_fwl_2 = "FTOWN2.FWL"#11 frames
+	# mm4_town_fwl_3 = "FTOWN3.FWL"#34 frames
+	# mm4_town_fwl_4 = "FTOWN4.FWL"#17 frames
 
 	mm4_fwl_1_map = [
 		#src_file; src_frame; y_end
-		(mm3_town_fwl_1, 0),#0
-		(mm3_town_fwl_1, 1),#1
-		(mm3_town_fwl_1, 2),#2
-		(mm3_town_fwl_1, 3),#3
-		(mm3_town_fwl_1, 2),#4
-		(mm3_town_fwl_1, 3),#5
-		(mm3_town_fwl_1, 0),#6
-		(mm3_town_gnd, 29, 4),#7
+		(mm3_wall_1, 0),#0
+		(mm3_wall_1, 1),#1
+		(mm3_wall_1, 2),#2
+		(mm3_wall_1, 3),#3
+		(mm3_wall_1, 2),#4
+		(mm3_wall_1, 3),#5
+		(mm3_wall_1, 0),#6
+		(mm3_wall_4, 29, 4),#7
 	]
 
 	mm4_fwl_2_map = [
 		#src_file; src_frame; y_end
-		(mm3_town_fwl_1, 6),#0
-		(mm3_town_fwl_1, 7),#1
-		(mm3_town_fwl_1, 8),#2
-		(mm3_town_fwl_1, 9),#3
-		(mm3_town_fwl_1, 0),#4
-		(mm3_town_fwl_1, 0),#5
-		(mm3_town_fwl_1, 0),#6
-		(mm3_town_fwl_1, 7),#7
-		(mm3_town_fwl_1, 8),#8
-		(mm3_town_fwl_1, 10),#9
-		(mm3_town_fwl_1, 7),#10
+		(mm3_wall_1, 6),#0
+		(mm3_wall_1, 7),#1
+		(mm3_wall_1, 8),#2
+		(mm3_wall_1, 9),#3
+		(mm3_wall_1, 0),#4
+		(mm3_wall_1, 0),#5
+		(mm3_wall_1, 0),#6
+		(mm3_wall_1, 7),#7
+		(mm3_wall_1, 8),#8
+		(mm3_wall_1, 10),#9
+		(mm3_wall_1, 7),#10
 	]
 
 	mm4_fwl_3_map = [
 		#src_file; src_frame; y_end
-		(mm3_town_fwl_2, 0),#0
-		(mm3_town_fwl_2, 0),#1
-		(mm3_town_fwl_2, 1),#2
-		(mm3_town_fwl_2, 2),#3
-		(mm3_town_fwl_2, 3),#4
-		(mm3_town_fwl_2, 2),#5
-		(mm3_town_fwl_2, 0),#6
-		(mm3_town_fwl_2, 6),#7
-		(mm3_town_fwl_2, 7),#8
-		(mm3_town_fwl_2, 8),#9
-		(mm3_town_fwl_2, 9),#10
-		(mm3_town_fwl_2, 0),#11
-		(mm3_town_fwl_2, 0),#12
-		(mm3_town_fwl_2, 0),#13
-		(mm3_town_fwl_2, 7),#14
-		(mm3_town_fwl_2, 8),#15
-		(mm3_town_fwl_2, 10),#16
-		(mm3_town_fwl_3, 0),#17
-		(mm3_town_fwl_3, 0),#18
-		(mm3_town_fwl_3, 1),#19
-		(mm3_town_fwl_3, 2),#20
-		(mm3_town_fwl_3, 3),#21
-		(mm3_town_fwl_3, 2),#22
-		(mm3_town_fwl_3, 0),#23
-		(mm3_town_fwl_3, 7),#24
-		(mm3_town_fwl_3, 8),#25
-		(mm3_town_fwl_3, 9),#26
-		(mm3_town_fwl_3, 10),#27
-		(mm3_town_fwl_3, 0),#28
-		(mm3_town_fwl_3, 0),#29
-		(mm3_town_fwl_3, 0),#30
-		(mm3_town_fwl_3, 8),#31
-		(mm3_town_fwl_3, 9),#32
-		(mm3_town_fwl_3, 11),#33
+		(mm3_wall_2, 0),#0
+		(mm3_wall_2, 0),#1
+		(mm3_wall_2, 1),#2
+		(mm3_wall_2, 2),#3
+		(mm3_wall_2, 3),#4
+		(mm3_wall_2, 2),#5
+		(mm3_wall_2, 0),#6
+		(mm3_wall_2, 6),#7
+		(mm3_wall_2, 7),#8
+		(mm3_wall_2, 8),#9
+		(mm3_wall_2, 9),#10
+		(mm3_wall_2, 0),#11
+		(mm3_wall_2, 0),#12
+		(mm3_wall_2, 0),#13
+		(mm3_wall_2, 7),#14
+		(mm3_wall_2, 8),#15
+		(mm3_wall_2, 10),#16
+		(mm3_wall_3, 0),#17
+		(mm3_wall_3, 0),#18
+		(mm3_wall_3, 1),#19
+		(mm3_wall_3, 2),#20
+		(mm3_wall_3, 3),#21
+		(mm3_wall_3, 2),#22
+		(mm3_wall_3, 0),#23
+		(mm3_wall_3, 7),#24
+		(mm3_wall_3, 8),#25
+		(mm3_wall_3, 9),#26
+		(mm3_wall_3, 10),#27
+		(mm3_wall_3, 0),#28
+		(mm3_wall_3, 0),#29
+		(mm3_wall_3, 0),#30
+		(mm3_wall_3, 8),#31
+		(mm3_wall_3, 9),#32
+		(mm3_wall_3, 11),#33
 	]
 
 	mm4_fwl_4_map = [
 		#src_file; src_frame; y_end
-		(mm3_town_fwl_4, 0),#0
-		(mm3_town_fwl_4, 0),#1
-		(mm3_town_fwl_4, 1),#2
-		(mm3_town_fwl_4, 2),#3
-		(mm3_town_fwl_4, 3),#4
-		(mm3_town_fwl_4, 2),#5
-		(mm3_town_fwl_4, 0),#6
-		(mm3_town_fwl_4, 14),#7
-		(mm3_town_fwl_4, 15),#8
-		(mm3_town_fwl_4, 16),#9
-		(mm3_town_fwl_4, 17),#10
-		(mm3_town_fwl_4, 0),#11
-		(mm3_town_fwl_4, 0),#12
-		(mm3_town_fwl_4, 0),#13
-		(mm3_town_fwl_4, 15),#14
-		(mm3_town_fwl_4, 16),#15
-		(mm3_town_fwl_4, 18),#16
+		(mm3_wall_4, 0),#0
+		(mm3_wall_4, 0),#1
+		(mm3_wall_4, 1),#2
+		(mm3_wall_4, 2),#3
+		(mm3_wall_4, 3),#4
+		(mm3_wall_4, 2),#5
+		(mm3_wall_4, 0),#6
+		(mm3_wall_4, 14),#7
+		(mm3_wall_4, 15),#8
+		(mm3_wall_4, 16),#9
+		(mm3_wall_4, 17),#10
+		(mm3_wall_4, 0),#11
+		(mm3_wall_4, 0),#12
+		(mm3_wall_4, 0),#13
+		(mm3_wall_4, 15),#14
+		(mm3_wall_4, 16),#15
+		(mm3_wall_4, 18),#16
 	]
 
 	mm4_fwl_files = [
-		(mm4_town_fwl_1, mm4_fwl_1_map),
-		(mm4_town_fwl_2, mm4_fwl_2_map),
-		(mm4_town_fwl_3, mm4_fwl_3_map),
-		(mm4_town_fwl_4, mm4_fwl_4_map),
+		("1.FWL", mm4_fwl_1_map),
+		("2.FWL", mm4_fwl_2_map),
+		("3.FWL", mm4_fwl_3_map),
+		("4.FWL", mm4_fwl_4_map),
 	]
 
 
-	remap_sprites(mm4_fwl_files, in_dir, out_dir)
-
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="twnwl", mm4_prefix="FTOWN")
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="cavwl", mm4_prefix="FCAVE")
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="dunwl", mm4_prefix="DUNG")
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="caswl", mm4_prefix="CSTL")
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="sciwl", mm4_prefix="SCFI")
 	
 
 

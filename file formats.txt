@@ -240,6 +240,7 @@ Gameplay items:
 -How to display Coraks notes ⚠️
 -some sprites causing crashes:
 	-dirt
+-NPC offering skill causing crash (ex. cartography in fountain head) ⚠️
 
 
 
