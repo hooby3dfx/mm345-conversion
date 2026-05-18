@@ -241,7 +241,7 @@ Gameplay items:
 -some sprites causing crashes:
 	-dirt
 -NPC offering skill causing crash (ex. cartography in fountain head) ✅
--crash drinking from well; your defensive skill has been magically augmented
+-crash drinking from well(4,7); your defensive skill has been magically augmented
 
 
 

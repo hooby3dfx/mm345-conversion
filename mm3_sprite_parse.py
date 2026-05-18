@@ -334,10 +334,14 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 
 
 
-parse_sprite("mm3out/twnwl2.vga", "out_mm3_wip", mode="mm3")
+# parse_sprite("mm3out/twnwl2.vga", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/day.vga", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/itit0.vga", "out_mm3_wip", mode="mm3")
 # parse_sprite("mm3out/topj.vga", "out_mm3_wip", mode="mm3")
+# parse_sprite("MM3-CC-files/mm3-cc-files/0x3dcf.ccx", "out_mm3_wip", mode="mm3")
+# parse_sprite("MM3-CC-files/mm3-cc-files/0x80ff.ccx", "out_mm3_wip", mode="mm3")
+parse_sprite("MM3-CC-files/mm3-cc-files/0xbd91.ccx", "out_mm3_wip", mode="mm3")
+
 
 #tests:
 parse_sprite("mm3out/town.pic", "test/out_mm3_test01", mode="mm3")
@@ -348,6 +352,7 @@ parse_sprite("mm3out/troll.mon", "test/out_mm3_test05", mode="mm3")
 parse_sprite("mm3out/bublman.mon", "test/out_mm3_test06", mode="mm3")
 parse_sprite("mm3out/road.vga", "test/out_mm3_test07", mode="mm3")
 parse_sprite("mm3out/dirt.vga", "test/out_mm3_test08", mode="mm3")
+parse_sprite("mm3out/water.vga", "test/out_mm3_test09", mode="mm3")
 
 
 # Usage

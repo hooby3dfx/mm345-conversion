@@ -433,6 +433,13 @@ def convert_environments(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_scifi_sky)
 	copy_file(out_dir+"/"+mm4_scifi_sky, out_dir+"/"+mm4_hash)
 
+	#water
+	mm3_water = "water.vga"
+	mm4_water_out = "WATER.OUT"
+	convert_sprite_3to4(in_dir+"/"+mm3_water, out_dir+"/"+mm4_water_out)
+	mm4_hash = hash_filename(mm4_water_out)
+	copy_file(out_dir+"/"+mm4_water_out, out_dir+"/"+mm4_hash)
+
 
 
 	#GROUND/WALLS!
