@@ -200,6 +200,13 @@ def convert_3to4(event_line):
             args_copy[1] = 0x49
             event_line.raw_args = bytes(args_copy)
             modified = True
+    elif event_line.opcode==0x0F:
+        #mm3 arg 09 should be for learn which is 06 in xeen
+        if event_line.raw_args[0]==0x09:
+            args_copy = bytearray(event_line.raw_args)
+            args_copy[0] = 0x06
+            event_line.raw_args = bytes(args_copy)
+            modified = True
 
 
     
@@ -244,7 +251,7 @@ def parse_evt_file(file_path, out_path="mm3to4evt.bin"):
 
 # parse_evt_file("ext_cld_world/MAZE0028.EVT")
 
-# parse_evt_file('mm3out/MAZE01.EVT')
+parse_evt_file('mm3out/MAZE01.EVT')
 parse_evt_file('mm3out/MAZE41.EVT')
 # parse_evt_file('mm3out/MAZE16.EVT')
 

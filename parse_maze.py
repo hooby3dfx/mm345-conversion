@@ -212,17 +212,17 @@ def is_mm3_indoor(maze_id):
 def get_wallkind(maze_id):
 	#TODO confirm accuracy and types
 	if maze_id < 6:
-		return 0
+		return 0#town
 	elif maze_id < 16:
-		return 1
+		return 1#cave
 	elif maze_id < 24:
-		return 2
+		return 2#dungeon
 	elif maze_id < 29:
-		return 3
+		return 3#castle
 	elif maze_id < 34:
-		return 4
+		return 2#dungeon
 	elif maze_id < 41:
-		return 5
+		return 4#scifi
 	elif maze_id == 65:
 		return 0
 	elif maze_id == 66:
@@ -232,8 +232,11 @@ def get_wallkind(maze_id):
 
 
 def convert_dat_3to4(map, maze_id):
-	indoor = is_mm3_indoor(maze_id) #temp hack
 	mm3to4 = bytearray()
+	cellflags = bytearray()
+
+	indoor = is_mm3_indoor(maze_id) #temp hack
+	wallkind = get_wallkind(maze_id)
 
 	for y in range(16):#do NOT reverse y
 		for x in range(16):
@@ -273,12 +276,18 @@ def convert_dat_3to4(map, maze_id):
 				#								overlay		top
 				mm3to4.append(combine_nibbles(0,		 top3to4(EastiTop)))#EastiTop, NorthiOverlay
 
+			#0x10 autoexecute
+			#0x08 ceiling
+			#mm3 is always auto execute...?
+			cellflag = 0x10 | (0x08 if wallkind else 0x00)
+			cellflags.append(cellflag)
+
 
 	# print(f"mm3to4: {mm3to4}")
 	# print("")
 
-	#mm3 is always auto execute...?
-	mm3to4.extend(bytearray([0x10]) * 256)#cell flags
+	# mm3to4.extend(bytearray([0x10 & 0x08]) * 256)#cell flags
+	mm3to4.extend(cellflags)
 
 	return mm3to4
 

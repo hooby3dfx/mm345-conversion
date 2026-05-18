@@ -405,7 +405,34 @@ def convert_environments(in_dir, out_dir):
 	# cav.sky
 	# dun.sky
 	# sci.sky
-	
+	mm3_cave_sky = "cav.sky"
+	mm4_cave_sky = "CAVE.SKY"
+	# mm3_castle_sky = "cas.sky"
+	# mm4_castle_sky = "CAVE.SKY"
+	mm3_dung_sky = "dun.sky"
+	mm4_dung_sky = "DUNG.SKY"
+	mm3_scifi_sky = "sci.sky"
+	mm4_scifi_sky = "SCFI.SKY"
+
+	convert_sprite_3to4(in_dir+"/"+mm3_cave_sky, out_dir+"/"+mm4_cave_sky+"a", y_end=17)
+	convert_sprite_3to4(in_dir+"/"+mm3_cave_sky, out_dir+"/"+mm4_cave_sky+"b", y_start=17)
+	merge_mm4_sprites(out_dir+"/"+mm4_cave_sky+"a", out_dir+"/"+mm4_cave_sky+"b", out_dir+"/"+mm4_cave_sky)
+	mm4_hash = hash_filename(mm4_cave_sky)
+	copy_file(out_dir+"/"+mm4_cave_sky, out_dir+"/"+mm4_hash)
+
+	convert_sprite_3to4(in_dir+"/"+mm3_dung_sky, out_dir+"/"+mm4_dung_sky+"a", y_end=17)
+	convert_sprite_3to4(in_dir+"/"+mm3_dung_sky, out_dir+"/"+mm4_dung_sky+"b", y_start=17)
+	merge_mm4_sprites(out_dir+"/"+mm4_dung_sky+"a", out_dir+"/"+mm4_dung_sky+"b", out_dir+"/"+mm4_dung_sky)
+	mm4_hash = hash_filename(mm4_dung_sky)
+	copy_file(out_dir+"/"+mm4_dung_sky, out_dir+"/"+mm4_hash)
+
+	convert_sprite_3to4(in_dir+"/"+mm3_scifi_sky, out_dir+"/"+mm4_scifi_sky+"a", y_end=17)
+	convert_sprite_3to4(in_dir+"/"+mm3_scifi_sky, out_dir+"/"+mm4_scifi_sky+"b", y_start=17)
+	merge_mm4_sprites(out_dir+"/"+mm4_scifi_sky+"a", out_dir+"/"+mm4_scifi_sky+"b", out_dir+"/"+mm4_scifi_sky)
+	mm4_hash = hash_filename(mm4_scifi_sky)
+	copy_file(out_dir+"/"+mm4_scifi_sky, out_dir+"/"+mm4_hash)
+
+
 
 	#GROUND/WALLS!
 
