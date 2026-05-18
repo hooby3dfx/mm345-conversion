@@ -9,7 +9,7 @@ class MMTranscoder:
     def log(self, message):
         if self.verbose: print(message)
 
-    def transcode_cell(self, data, offset, cell_id, out_width=0, y_start=0, y_end=0):
+    def transcode_cell(self, data, offset, cell_id, out_width=0, out_height_off=0, y_start=0, y_end=0):
         if offset <= 0 or offset >= len(data): return b""
         
         self.log(f"\n--- Transcoding {cell_id} ---")
@@ -26,9 +26,11 @@ class MMTranscoder:
         # x_off += mm4_width_diff
 
         # x_off = 0
-        # mm4_height_diff = 148 - total_h
-        mm4_height_diff = 0
-        y_off += mm4_height_diff
+
+        if out_height_off:
+            mm4_height_diff = out_height_off
+            y_off += mm4_height_diff
+
         # y_off = 0
         # height = 100
 
@@ -331,7 +333,7 @@ class MMTranscoder:
             self.log(f"Sanity Check Error: {e}")
             return False
 
-def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_width=0, y_start=0, y_end=0):
+def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_width=0, out_height_off=0, y_start=0, y_end=0):
 
     print(f"convert_sprite_3to4 {filepath} to {outpath}")
 
@@ -394,7 +396,7 @@ def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_w
                 new_offs.append(offset_map[old_off])
             else:
                 cid = f"Frame{i_in_frame}_Cell{j+1}"
-                res = transcoder.transcode_cell(data, old_off, cid, out_width, y_start, y_end)
+                res = transcoder.transcode_cell(data, old_off, cid, out_width, out_height_off, y_start, y_end)
 
                 if res:
                     offset_map[old_off] = write_ptr
@@ -438,7 +440,8 @@ def runtests():
     # parse_sprite("mm3out/bublman.mon", "out_mm3_test06", mode="mm3")
     # parse_sprite("mm3out/road.vga", "out_mm3_test07", mode="mm3")
     # parse_sprite("mm3out/dirt.vga", "out_mm3_test08", mode="mm3")
-    convert_sprite_3to4("mm3out/FOUNTHED.pic", "out_mm3to4_sprite_test/03_FOUNTHED.pic.ccx", True)
+    convert_sprite_3to4("mm3out/FOUNTHED.pic", "test/03_FOUNTHED.pic.ccx", True)
+    convert_sprite_3to4("mm3out/troll.mon", "test/05_troll.mon.ccx", True, out_width=250, out_height_off=50)
     
 
 if __name__ == "__main__":

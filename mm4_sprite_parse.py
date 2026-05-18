@@ -207,9 +207,12 @@ parse_sprite("mm3to4_out/001.MON", "test/out_mm4_test06", mode="xeen")#bublman.m
 parse_sprite("mm3to4_out/ROAD.SRF", "test/out_mm4_test07", mode="xeen")#road.vga
 parse_sprite("mm3to4_out/DIRT.SRF", "test/out_mm4_test08", mode="xeen")#dirt.vga
 
+parse_sprite("test/05_troll.mon.ccx", "test/out_mm4_test05_inception", mode="xeen")#troll.mon
+
+
 #test for xeen
-parse_sprite("ext_cld/d_7818.ccx", "out_xeen_test01", mode="xeen")
-parse_sprite("ext_cld/d_7834.ccx", "out_xeen_test02", mode="xeen")
+parse_sprite("ext_cld/d_7818.ccx", "test/out_xeen_test01", mode="xeen")
+parse_sprite("ext_cld/d_7834.ccx", "test/out_xeen_test02", mode="xeen")
 
 
 # parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")

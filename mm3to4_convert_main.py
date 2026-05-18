@@ -309,18 +309,19 @@ def convert_sprites(in_dir, out_dir):
 
 		print(f"converting mon sprite {mm3_mon} to {mm4_mon} and {mm4_att}")
 		sprite_width = 250
+		sprite_height_off = 50
 		#Xeen mon sprites are 8 frames, att sprites are 4 frames
 		#...can there be more?
 		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon, False, out_width=sprite_width)
 
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"00", False, out_width=sprite_width, frame_number=0)
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"01", False, out_width=sprite_width, frame_number=1)
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"02", False, out_width=sprite_width, frame_number=2)
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"03", False, out_width=sprite_width, frame_number=3)
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"04", False, out_width=sprite_width, frame_number=0)
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"05", False, out_width=sprite_width, frame_number=1)
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"06", False, out_width=sprite_width, frame_number=2)
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"07", False, out_width=sprite_width, frame_number=3)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"00", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=0)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"01", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=1)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"02", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=2)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"03", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=3)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"04", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=0)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"05", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=1)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"06", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=2)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_mon+"07", False, out_width=sprite_width, out_height_off=sprite_height_off, frame_number=3)
 
 		merge_mm4_optimized(out_dir+"/"+mm4_mon+"00", out_dir+"/"+mm4_mon+"01", out_dir+"/"+mm4_mon+"a")
 		merge_mm4_optimized(out_dir+"/"+mm4_mon+"a", out_dir+"/"+mm4_mon+"02", out_dir+"/"+mm4_mon+"b")
@@ -331,7 +332,7 @@ def convert_sprites(in_dir, out_dir):
 		merge_mm4_optimized(out_dir+"/"+mm4_mon+"f", out_dir+"/"+mm4_mon+"07", out_dir+"/"+mm4_mon)
 
 		#att sprite
-		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_att, False, out_width=sprite_width)
+		convert_sprite_3to4(in_dir+"/"+mm3_mon, out_dir+"/"+mm4_att, False, out_width=sprite_width, out_height_off=sprite_height_off)
 
 		mm4_mon_hash = hash_filename(mm4_mon)
 		mm4_att_hash = hash_filename(mm4_att)
