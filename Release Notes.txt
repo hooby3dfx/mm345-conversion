@@ -4,8 +4,10 @@ Release Notes
 
 v0.02
 Whats new:
--More 2D graphics properly converted
--
+-More graphics properly converted
+-Indoor environment graphics should mostly be using the right graphics
+-Monster types more correct
+
 
 
 

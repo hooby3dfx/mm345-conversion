@@ -26,6 +26,7 @@ def oid3to4(oid3):
 
 def get_monsters_for_mazeid(maze_id):
 	#from https://dungeoncrawl-classics.com/might-and-magic/mm3/mm3-guide/
+	
 	maze_monster_map = [
 		[],
 		[0x01,0x07,0x07],	# Fountain Head /Foes: Bubble Man, Moose Rat, Rat Overlord
@@ -95,6 +96,79 @@ def get_monsters_for_mazeid(maze_id):
 		[0x00,0x01,0x02],	# It's a Secret
 		[0x00,0x01,0x02],	# The Arena
 	]
+	
+	
+	'''
+	maze_monster_map = [
+		[],
+		[0x01, 0x07, 0x50],	# Fountain Head /Foes: Bubble Man, Moose Rat, Rat Overlord
+		[0x04, 0x09, 0x1b],	# Baywatch /Foes: Skeleton, Zombie, Ghoul
+		[0x0c, 0x0b, 0x2e],	# Wildabar /Foes: Ninja, Mad Dwarf, Sonic Ninja
+		[0x0c, 0x1b, 0x2c],	# Swamp Town /Foes: Ninja, Ghoul, Ghost
+		[0x29, 0x18, 0x38],	# Blistering Heights /Foes: Fire Lizard, Mini Dragon, Major Demon
+		[0x00, 0x02, 0x07],	# Fountain Head Cavern /Foes: Vampire Bat, Goblin, Moose Rat
+		[0x01, 0x05, 0x1d],	# Baywatch Cavern /Foes: Bubble Man, Screamer, Phantom
+		[0x10, 0x0e, 0x22],	# Wildabar Cavern /Foes: Phase Head, Ogre, Wicked Witch
+		[0x15, 0x1d, 0x33],	# Swamp Town Cavern /Foes: Scorpia, Phantom, Reaper
+		[0x00, 0x00, 0x00],	# Blistering Heights Cavern /Foes: [Not specifically listed in guide]
+		[0x08, 0x0f, 0x41],	# Cyclops Cavern /Foes: Wild Fungus, Bugaboo, Cyclops
+		[0x11, 0x13, 0x3f],	# Arachnoid Cavern /Foes: Giant Spider, Dino Beetle, Toxic Worm
+		[0x00, 0x00, 0x00],	# Cursed Cold Cavern /Foes: [Not specifically listed in guide]
+		[0x2d, 0x43, 0x4f],	# Dragon Cavern /Foes: Draconi, Green Dragon, Dragon Lord
+		[0x30, 0x34, 0x35],	# The Magic Cavern /Foes: Guardian, Sorcerer, Lich
+		[0x04, 0x09, 0x28],	# Ancient Temple of Moo /Foes: Skeleton, Zombie, Cleric of Moo
+		[0x14, 0x0a, 0x1f],	# Slithercult Stronghold /Foes: Cobra Fiend, Candle Creep, Evil Ranger
+		[0x3d, 0x2c, 0x1b],	# Fortress of Fear /Foes: Mummy, Ghost, Ghoul
+		[0x18, 0x26, 0x2f],	# Halls of Insanity /Foes: Mini Dragon, Mystic Cloud, Evil Eye
+		[0x00, 0x00, 0x00],	# Dark Warrior Keep /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# Cathedral of Carnage /Foes: [Not specifically listed in guide]
+		[0x04, 0x1b, 0x09],	# Tomb of Terror /Foes: Skeleton, Ghoul, Zombie (also Lich, Vampire, Mummy)
+		[0x4c, 0x4d, 0x53],	# The Maze From Hell /Foes: Medusa, Minotaur, Minotaur King
+		[0x31, 0x1f, 0x00],	# Castle Whiteshield /Foes: Paladin, Evil Ranger
+		[0x00, 0x00, 0x00],	# Castle Bloodreign /Foes: [Not specifically listed in guide]
+		[0x1c, 0x32, 0x23],	# Castle Dragontooth /Foes: Castle Guard, Dark Pegasus, Iron Wizard
+		[0x00, 0x00, 0x00],	# Castle Greywind /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# Castle Blackwind /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# Whiteshield Dungeon /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# Bloodreign Dungeon /Foes: [Not specifically listed in guide]
+		[0x22, 0x36, 0x2c],	# Dragontooth Dungeon /Foes: Wicked Witch, Spirit Shield, Ghost
+		[0x00, 0x00, 0x00],	# Greywind Dungeon /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# Blackwind Dungeon /Foes: [Not specifically listed in guide]
+		[0x30, 0x3a],       # Alpha Engine Sector /Foes: Guardian, ED-409
+		[0x36, 0x3a],       # Main Engine Sector /Foes: Spirit Shield, ED-409
+		[0x00, 0x00, 0x00],	# Beta Engine Sector /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# Aft Storage Sector /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# Central Control Sector /Foes: [Not specifically listed in guide]
+		[0x10, 0x23],       # Forward Storage Sector /Foes: Phase Head, Iron Wizard
+		[0x00, 0x00, 0x00],	# Main Control Sector /Foes: [Not specifically listed in guide]
+		[0x03, 0x02],       # A1 /Foes: Orc Warrior, Goblin
+		[0x03, 0x02, 0x00],	# A2 /Foes: Orc Warrior, Goblins, Vampire Bats
+		[0x05, 0x00],       # A3 /Foes: Screamer, Vampire Bat
+		[0x11, 0x14],       # A4 /Foes: Giant Spider, Magic Mantis
+		[0x08, 0x06],       # B1 /Foes: Wild Fungus, Oh no Bug
+		[0x12, 0x0e],       # B2 /Foes: Sprite, Ogre
+		[0x00, 0x00, 0x00],	# B3 /Foes: [Not specifically listed in guide]
+		[0x14, 0x06],       # B4 /Foes: Magic Mantis, Oh No Bug
+		[0x12, 0x47, 0x41],	# C1 /Foes: Sprite, Werewolf, Cyclops
+		[0x38, 0x40],       # C2 /Foes: Major Devils, Dragon Worm
+		[0x49, 0x4b],       # C3 /Foes: Great Hydra, Kudo Crab
+		[0x00, 0x00, 0x00],	# C4 /Foes: [Not specifically listed in guide]
+		[0x00, 0x00, 0x00],	# D1 /Foes: [Not specifically listed in guide]
+		[0x29, 0x2a],       # D2 /Foes: Fire Stalker, Fire Lizard
+		[0x38, 0x4e],       # D3 /Foes: Major Demon, Octobeast
+		[0x00, 0x00, 0x00],	# D4 /Foes: [Not specifically listed in guide]
+		[0x25, 0x1f],       # E1 /Foes: Archer, Evil Ranger
+		[0x00, 0x00, 0x00],	# E2 /Foes: [Not specifically listed in guide]
+		[0x17, 0x21],       # E3 /Foes: Cursed Fool, Tree Golem
+		[0x24, 0x4a, 0x27],	# E4 /Foes: Death Locust, Vulture Roc, Barbarian
+		[0x25, 0x17],       # F1 /Foes: Archer, Cursed Fool
+		[0x20, 0x21, 0x4d],	# F2 /Foes: Shadow Rogue, Tree Golem, Minotaur
+		[0x2b, 0x37],       # F3 /Foes: Gargoyle, Troll
+		[0x24, 0x27],       # F4 /Foes: Death Locust, Barbarian
+		[0x53, 0x48],       # It's a Secret /Foes: Minotaur King, Terminator
+		[0x27, 0x31, 0x4d],	# The Arena /Foes: Barbarian, Paladin, Minotaur
+	]
+	'''
 
 	if maze_id < len(maze_monster_map):
 		return maze_monster_map[maze_id]
@@ -162,8 +236,9 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 				# mm4_mids.extend([mid0, mid1, mid2, mid3, mid4])
 				# mm4_mids.extend(bytearray([0xFF]) * 11)
 
-				mm4_mids.extend(get_monsters_for_mazeid(mazeid))
-				mm4_mids.extend(bytearray([0xFF]) * 13)
+				monsters = get_monsters_for_mazeid(mazeid)
+				mm4_mids.extend(monsters)
+				mm4_mids.extend(bytearray([0xFF]) * (16-len(monsters)))
 
 				skip1 = True
 			elif oy==255:
