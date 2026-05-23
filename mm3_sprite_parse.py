@@ -301,65 +301,68 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
 
     print(f"Done! Extracted {num_f} frames to {out_dir}")
 
-# EXECUTION
-# parse_sprite("witch.mon", "out_witch", mode="mm3")
-# parse_sprite("d_7818.ccx", "out_xeen", mode="xeen")
 
-# Usage examples:
-# parse_sprite("WIP_MM3_REPACK/d_7818.ccx", "out_xeen", mode="xeen")
-# parse_sprite("out_witch.mm4", "text_3to4", mode="xeen")
+if __name__ == "__main__":
 
-# parse_sprite("mm3out/troll.mon", "out_troll", mode="mm3")
-# parse_sprite("mm3out/witch.mon", "out_witch", mode="mm3")
+    # EXECUTION
+    # parse_sprite("witch.mon", "out_witch", mode="mm3")
+    # parse_sprite("d_7818.ccx", "out_xeen", mode="xeen")
 
-# parse_sprite("mm3out/town.pic", "out_town", mode="mm3")
-# parse_sprite("mm3out/sci.sky", "out_scisky", mode="mm3")
-# parse_sprite("mm3out/temple.out", "out_temple", mode="mm3")
+    # Usage examples:
+    # parse_sprite("WIP_MM3_REPACK/d_7818.ccx", "out_xeen", mode="xeen")
+    # parse_sprite("out_witch.mm4", "text_3to4", mode="xeen")
 
-# parse_sprite("MM3-CC-Files/mm3-cc-files/0xf053.ccx", "out_unknown", mode="mm3")
+    # parse_sprite("mm3out/troll.mon", "out_troll", mode="mm3")
+    # parse_sprite("mm3out/witch.mon", "out_witch", mode="mm3")
 
-# parse_sprite("mm3out/topa1.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/town.pic", "out_town", mode="mm3")
+    # parse_sprite("mm3out/sci.sky", "out_scisky", mode="mm3")
+    # parse_sprite("mm3out/temple.out", "out_temple", mode="mm3")
 
-# parse_sprite("mm3out/out.til", "outmm3_out-til", mode="mm3")
-# parse_sprite("mm3out/eface01.out", "outmm3_eface", mode="mm3")
+    # parse_sprite("MM3-CC-Files/mm3-cc-files/0xf053.ccx", "out_unknown", mode="mm3")
 
-# parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/scroll.icn", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/grass.vga", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/dirt.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/topa1.vga", "out_mm3_wip", mode="mm3")
 
-# parse_sprite("mm3out/ina.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/out.til", "outmm3_out-til", mode="mm3")
+    # parse_sprite("mm3out/eface01.out", "outmm3_eface", mode="mm3")
 
+    # parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/FOUNTHED.pic", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/DESK.pic", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/scroll.icn", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/grass.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/dirt.vga", "out_mm3_wip", mode="mm3")
 
-
-# parse_sprite("mm3out/twnwl2.vga", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/day.vga", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/itit0.vga", "out_mm3_wip", mode="mm3")
-# parse_sprite("mm3out/topj.vga", "out_mm3_wip", mode="mm3")
-# parse_sprite("MM3-CC-files/mm3-cc-files/0x3dcf.ccx", "out_mm3_wip", mode="mm3")
-# parse_sprite("MM3-CC-files/mm3-cc-files/0x80ff.ccx", "out_mm3_wip", mode="mm3")
-parse_sprite("MM3-CC-files/mm3-cc-files/0xbd91.ccx", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/ina.vga", "out_mm3_wip", mode="mm3")
 
 
-#tests:
-parse_sprite("mm3out/town.pic", "test/out_mm3_test01", mode="mm3")
-parse_sprite("mm3out/town2.pic", "test/out_mm3_test02", mode="mm3")
-parse_sprite("mm3out/FOUNTHED.pic", "test/out_mm3_test03", mode="mm3")
-parse_sprite("mm3out/DESK.pic", "test/out_mm3_test04", mode="mm3")
-parse_sprite("mm3out/troll.mon", "test/out_mm3_test05", mode="mm3")
-parse_sprite("mm3out/bublman.mon", "test/out_mm3_test06", mode="mm3")
-parse_sprite("mm3out/road.vga", "test/out_mm3_test07", mode="mm3")
-parse_sprite("mm3out/dirt.vga", "test/out_mm3_test08", mode="mm3")
-parse_sprite("mm3out/water.vga", "test/out_mm3_test09", mode="mm3")
+
+    # parse_sprite("mm3out/twnwl2.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/day.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/itit0.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/topj.vga", "out_mm3_wip", mode="mm3")
+    # parse_sprite("MM3-CC-files/mm3-cc-files/0x3dcf.ccx", "out_mm3_wip", mode="mm3")
+    # parse_sprite("MM3-CC-files/mm3-cc-files/0x80ff.ccx", "out_mm3_wip", mode="mm3")
+    parse_sprite("MM3-CC-files/mm3-cc-files/0xbd91.ccx", "out_mm3_wip", mode="mm3")
 
 
-# Usage
-# convert_xeen_sprite("002.ATT", "out_frames")
-# convert_xeen_sprite("001.ATT", "sprite_out")
+    #tests:
+    parse_sprite("mm3out/town.pic", "test/out_mm3_test01", mode="mm3")
+    parse_sprite("mm3out/town2.pic", "test/out_mm3_test02", mode="mm3")
+    parse_sprite("mm3out/FOUNTHED.pic", "test/out_mm3_test03", mode="mm3")
+    parse_sprite("mm3out/DESK.pic", "test/out_mm3_test04", mode="mm3")
+    parse_sprite("mm3out/troll.mon", "test/out_mm3_test05", mode="mm3")
+    parse_sprite("mm3out/bublman.mon", "test/out_mm3_test06", mode="mm3")
+    parse_sprite("mm3out/road.vga", "test/out_mm3_test07", mode="mm3")
+    parse_sprite("mm3out/dirt.vga", "test/out_mm3_test08", mode="mm3")
+    parse_sprite("mm3out/water.vga", "test/out_mm3_test09", mode="mm3")
 
-# convert_sprite("mm3out/witch.mon", "monster_sprite")
-# convert_sprite("WIP_MM3_REPACK/d_7818.ccx", "monster_sprite")
+
+    # Usage
+    # convert_xeen_sprite("002.ATT", "out_frames")
+    # convert_xeen_sprite("001.ATT", "sprite_out")
+
+    # convert_sprite("mm3out/witch.mon", "monster_sprite")
+    # convert_sprite("WIP_MM3_REPACK/d_7818.ccx", "monster_sprite")
 
 

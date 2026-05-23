@@ -439,7 +439,7 @@ def convert_info_3to4(mm3_info):
 	maze_surr_W = mm3_info[11]
 	maze_flags00 = 0
 	maze_flags01 = 0
-	maze_flags02 = 0
+	maze_flags02 = 0 #dark, outdoors
 	maze_flags03 = 0 if indoor else 128 #indoor 0; outdoor 128
 
 	if indoor:	
@@ -531,17 +531,18 @@ def parse_mazefile(filepath, outpath='mm3to4dat.bin'):
 		print("")
 
 
+if __name__ == "__main__":
 
-parse_mazefile("ext_cld_world/MAZE0028.DAT")
-# parse_mazefile("scummvmxeen/mazex255-og.dat")
-parse_mazefile("ext_cld_world/MAZE0023.DAT")
+	parse_mazefile("ext_cld_world/MAZE0028.DAT")
+	# parse_mazefile("scummvmxeen/mazex255-og.dat")
+	parse_mazefile("ext_cld_world/MAZE0023.DAT")
 
-# parse_mazefile("scummvmxeen/mazex255.dat")
+	# parse_mazefile("scummvmxeen/mazex255.dat")
 
-parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
-# parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
-# parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
+	parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
+	# parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
+	# parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
 
-parse_mazefile("mm3to4_out/MAZE0016.DAT")
-parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
+	parse_mazefile("mm3to4_out/MAZE0016.DAT")
+	parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
 

@@ -6,7 +6,7 @@ v0.02
 Whats new:
 -More graphics properly converted
 -Indoor environment graphics should mostly be using the right graphics
--Monster types more correct
+-Corrected monsters in levels, and monsters now have actual stats
 
 
 

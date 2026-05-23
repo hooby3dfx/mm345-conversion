@@ -202,7 +202,10 @@ The background color for UI menus is in XEEN.DAT at uncompressed offset 0x41A7C 
 
 
 
-
+WoX concept:
+XEEN0023 (Area F3) (8,10)
+Warp to Dark map0029.
+Instead, warp to MM3 map01?
 
 
 

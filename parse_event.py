@@ -241,20 +241,26 @@ def parse_evt_file(file_path, out_path="mm3to4evt.bin"):
         f.write(mm3to4)
 
 
-# Example Usage:
-# parse_evt_file('WIP_MM3_REPACK/MAZE0028.EVT')
-# parse_evt_file("mm3_default.sav-files/MAZE01.EVT")
-# parse_evt_file("mm3_default.sav-files/MAZE41.EVT")
-# parse_evt_file("mm3_default.sav-files/MAZE03.EVT")
+if __name__ == "__main__":
+    # Example Usage:
+    # parse_evt_file('WIP_MM3_REPACK/MAZE0028.EVT')
+    # parse_evt_file("mm3_default.sav-files/MAZE01.EVT")
+    # parse_evt_file("mm3_default.sav-files/MAZE41.EVT")
+    # parse_evt_file("mm3_default.sav-files/MAZE03.EVT")
 
-# parse_evt_file('WIP_MM3_REPACK/MAZE0001.EVT')
+    # parse_evt_file('WIP_MM3_REPACK/MAZE0001.EVT')
 
-# parse_evt_file("ext_cld_world/MAZE0028.EVT")
+    # parse_evt_file("ext_cld_world/MAZE0028.EVT")
+    # parse_evt_file("ext_cld_world/MAZE0023.EVT")
+    # parse_evt_file("/Users/bbarnes/Games/dosc/wox/ext_cld_sav/MAZE0023.EVT")
+    parse_evt_file("/Users/bbarnes/Games/dosc/wox/ext_cld_sav/0xB8D5.ccx")
 
-parse_evt_file('mm3out/MAZE01.EVT')
-parse_evt_file('mm3out/MAZE41.EVT')
-# parse_evt_file('mm3out/MAZE16.EVT')
 
-# parse_evt_file("ext_cld/MAZE0079.EVT")
+    # parse_evt_file('mm3out/MAZE01.EVT')
+    # parse_evt_file('mm3out/MAZE41.EVT')
+
+    # parse_evt_file('mm3out/MAZE16.EVT')
+
+    # parse_evt_file("ext_cld/MAZE0079.EVT")
 
 

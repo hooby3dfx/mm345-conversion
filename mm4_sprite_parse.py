@@ -164,59 +164,61 @@ def parse_sprite(filepath, out_dir, mode="xeen"):
         img.save(os.path.join(out_dir, f"frame_{i:02d}.png"))
     print(f"Done! Extracted {num_f} frames to {out_dir}")
 
-# EXECUTION
-# parse_sprite("witch.mon", "out_witch", mode="mm3")
-# parse_sprite("d_7818.ccx", "out_xeen", mode="xeen")
 
-# parse_sprite("mm3out/troll.ccx", "out_xeen", mode="xeen")
-# parse_sprite("check_test.ccx", "out_test_xeen", mode="xeen")
-# parse_sprite("WIP_MM3_REPACK/d_10336.ccx_og", "out_mm4_og", mode="xeen")
-# parse_sprite("WIP_MM3_REPACK/d_7818.ccx_og", "out_mm4_og", mode="xeen")
-# parse_sprite("WIP_MM3_REPACK/d_36181.ccx", "out_mm4_outdoor", mode="xeen")#OUTDOOR.TIL 
+if __name__ == "__main__":
+    # EXECUTION
+    # parse_sprite("witch.mon", "out_witch", mode="mm3")
+    # parse_sprite("d_7818.ccx", "out_xeen", mode="xeen")
 
-# parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("mm3out/troll.ccx", "out_xeen", mode="xeen")
+    # parse_sprite("check_test.ccx", "out_test_xeen", mode="xeen")
+    # parse_sprite("WIP_MM3_REPACK/d_10336.ccx_og", "out_mm4_og", mode="xeen")
+    # parse_sprite("WIP_MM3_REPACK/d_7818.ccx_og", "out_mm4_og", mode="xeen")
+    # parse_sprite("WIP_MM3_REPACK/d_36181.ccx", "out_mm4_outdoor", mode="xeen")#OUTDOOR.TIL 
 
-# parse_sprite("founthed_mm4.ccx", "out_mm3to4_sprite_test", mode="xeen")
-# parse_sprite("WIP_MM3_REPACK/d_42222.ccx_og", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
 
-# parse_sprite("mm3to4_out/008.OBJ", "out_mm3to4_sprite_test", mode="xeen")
-# parse_sprite("wipmm5to3repack/d_42222.ccx", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("founthed_mm4.ccx", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("WIP_MM3_REPACK/d_42222.ccx_og", "out_mm3to4_sprite_test", mode="xeen")
 
-# parse_sprite("ext_drk/d_27886.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_drk/d_124.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_drk/d_33280.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_drk/d_54169.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_drk/d_27503.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_drk/d_54185.ccx", "out_mm4_og", mode="xeen")
-#63609, 49308, 46575, 44055
-# parse_sprite("ext_cld/d_49308.ccx", "out_mm4_og", mode="xeen")
-#43071, 36523, 46616, 20382
-# parse_sprite("ext_cld/d_20382.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("mm3to4_out/008.OBJ", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("wipmm5to3repack/d_42222.ccx", "out_mm3to4_sprite_test", mode="xeen")
 
-# parse_sprite("ext_cld/d_25870.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_cld/d_41000.ccx", "out_mm4_og", mode="xeen")
-# parse_sprite("ext_cld/d_39771.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_drk/d_27886.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_drk/d_124.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_drk/d_33280.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_drk/d_54169.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_drk/d_27503.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_drk/d_54185.ccx", "out_mm4_og", mode="xeen")
+    #63609, 49308, 46575, 44055
+    # parse_sprite("ext_cld/d_49308.ccx", "out_mm4_og", mode="xeen")
+    #43071, 36523, 46616, 20382
+    # parse_sprite("ext_cld/d_20382.ccx", "out_mm4_og", mode="xeen")
 
-#tests for mm3to4:
-parse_sprite("mm3to4_out/043.OBJ", "test/out_mm4_test01", mode="xeen")#town.pic
-parse_sprite("mm3to4_out/061.OBJ", "test/out_mm4_test02", mode="xeen")#town2.pic
-parse_sprite("mm3to4_out/056.OBJ", "test/out_mm4_test03", mode="xeen")#FOUNTHED.pic
-parse_sprite("mm3to4_out/008.OBJ", "test/out_mm4_test04", mode="xeen")#DESK.pic
-parse_sprite("mm3to4_out/055.MON", "test/out_mm4_test05", mode="xeen")#troll.mon
-parse_sprite("mm3to4_out/001.MON", "test/out_mm4_test06", mode="xeen")#bublman.mon
-parse_sprite("mm3to4_out/ROAD.SRF", "test/out_mm4_test07", mode="xeen")#road.vga
-parse_sprite("mm3to4_out/DIRT.SRF", "test/out_mm4_test08", mode="xeen")#dirt.vga
+    # parse_sprite("ext_cld/d_25870.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_cld/d_41000.ccx", "out_mm4_og", mode="xeen")
+    # parse_sprite("ext_cld/d_39771.ccx", "out_mm4_og", mode="xeen")
 
-parse_sprite("test/05_troll.mon.ccx", "test/out_mm4_test05_inception", mode="xeen")#troll.mon
+    #tests for mm3to4:
+    parse_sprite("mm3to4_out/043.OBJ", "test/out_mm4_test01", mode="xeen")#town.pic
+    parse_sprite("mm3to4_out/061.OBJ", "test/out_mm4_test02", mode="xeen")#town2.pic
+    parse_sprite("mm3to4_out/056.OBJ", "test/out_mm4_test03", mode="xeen")#FOUNTHED.pic
+    parse_sprite("mm3to4_out/008.OBJ", "test/out_mm4_test04", mode="xeen")#DESK.pic
+    parse_sprite("mm3to4_out/055.MON", "test/out_mm4_test05", mode="xeen")#troll.mon
+    parse_sprite("mm3to4_out/001.MON", "test/out_mm4_test06", mode="xeen")#bublman.mon
+    parse_sprite("mm3to4_out/ROAD.SRF", "test/out_mm4_test07", mode="xeen")#road.vga
+    parse_sprite("mm3to4_out/DIRT.SRF", "test/out_mm4_test08", mode="xeen")#dirt.vga
 
-
-#test for xeen
-parse_sprite("ext_cld/d_7818.ccx", "test/out_xeen_test01", mode="xeen")
-parse_sprite("ext_cld/d_7834.ccx", "test/out_xeen_test02", mode="xeen")
+    parse_sprite("test/05_troll.mon.ccx", "test/out_mm4_test05_inception", mode="xeen")#troll.mon
 
 
-# parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")
-# parse_sprite("mm3to4_out/TOWN.SKYo", "out_mm3to4_sprite_test", mode="xeen")
-# parse_sprite("mm3to4_out/TOWN.SKYa", "out_mm3to4_sprite_test", mode="xeen")
-# parse_sprite("mm3to4_out/TOWN.SKYb", "out_mm3to4_sprite_test", mode="xeen")
-# parse_sprite("mm3to4_out/TOWN.SKY", "out_mm3to4_sprite_test", mode="xeen")
+    #test for xeen
+    parse_sprite("ext_cld/d_7818.ccx", "test/out_xeen_test01", mode="xeen")
+    parse_sprite("ext_cld/d_7834.ccx", "test/out_xeen_test02", mode="xeen")
+
+
+    # parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("mm3to4_out/TOWN.SKYo", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("mm3to4_out/TOWN.SKYa", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("mm3to4_out/TOWN.SKYb", "out_mm3to4_sprite_test", mode="xeen")
+    # parse_sprite("mm3to4_out/TOWN.SKY", "out_mm3to4_sprite_test", mode="xeen")

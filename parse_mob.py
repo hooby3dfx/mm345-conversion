@@ -273,23 +273,23 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 		with open(outpath, "wb") as f:
 			f.write(mm4_mob)
 
+if __name__ == "__main__":
 
+	# parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE05.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE06.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE07.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE08.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE09.MOB")
 
-# parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE05.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE06.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE07.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE08.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE09.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE40.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE41.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE42.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
-# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE40.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE41.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE42.MOB")
-# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
-
-parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
+	parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
 

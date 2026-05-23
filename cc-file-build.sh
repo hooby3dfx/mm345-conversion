@@ -1,9 +1,21 @@
 #!/bin/sh
 
 #cc file "build" script
+output_dir=mm3to4_out
 repack_dir=wipmm5to3repack #or wipmm4to3repack
 base_game=DARK #XEEN or DARK
 first_level=29
+clean_slate=1
+
+if [ $clean_slate -gt 0 ]; then
+	echo clean slating $output_dir
+	rm -rf $output_dir
+	mkdir $output_dir
+
+	echo clean slating $repack_dir
+	rm -rf $repack_dir
+	cp -r ext_darkw $repack_dir
+fi
 
 #do the file conversion:
 echo doing file conversion
@@ -19,13 +31,14 @@ cp mm3to4_out/AAZE*.TXT $repack_dir
 cp mm3to4_out/AAZE*.HED $repack_dir
 # cp mm3to4_out/XEEN*.TXT $repack_dir
 cp mm3to4_out/DARK*.TXT $repack_dir
+
 #temp workaround for starting level
-cp mm3to4_out/MAZE0001.DAT $repack_dir/MAZE00${first_level}.DAT
-cp mm3to4_out/MAZE0001.EVT $repack_dir/MAZE00${first_level}.EVT
-cp mm3to4_out/MAZE0001.MOB $repack_dir/MAZE00${first_level}.MOB
-cp mm3to4_out/AAZE0001.TXT $repack_dir/AAZE00${first_level}.TXT
-# cp mm3to4_out/XEEN0001.TXT $repack_dir/XEEN0028.TXT
-cp mm3to4_out/${base_game}0001.TXT $repack_dir/${base_game}00${first_level}.TXT
+# cp mm3to4_out/MAZE0001.DAT $repack_dir/MAZE00${first_level}.DAT
+# cp mm3to4_out/MAZE0001.EVT $repack_dir/MAZE00${first_level}.EVT
+# cp mm3to4_out/MAZE0001.MOB $repack_dir/MAZE00${first_level}.MOB
+# cp mm3to4_out/AAZE0001.TXT $repack_dir/AAZE00${first_level}.TXT
+# # cp mm3to4_out/XEEN0001.TXT $repack_dir/XEEN0028.TXT
+# cp mm3to4_out/${base_game}0001.TXT $repack_dir/${base_game}00${first_level}.TXT
 
 
 #run Xeen CC Packer
