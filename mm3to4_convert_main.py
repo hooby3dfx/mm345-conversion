@@ -402,10 +402,15 @@ def convert_environments(in_dir, out_dir):
 
 
 	#sky (day)
+	# so this damn sprite is giving me trouble in wox/darkside... it seems due to the filesize?
+	# larger than ~7k causes other sprites such as base ground (water) not to load. 
+	# the image itself is clouds and relatively noisy, so its not well compressed.
+	# there are a lot of color "pairs" though...
+
 	mm3_sky_sky = "day.vga"
 	mm4_sky_sky = "SKY.SKY"
 	convert_sprite_3to4(in_dir+"/"+mm3_sky_sky, out_dir+"/"+mm4_sky_sky+"a", y_end=17)
-	convert_sprite_3to4(in_dir+"/"+mm3_sky_sky, out_dir+"/"+mm4_sky_sky+"b", y_start=17)
+	convert_sprite_3to4(in_dir+"/"+mm3_sky_sky, out_dir+"/"+mm4_sky_sky+"b", y_start=17, scanline=True)
 	# now to put the two frames together into one file...
 	merge_mm4_sprites(out_dir+"/"+mm4_sky_sky+"a", out_dir+"/"+mm4_sky_sky+"b", out_dir+"/"+mm4_sky_sky)
 	mm4_hash = hash_filename(mm4_sky_sky)

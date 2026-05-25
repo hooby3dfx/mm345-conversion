@@ -9,7 +9,7 @@ class MMTranscoder:
     def log(self, message):
         if self.verbose: print(message)
 
-    def transcode_cell(self, data, offset, cell_id, out_width=0, out_height_off=0, y_start=0, y_end=0):
+    def transcode_cell(self, data, offset, cell_id, out_width=0, out_height_off=0, y_start=0, y_end=0, scanline=False):
         if offset <= 0 or offset >= len(data): return b""
         
         self.log(f"\n--- Transcoding {cell_id} ---")
@@ -91,6 +91,15 @@ class MMTranscoder:
                 new_cell.extend([0, mm3_off]) # MM4 V-Skip
                 y_ptr += mm3_off
                 continue
+
+            # if scanline:
+            #     if y_ptr%3==0:
+            #         self.log(f"putting 'scanline' for line {y_ptr}")
+            #         new_cell.extend([0, 0])
+            #         y_ptr += 1
+            #         dp = line_end_src
+            #         continue
+                    
                 
             # print(f"line_end_src {line_end_src}")
             x_pos = mm3_off + x_off
@@ -101,6 +110,7 @@ class MMTranscoder:
                 # dp = line_end_src
                 new_cell.extend([0, total_h-y_ptr])
                 break
+
             
             # --- START MM4 LINE ---
             len_byte_pos = len(new_cell)
@@ -112,6 +122,30 @@ class MMTranscoder:
             
             stop_cell = False
             TMP_STORED_LEN = 0
+
+            if scanline and y_ptr>40:
+                color = y_ptr+152
+                #write a full line of color
+                #test with width 216
+                new_cmd = bytearray()
+                new_cmd.append(0x40 | 31) #map to CMD2
+                new_cmd.append(color)
+                new_cmd.append(0x40 | 31) #map to CMD2
+                new_cmd.append(color)
+                new_cmd.append(0x40 | 31) #map to CMD2
+                new_cmd.append(color)
+                new_cmd.append(0x40 | 31) #map to CMD2
+                new_cmd.append(color)
+                new_cmd.append(0x40 | 31) #map to CMD2
+                new_cmd.append(color)
+                new_cmd.append(0x40 | 31) #map to CMD2
+                new_cmd.append(color)
+                new_cmd.append(0x40 | 9) #map to CMD2
+                new_cmd.append(color)
+                new_line.extend(new_cmd)
+                #now skip this src line...
+                dp = line_end_src
+
 
             while dp < line_end_src and dp < len(data):
                 opcode = data[dp]
@@ -346,7 +380,7 @@ class MMTranscoder:
             self.log(f"Sanity Check Error: {e}")
             return False
 
-def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_width=0, out_height_off=0, y_start=0, y_end=0):
+def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_width=0, out_height_off=0, y_start=0, y_end=0, scanline=False):
 
     print(f"convert_sprite_3to4 {filepath} to {outpath}")
 
@@ -409,7 +443,7 @@ def convert_sprite_3to4(filepath, outpath, verbose=False, frame_number=-1, out_w
                 new_offs.append(offset_map[old_off])
             else:
                 cid = f"Frame{i_in_frame}_Cell{j+1}"
-                res = transcoder.transcode_cell(data, old_off, cid, out_width, out_height_off, y_start, y_end)
+                res = transcoder.transcode_cell(data, old_off, cid, out_width, out_height_off, y_start, y_end, scanline)
 
                 if res:
                     offset_map[old_off] = write_ptr
