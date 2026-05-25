@@ -431,6 +431,7 @@ def convert_info_3to4(mm3_info):
 	maze_id = mm3_info[31]
 
 	indoor = is_mm3_indoor(maze_id) #temp hack
+	dark = False
 
 	# maze_id = 41
 	maze_surr_N = mm3_info[8]
@@ -439,8 +440,10 @@ def convert_info_3to4(mm3_info):
 	maze_surr_W = mm3_info[11]
 	maze_flags00 = 0
 	maze_flags01 = 0
-	maze_flags02 = 0 #dark, outdoors
+	maze_flags02 = 0
 	maze_flags03 = 0 if indoor else 128 #indoor 0; outdoor 128
+	if dark:
+		maze_flags03 = maze_flags03+64
 
 	if indoor:	
 		wallTypes = [0x00, 0x01, 0x02, 0x03, 0x00, 0x05, 0x00, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x00, 0x0D, 0x0E, 0x0F]

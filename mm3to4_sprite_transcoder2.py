@@ -161,15 +161,28 @@ class MMTranscoder:
                     # self.log(f"skipping cmd 2 val {val}")
                     # break
 
-                    TMP_STORED_LEN = 2
+                    # TMP_STORED_LEN = 2
 
                     #map cmd 2 to cmd 0
-                    count = (val + 1)
-                    self.log(f"converting cmd 2 to 0: (dp {dp} val {val} count {count})")
-                    new_cmd.append(0x00 | val)
-                    new_cmd.extend(data[dp:dp+count])
-                    if val:
-                        dp += count
+                    # count = (val + 1)
+                    # self.log(f"converting cmd 2 to 0: (dp {dp} val {val} count {count})")
+                    # new_cmd.append(0x00 | val)
+                    # new_cmd.extend(data[dp:dp+count])
+                    # if val:
+                    #     dp += count
+
+                    count = opcode+1
+                    extraval = count - 65
+                    # print(f"val {val} extraval {extraval}")
+                    assert extraval==val
+                    self.log(f"converting cmd 2 to 1: (dp {dp} val {val} count {count})")
+                    new_cmd.append(0x20 | 31)
+                    new_cmd.extend(data[dp:dp+64])
+                    dp += 64
+                    new_cmd.append(0x00 | extraval)
+                    new_cmd.extend(data[dp:dp+extraval+1])
+                    dp += (extraval+1)
+
 
                 
                 elif cmd == 3: # Stream CMD3
@@ -442,6 +455,7 @@ def runtests():
     # parse_sprite("mm3out/dirt.vga", "out_mm3_test08", mode="mm3")
     convert_sprite_3to4("mm3out/FOUNTHED.pic", "test/03_FOUNTHED.pic.ccx", True)
     convert_sprite_3to4("mm3out/troll.mon", "test/05_troll.mon.ccx", True, out_width=250, out_height_off=50)
+    convert_sprite_3to4("mm3out/day.vga", "test/10_day.vga.ccx", True)
     
 
 if __name__ == "__main__":

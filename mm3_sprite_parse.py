@@ -107,14 +107,21 @@ def decompress_cell(data, offset, is_mm3=False):
 
             elif cmd == 2:
                 # wait = input("MM3 cmd2 - Press Enter to continue.")
-                TMP_STORED_LEN = 2
-                for _ in range(length + 1):
-                    if Test:
-                        put(202); #blue
-                    else:
-                        put(data[dp]);
-                    if length:
-                        dp += 1
+                # TMP_STORED_LEN = 2
+                # for _ in range(length + 1):
+                #     if Test:
+                #         put(202); #blue
+                #     else:
+                #         put(data[dp]);
+                #     if length:
+                #         dp += 1
+                count = (opcode + 1)
+                for _ in range(count):
+                    if dp < len(data):
+                        if Test:
+                            put(202); dp += 1 #blue
+                        else:
+                            put(data[dp]); dp += 1
 
             elif cmd == 3:
                 count = (opcode + 1)#33?
@@ -343,19 +350,20 @@ if __name__ == "__main__":
     # parse_sprite("mm3out/topj.vga", "out_mm3_wip", mode="mm3")
     # parse_sprite("MM3-CC-files/mm3-cc-files/0x3dcf.ccx", "out_mm3_wip", mode="mm3")
     # parse_sprite("MM3-CC-files/mm3-cc-files/0x80ff.ccx", "out_mm3_wip", mode="mm3")
-    parse_sprite("MM3-CC-files/mm3-cc-files/0xbd91.ccx", "out_mm3_wip", mode="mm3")
+    # parse_sprite("MM3-CC-files/mm3-cc-files/0xbd91.ccx", "out_mm3_wip", mode="mm3")
 
 
     #tests:
-    parse_sprite("mm3out/town.pic", "test/out_mm3_test01", mode="mm3")
-    parse_sprite("mm3out/town2.pic", "test/out_mm3_test02", mode="mm3")
-    parse_sprite("mm3out/FOUNTHED.pic", "test/out_mm3_test03", mode="mm3")
-    parse_sprite("mm3out/DESK.pic", "test/out_mm3_test04", mode="mm3")
-    parse_sprite("mm3out/troll.mon", "test/out_mm3_test05", mode="mm3")
-    parse_sprite("mm3out/bublman.mon", "test/out_mm3_test06", mode="mm3")
-    parse_sprite("mm3out/road.vga", "test/out_mm3_test07", mode="mm3")
-    parse_sprite("mm3out/dirt.vga", "test/out_mm3_test08", mode="mm3")
-    parse_sprite("mm3out/water.vga", "test/out_mm3_test09", mode="mm3")
+    # parse_sprite("mm3out/town.pic", "test/out_mm3_test01", mode="mm3")
+    # parse_sprite("mm3out/town2.pic", "test/out_mm3_test02", mode="mm3")
+    # parse_sprite("mm3out/FOUNTHED.pic", "test/out_mm3_test03", mode="mm3")
+    # parse_sprite("mm3out/DESK.pic", "test/out_mm3_test04", mode="mm3")
+    # parse_sprite("mm3out/troll.mon", "test/out_mm3_test05", mode="mm3")
+    # parse_sprite("mm3out/bublman.mon", "test/out_mm3_test06", mode="mm3")
+    # parse_sprite("mm3out/road.vga", "test/out_mm3_test07", mode="mm3")
+    # parse_sprite("mm3out/dirt.vga", "test/out_mm3_test08", mode="mm3")
+    # parse_sprite("mm3out/water.vga", "test/out_mm3_test09", mode="mm3")
+    parse_sprite("mm3out/day.vga", "test/out_mm3_test10", mode="mm3")
 
 
     # Usage

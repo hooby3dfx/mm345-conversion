@@ -299,7 +299,9 @@ def convert_sprites(in_dir, out_dir):
 		copy_file(out_dir+"/"+mm4_obj, out_dir+"/"+mm4_hash)
 
 
-	#TODO generate https://xeen.fandom.com/wiki/CLOUDS.DAT_File
+	# generate object sprite dat file
+	# https://xeen.fandom.com/wiki/CLOUDS.DAT_File
+	# TODO enter correct values
 	sprite_dat_mm4 = f"DARK.DAT"
 	mm4_hash = hash_filename(sprite_dat_mm4)
 	sprite_dat_data = bytearray(1452)
@@ -384,6 +386,9 @@ MM3TO4_OUTDOOR_SURFACE = [
 	# ('water.vga','WATER.SRF'),
 ]
 
+# MM3TO4_OUTDOOR_TERRAIN = []
+# MM3TO4_OUTDOOR_SURFACE = []
+
 
 def convert_environments(in_dir, out_dir):
 	print("convert_environments")
@@ -406,6 +411,7 @@ def convert_environments(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_sky_sky)
 	copy_file(out_dir+"/"+mm4_sky_sky, out_dir+"/"+mm4_hash)
 
+	
 	#sky (night)
 	mm3_night_sky = "night.vga"
 	mm4_night_sky = "NIGHT.SKY"
@@ -415,14 +421,12 @@ def convert_environments(in_dir, out_dir):
 	merge_mm4_sprites(out_dir+"/"+mm4_night_sky+"a", out_dir+"/"+mm4_night_sky+"b", out_dir+"/"+mm4_night_sky)
 	mm4_hash = hash_filename(mm4_night_sky)
 	copy_file(out_dir+"/"+mm4_night_sky, out_dir+"/"+mm4_hash)
+	
 
-	# cav.sky
-	# dun.sky
-	# sci.sky
 	mm3_cave_sky = "cav.sky"
 	mm4_cave_sky = "CAVE.SKY"
 	# mm3_castle_sky = "cas.sky"
-	# mm4_castle_sky = "CAVE.SKY"
+	# mm4_castle_sky = "CSTL.SKY"
 	mm3_dung_sky = "dun.sky"
 	mm4_dung_sky = "DUNG.SKY"
 	mm3_scifi_sky = "sci.sky"
@@ -445,6 +449,7 @@ def convert_environments(in_dir, out_dir):
 	merge_mm4_sprites(out_dir+"/"+mm4_scifi_sky+"a", out_dir+"/"+mm4_scifi_sky+"b", out_dir+"/"+mm4_scifi_sky)
 	mm4_hash = hash_filename(mm4_scifi_sky)
 	copy_file(out_dir+"/"+mm4_scifi_sky, out_dir+"/"+mm4_hash)
+
 
 	#water
 	mm3_water = "water.vga"
@@ -764,6 +769,7 @@ def convert_meta_data(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_bin)
 	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
+
 
 	#TODO stuff in exe/dat files:
 	#items
