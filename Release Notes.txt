@@ -2,13 +2,19 @@ Release Notes
 =============
 
 
-v0.02
+v0.02 Major upgrade
+
 Whats new:
 -More graphics properly converted
--Indoor environment graphics should mostly be using the right graphics
+-Indoor and outdoor environment graphics should mostly be using the right graphics
+	-outdoor surface sprites are slightly different size so there are some cracks
 -Corrected monsters in levels, and monsters now have actual stats
 
 
+How to use:
+1. Install World of Xeen (4+5)
+2. Update XEEN.CC and DARK.CC from this release
+3. 
 
 
 

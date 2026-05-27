@@ -241,10 +241,11 @@ Gameplay items:
 	party should start with rope and hook so to climb down pit ⚠️
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
 -How to display Coraks notes ⚠️
--some sprites causing crashes:
-	-dirt
 -NPC offering skill causing crash (ex. cartography in fountain head) ✅
--crash drinking from well(4,7); your defensive skill has been magically augmented
+
+-freeze drinking from well(4,7); 'your defensive skill has been magically augmented' ⚠️
+-crash in shop browse; 'error drawing sprite in window:0000 handle:0029 frame:0013' ⚠️
+-quests/auto notes?
 
 
 

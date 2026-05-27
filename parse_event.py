@@ -207,6 +207,13 @@ def convert_3to4(event_line):
             args_copy[0] = 0x06
             event_line.raw_args = bytes(args_copy)
             modified = True
+    elif event_line.opcode==0x07 or event_line.opcode==0x1F:
+        #for teleport - if target is maze 29, change to maze 129
+        if event_line.raw_args[0]==0x1D:
+            args_copy = bytearray(event_line.raw_args)
+            args_copy[0] = 0x81
+            event_line.raw_args = bytes(args_copy)
+            modified = True
 
 
     

@@ -19,26 +19,34 @@ fi
 
 #do the file conversion:
 echo doing file conversion
-python3 mm3to4_convert_main.py mm3out mm3to4_out > mm3tox_convert_main_log.txt
+python3 mm3to4_convert_main.py mm3out $output_dir > mm3tox_convert_main_log.txt
+
+#temp workaround for maze29 -> maze129
+mv $output_dir/MAZE00${first_level}.DAT $output_dir/MAZEX1${first_level}.DAT
+mv $output_dir/MAZE00${first_level}.EVT $output_dir/MAZEX1${first_level}.EVT
+mv $output_dir/MAZE00${first_level}.MOB $output_dir/MAZEX1${first_level}.MOB
+mv $output_dir/AAZE00${first_level}.TXT $output_dir/AAZEX1${first_level}.TXT
+mv $output_dir/AAZE00${first_level}.HED $output_dir/AAZEX1${first_level}.HED
+mv $output_dir/${base_game}00${first_level}.TXT $output_dir/${base_game}X1${first_level}.TXT
 
 #copy build output to repack folder
 echo copying build output to repack folder
-cp mm3to4_out/d_*.ccx $repack_dir
-cp mm3to4_out/MAZE*.DAT $repack_dir
-cp mm3to4_out/MAZE*.EVT $repack_dir
-cp mm3to4_out/MAZE*.MOB $repack_dir
-cp mm3to4_out/AAZE*.TXT $repack_dir
-cp mm3to4_out/AAZE*.HED $repack_dir
-# cp mm3to4_out/XEEN*.TXT $repack_dir
-cp mm3to4_out/DARK*.TXT $repack_dir
+cp $output_dir/d_*.ccx $repack_dir
+cp $output_dir/MAZE*.DAT $repack_dir
+cp $output_dir/MAZE*.EVT $repack_dir
+cp $output_dir/MAZE*.MOB $repack_dir
+cp $output_dir/AAZE*.TXT $repack_dir
+cp $output_dir/AAZE*.HED $repack_dir
+# cp $output_dir/XEEN*.TXT $repack_dir
+cp $output_dir/DARK*.TXT $repack_dir
 
 #temp workaround for starting level
-# cp mm3to4_out/MAZE0001.DAT $repack_dir/MAZE00${first_level}.DAT
-# cp mm3to4_out/MAZE0001.EVT $repack_dir/MAZE00${first_level}.EVT
-# cp mm3to4_out/MAZE0001.MOB $repack_dir/MAZE00${first_level}.MOB
-# cp mm3to4_out/AAZE0001.TXT $repack_dir/AAZE00${first_level}.TXT
-# # cp mm3to4_out/XEEN0001.TXT $repack_dir/XEEN0028.TXT
-# cp mm3to4_out/${base_game}0001.TXT $repack_dir/${base_game}00${first_level}.TXT
+# cp $output_dir/MAZE0001.DAT $repack_dir/MAZE00${first_level}.DAT
+# cp $output_dir/MAZE0001.EVT $repack_dir/MAZE00${first_level}.EVT
+# cp $output_dir/MAZE0001.MOB $repack_dir/MAZE00${first_level}.MOB
+# cp $output_dir/AAZE0001.TXT $repack_dir/AAZE00${first_level}.TXT
+# # cp $output_dir/XEEN0001.TXT $repack_dir/XEEN0028.TXT
+# cp $output_dir/${base_game}0001.TXT $repack_dir/${base_game}00${first_level}.TXT
 
 
 #run Xeen CC Packer

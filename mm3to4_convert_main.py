@@ -169,7 +169,8 @@ def convert_maps(in_dir, out_dir):
 		if numi==29:
 			#for darkside, maze29 is castleview; it seems like when starting a new game this 
 			#maze gets corrupted and then saves dont work. needs further investigation.
-			continue
+			# continue
+			print("be careful for maze29 with darksize/wox")
 
 		print(f"for MM3 maze {num}")
 		maze_dat = f"MAZE{num}.DAT"
@@ -757,11 +758,14 @@ def convert_meta_data(in_dir, out_dir):
 	# tavern.bin
 	#MM4:
 	# AWARD.BIN
+	# NOTES.BIN
 	# QNOTES.BIN
+	# QUEST.BIN
 	# SPECIAL.BIN
 	# SPLDESC.BIN
 	# TAVERN.BIN
 	# VIEWTEXT.BIN
+
 
 	mm3_bin = "award.bin"
 	mm4_bin = "AWARD.BIN"
@@ -775,10 +779,14 @@ def convert_meta_data(in_dir, out_dir):
 	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
 
+	mm3_bin = "quest.bin"
+	mm4_bin = "QUEST.BIN"
+	mm4_hash = hash_filename(mm4_bin)
+	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
+	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
 
-	#TODO stuff in exe/dat files:
-	#items
-	#stats
+
+
 
 	mm4_mon = "DARK.MON"
 	mm4_hash = hash_filename(mm4_mon)
@@ -808,6 +816,12 @@ def convert_meta_data(in_dir, out_dir):
 	with open(out_dir+"/"+mirror_text, 'wb') as dest:
 		dest.write(mirror_text_data)
 	copy_file(out_dir+"/"+mirror_text, out_dir+"/"+mm4_hash)
+
+	#TODO stuff in exe/dat files:
+	#items
+	#stats
+	#MAE.XEN, SPELLS.XEN
+
 
 
 

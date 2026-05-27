@@ -124,7 +124,9 @@ class MMTranscoder:
             TMP_STORED_LEN = 0
 
             if scanline and y_ptr>40:
-                color = y_ptr+152
+                print(f"adding line of color to save space...")
+                # color = y_ptr+152
+                color = 250 - y_ptr
                 #write a full line of color
                 #test with width 216
                 new_cmd = bytearray()
