@@ -14,9 +14,12 @@ Whats new:
 How to use:
 1. Install World of Xeen (4+5)
 2. Update XEEN.CC and DARK.CC from this release
-3. 
-
-
+3. Launch the game and then start a new game...
+README:
+-Once you start a new game, it will start in Clouds of Xeen (MM4) starting area, Vertigo.
+-Go right and you will see the teleport mirror; when facing the mirror there are trees on the left and right. If you step onto the tree directly to the left then you will warp to Isles of Terra (MM3) starting area, Fountain Head!
+-At this point the colors will look all messed up. Press tab/menu, save game, quit, and then load the save file and it will look proper MM3!
+HAVE FUN!
 
 
 

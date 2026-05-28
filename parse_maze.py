@@ -123,7 +123,7 @@ MM4 base layer values (surface type index):
 5 = LAVA.SRF
 6 = DESERT.SRF
 7 = ROAD.SRF
-8 = WATER.SRF
+8 = WATER.SRF	what is DWATER?
 9 = TFLR.SRF
 10 = SKY.SRF
 11 = CROAD.SRF

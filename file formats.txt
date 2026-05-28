@@ -233,6 +233,7 @@ Progress notes:
 -Interlocking mazes ✅
 -UI images like backgrounds for menus ⚠️
 -pow13948.icn (temple of moo) ✅ (due to missing monster id)
+-for now all sprites not animated (DARK.DAT)
 
 
 Gameplay items:
@@ -242,10 +243,16 @@ Gameplay items:
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
 -How to display Coraks notes ⚠️
 -NPC offering skill causing crash (ex. cartography in fountain head) ✅
-
--freeze drinking from well(4,7); 'your defensive skill has been magically augmented' ⚠️
--crash in shop browse; 'error drawing sprite in window:0000 handle:0029 frame:0013' ⚠️
+-some indoor mazes arent getting ceiling set ⚠️
 -quests/auto notes?
+-guild membership ⚠️
+-cyclops cavern - no objects ⚠️
+-healthbar/attack icn sprite randomly not loaded ⚠️
+
+
+-freeze drinking from well A1(4,7); 'your defensive skill has been magically augmented' ⚠️
+-freeze on magic crystal ball -> a magical feeling overcomes you! ⚠️
+
 
 
 

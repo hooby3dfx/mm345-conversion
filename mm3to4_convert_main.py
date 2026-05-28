@@ -372,9 +372,9 @@ MM3TO4_OUTDOOR_SURFACE = [
 	# SRF files
 	# ('','CLOUD.SRF'),
 	('desert.vga','DESERT.SRF'),
-	# ('dirt.vga','DIRT.SRF'),#need to fix sprite
-	('desert.vga','DIRT.SRF'),
-	# ('water.vga','DWATER.SRF'),
+	('dirt.vga','DIRT.SRF'),
+	# ('','DWATER.SRF'),
+	('swamp.vga','DWATER.SRF'),
 	('grass.vga','GRASS.SRF'),
 	('lava.vga','LAVA.SRF'),
 	('road.vga','ROAD.SRF'),
@@ -384,7 +384,7 @@ MM3TO4_OUTDOOR_SURFACE = [
 	# ('','SPACE.SRF'),
 	('swamp.vga','SWAMP.SRF'),
 	# ('','TFLR.SRF'),
-	# ('water.vga','WATER.SRF'),
+	# ('','WATER.SRF'),
 ]
 
 # MM3TO4_OUTDOOR_TERRAIN = []
@@ -835,14 +835,33 @@ MM3_FACE_SPRITE_NAMES = [
 	'hire4.fac','hire5.fac','hire6.fac','hire7.fac','hire8.fac','hire9.fac']
 
 MM3_ICONS = [
-	'bank.icn','bank2.icn','buy.icn','cast.icn','charpow.icn','combat.icn','confirm.icn',
-	'confirm2.icn','cpanel.icn','create.icn','detctmon.icn','detect.icn','duplicat.icn',
-	'element.icn','equip.icn','esc.icn','global.icn','hpbars.icn','inn.icn','items.icn',
-	'lloyds.icn','main.icn','mouse.icn','pow0.icn','pow10.icn','pow11.icn','pow12.icn',
-	'pow13.icn','pow14.icn','pow2.icn','pow3.icn','pow4.icn','pow5.icn','pow7.icn',
-	'pow8.icn','pow9.icn','protect.icn','restore.icn','scroll.icn','sell.icn','start.icn',
-	'train.icn','view.icn'
+	'bank.icn','bank2.icn',
+	'buy.icn',#skip(frame ct)
+	'cast.icn','charpow.icn',
+	'combat.icn',#skip(frame ct)
+	'confirm.icn','confirm2.icn',
+	'cpanel.icn',
+	'create.icn',#skip(frame ct)
+	'detctmon.icn',#skip(frame ct)
+	'detect.icn','duplicat.icn',
+	'element.icn',
+	# 'equip.icn', #causes crash in blacksmith:'error drawing sprite in window:0000 handle:0029 frame:0013'
+	'esc.icn',
+	'global.icn',#skip(frame ct)
+	'hpbars.icn','inn.icn',
+	'items.icn',#skip(frame ct)
+	'lloyds.icn',
+	'main.icn',#skip(frame ct)
+	'mouse.icn',#skip(frame ct)
+	'pow0.icn','pow10.icn','pow11.icn','pow12.icn',
+	'pow13.icn','pow14.icn','pow2.icn','pow3.icn',
+	'pow4.icn','pow5.icn','pow7.icn','pow8.icn','pow9.icn',
+	'protect.icn','restore.icn','scroll.icn','sell.icn',
+	'start.icn',#skip(frame ct)
+	'train.icn',
+	'view.icn'
 ]
+
 
 def convert_2d_graphics(in_dir, out_dir):
 	print("convert_2d_graphics")
