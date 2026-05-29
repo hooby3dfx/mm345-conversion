@@ -226,6 +226,9 @@ if __name__ == "__main__":
     # parse_sprite("ext_drk/d_44251.ccx", "test/out_xeen_test03", mode="xeen")
     parse_sprite("ext_drk/d_33280.ccx", "test/out_xeen_test10", mode="xeen")
 
+    parse_sprite("mm3to4_out/TRNG1.TWN", "out_mm3to4_sprite_test", mode="xeen")
+
+
 
 
     # parse_sprite("mm3to4_out/TOWN.GND", "out_mm3to4_sprite_test", mode="xeen")

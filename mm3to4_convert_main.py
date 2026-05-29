@@ -911,6 +911,86 @@ def convert_media(in_dir, out_dir):
 	copy_file(in_dir+"/"+mm3_logo, out_dir+"/"+mm4_logo)
 	copy_file(out_dir+"/"+mm4_logo, out_dir+"/"+mm4_hash)
 
+	#out -> twn
+	'''
+	frame.out
+	guild1.out
+	guild2.out
+	inn.out
+	tavern.out
+	temple.out
+	train1.out
+	train2.out
+	train3.out
+	train4.out
+	weapon.out
+
+	BLCK1.TWN
+	BLCK2.TWN
+	BNKR1.TWN
+	BNKR2.TWN
+	BNKR3.TWN
+	GILD1.TWN
+	GILD2.TWN
+	GILD3.TWN
+	GILD4.TWN
+	TMPL1.TWN
+	TMPL2.TWN
+	TMPL3.TWN
+	TMPL4.TWN
+	TRNG1.TWN
+	TRNG2.TWN
+	TVRN1.TWN
+	TVRN2.TWN
+	'''
+
+	town_anims = [
+		("weapon.out", "BLCK1.TWN"),
+		("weapon.out", "BLCK2.TWN"),
+		# ("weapon.out", "BLCK3.TWN"),
+
+		("inn.out", "BNKR1.TWN"),
+		("inn.out", "BNKR2.TWN"),
+		("inn.out", "BNKR3.TWN"),
+		("inn.out", "BNKR4.TWN"),
+		# ("inn.out", "BNKR5.TWN"),
+
+		("guild1.out", "GILD1.TWN"),
+		("guild1.out", "GILD2.TWN"),
+		("guild1.out", "GILD3.TWN"),
+		("guild1.out", "GILD4.TWN"),
+		("guild1.out", "GILD5.TWN"),
+		("guild1.out", "GILD6.TWN"),
+		# ("guild1.out", "GILD7.TWN"),
+
+		("temple.out", "TMPL1.TWN"),
+		("temple.out", "TMPL2.TWN"),
+		("temple.out", "TMPL3.TWN"),
+		# ("temple.out", "TMPL4.TWN"),
+
+		("train1.out", "TRNG1.TWN"),
+		("train1.out", "TRNG2.TWN"),
+		("train1.out", "TRNG3.TWN"),
+		("train1.out", "TRNG4.TWN"),
+		("train1.out", "TRNG5.TWN"),
+		# ("train1.out", "TRNG6.TWN"),
+
+		("tavern.out", "TVRN1.TWN"),
+		("tavern.out", "TVRN2.TWN"),
+		("tavern.out", "TVRN3.TWN"),
+		("tavern.out", "TVRN4.TWN"),	
+		# ("tavern.out", "TVRN5.TWN"),
+
+	]
+
+	for anim in town_anims:
+		mm3_anim = anim[0]
+		mm4_anim = anim[1]
+		mm4_hash = hash_filename(mm4_anim)
+		convert_sprite_3to4(in_dir+"/"+mm3_anim, out_dir+"/"+mm4_anim)
+		merge_mm4_optimized(out_dir+"/"+mm4_anim, out_dir+"/"+mm4_anim, out_dir+"/"+mm4_anim)
+		copy_file(out_dir+"/"+mm4_anim, out_dir+"/"+mm4_hash)
+
 
 
 
