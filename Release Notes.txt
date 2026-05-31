@@ -5,7 +5,7 @@ Release Notes
 v0.02 Major upgrade
 
 Whats new:
--More graphics properly converted
+-Almost all graphics properly converted
 -Indoor and outdoor environment graphics should mostly be using the right graphics
 	-outdoor surface sprites are slightly different size so there are some cracks
 -Corrected monsters in levels, and monsters now have actual stats
@@ -15,11 +15,20 @@ How to use:
 1. Install World of Xeen (4+5)
 2. Update XEEN.CC and DARK.CC from this release
 3. Launch the game and then start a new game...
-README:
 -Once you start a new game, it will start in Clouds of Xeen (MM4) starting area, Vertigo.
 -Go right and you will see the teleport mirror; when facing the mirror there are trees on the left and right. If you step onto the tree directly to the left then you will warp to Isles of Terra (MM3) starting area, Fountain Head!
 -At this point the colors will look all messed up. Press tab/menu, save game, quit, and then load the save file and it will look proper MM3!
+-To climb down into the pit in fountain head you will need rope. For now this can be obtained from the caravan right outside town.
+As a general note, saving often is recommended as there are some issues that can crash or freeze the game.
 HAVE FUN!
+
+KNOWN ISSUES/TODO LIST (READ ME!)
+-Object sprites are not animated for now
+-All maps tiles are set as "explored" for testing, so the mini map will show everything
+-Every map tile does an "auto execute" for the events which is close to the way MM3 works but this will also re-trigger when you turn direction for example and may show "nothing here" message
+-Music/sound files and other cutscenes
+
+
 
 
 

@@ -424,7 +424,7 @@ def parse_mazeinfo(mazeinfo):
 	return is_mm3, maze_id
 
 
-def convert_info_3to4(mm3_info):
+def convert_info_3to4(mm3_info, out_id=0):
 
 	mazeinfo = bytearray(60)
 
@@ -469,7 +469,7 @@ def convert_info_3to4(mm3_info):
 
 
 
-	mazeinfo[0] = maze_id
+	mazeinfo[0] = out_id if out_id else maze_id
 	mazeinfo[2] = maze_surr_N
 	mazeinfo[4] = maze_surr_E
 	mazeinfo[6] = maze_surr_S
@@ -500,7 +500,7 @@ def convert_info_3to4(mm3_info):
 	return mazeinfo
 
 
-def parse_mazefile(filepath, outpath='mm3to4dat.bin'):
+def parse_mazefile(filepath, outpath='mm3to4dat.bin', out_id=0):
 	print(f"parsing {filepath}")
 	with open(filepath, "rb") as f:
 		data = f.read()
@@ -522,7 +522,10 @@ def parse_mazefile(filepath, outpath='mm3to4dat.bin'):
 			print("converting 3to4")
 			mm3to4 = bytearray()
 			mm3to4.extend(convert_dat_3to4(mazedat, maze_id))
-			mm3to4.extend(convert_info_3to4(mazeinfo))
+			if out_id:
+				mm3to4.extend(convert_info_3to4(mazeinfo, out_id=out_id))
+			else:
+				mm3to4.extend(convert_info_3to4(mazeinfo))
 			mm3to4.extend(bytearray([0xFF]) * 64)#seen/stepped fog (set to true for testing)
 
 			# parse_mazedat(mm3to4)

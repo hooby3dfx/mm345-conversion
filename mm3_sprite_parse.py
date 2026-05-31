@@ -366,6 +366,9 @@ if __name__ == "__main__":
     parse_sprite("mm3out/day.vga", "test/out_mm3_test10", mode="mm3")
 
 
+    parse_sprite("mm3out/guild1.out", "test/out_mm3_wip", mode="mm3")
+
+
     # Usage
     # convert_xeen_sprite("002.ATT", "out_frames")
     # convert_xeen_sprite("001.ATT", "sprite_out")
