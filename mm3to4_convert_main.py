@@ -608,9 +608,9 @@ def convert_environments(in_dir, out_dir):
 
 	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="twnwl", mm4_prefix="STOWN")
 	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="cavwl", mm4_prefix="SCAVE")
-	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="dunwl", mm4_prefix="DUNG")
-	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="caswl", mm4_prefix="CSTL")
-	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="sciwl", mm4_prefix="SCFI")
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="dunwl", mm4_prefix="SDUNG")
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="caswl", mm4_prefix="SCSTL")
+	remap_sprites(mm4_swl_files, in_dir, out_dir, mm3_prefix="sciwl", mm4_prefix="SSCFI")
 
 	#front walls
 	#4 distance levels...
@@ -715,9 +715,9 @@ def convert_environments(in_dir, out_dir):
 
 	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="twnwl", mm4_prefix="FTOWN")
 	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="cavwl", mm4_prefix="FCAVE")
-	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="dunwl", mm4_prefix="DUNG")
-	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="caswl", mm4_prefix="CSTL")
-	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="sciwl", mm4_prefix="SCFI")
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="dunwl", mm4_prefix="FDUNG")
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="caswl", mm4_prefix="FCSTL")
+	remap_sprites(mm4_fwl_files, in_dir, out_dir, mm3_prefix="sciwl", mm4_prefix="FSCFI")
 	
 
 

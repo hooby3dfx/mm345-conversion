@@ -111,6 +111,12 @@ def top3to4(top3):
 			print(f"unhandled top3: {top3}")
 			return 0
 
+def base3to4(base3):
+	match base3:
+		case 15:
+			return 7
+
+	return base3
 
 '''
 MM4 base layer values (surface type index):
@@ -211,24 +217,32 @@ def is_mm3_indoor(maze_id):
 
 def get_wallkind(maze_id):
 	#TODO confirm accuracy and types
+	#0 town
+	#1 cave
+	#2 tower
+	#3 castle
+	#4 dungeon
+	#5 scifi
 	if maze_id < 6:
 		return 0#town
 	elif maze_id < 16:
 		return 1#cave
 	elif maze_id < 24:
-		return 2#dungeon
+		return 4#dungeon
 	elif maze_id < 29:
 		return 3#castle
 	elif maze_id < 34:
-		return 2#dungeon
+		return 4#dungeon
 	elif maze_id < 41:
-		return 4#scifi
+		return 5#scifi
+	elif maze_id < 65:
+		return 0 #(outdoor)
 	elif maze_id == 65:
 		return 0
 	elif maze_id == 66:
 		return 0
 
-	return 0
+	return 1
 
 
 def convert_dat_3to4(map, maze_id):
@@ -272,7 +286,7 @@ def convert_dat_3to4(map, maze_id):
 				# 4th bit purpose TBC...
 
 				#								middle		base
-				mm3to4.append(combine_nibbles(WestiBase, SouthiMiddle))
+				mm3to4.append(combine_nibbles(WestiBase, base3to4(SouthiMiddle)))
 				#								overlay		top
 				mm3to4.append(combine_nibbles(0,		 top3to4(EastiTop)))#EastiTop, NorthiOverlay
 
@@ -550,11 +564,12 @@ if __name__ == "__main__":
 	# parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
 
 	parse_mazefile("mm3to4_out/MAZE0016.DAT")
-	parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
+	parse_mazefile("mm3_default.sav-files/MAZE42.DAT")
+	parse_mazefile("mm3to4_out/MAZE0042.DAT")
 
-	parse_mazefile("mm3_default.sav-files/MAZE11.DAT")
-	parse_mazefile("mm3to4_out/MAZE0011.DAT")
-	parse_mazefile("mm3to4_out/MAZEX101.DAT")
-	parse_mazefile("mm3to4_out/MAZEX102.DAT")
-	parse_mazefile("mm3to4_out/MAZEX103.DAT")
+	# parse_mazefile("mm3_default.sav-files/MAZE11.DAT")
+	# parse_mazefile("mm3to4_out/MAZE0011.DAT")
+	# parse_mazefile("mm3to4_out/MAZEX101.DAT")
+	# parse_mazefile("mm3to4_out/MAZEX102.DAT")
+	# parse_mazefile("mm3to4_out/MAZEX103.DAT")
 
