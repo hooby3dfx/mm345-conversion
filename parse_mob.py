@@ -247,11 +247,11 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 			else:
 				print(f"({ox:2d}, {oy:2d}) id: {oid}")
 				if mm4_oids:
-					if ox<16 and oy<16 and oid<16:
+					if oid<16: #and ox<16 and oy<16: 
 						#					x	y	id	facing direction
 						mm4_objects.extend([ox, oy, oid, 0x01])
 				else:
-					if ox<16 and oy<16 and oid<16:
+					if oid<16: #and ox<16 and oy<16:
 						mm4_monsters.extend([ox, oy, oid, 0x00])
 
 
@@ -291,5 +291,5 @@ if __name__ == "__main__":
 	# parse_mm3_mob("mm3_default.sav-files/MAZE42.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
-	parse_mm3_mob("mm3_default.sav-files/MAZE16.MOB")
+	parse_mm3_mob("mm3_default.sav-files/MAZE11.MOB")
 

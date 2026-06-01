@@ -243,10 +243,9 @@ Gameplay items:
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
 -How to display Coraks notes ⚠️
 -NPC offering skill causing crash (ex. cartography in fountain head) ✅
--some indoor mazes arent getting ceiling set ⚠️
 -quests/auto notes?
--guild membership ⚠️
--cyclops cavern - no objects ⚠️
+-guild membership ✅
+-cyclops cavern - no objects/ceiling ✅
 -healthbar/attack icn sprite randomly not loaded ⚠️
 
 

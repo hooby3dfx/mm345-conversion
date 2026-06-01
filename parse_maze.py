@@ -552,3 +552,9 @@ if __name__ == "__main__":
 	parse_mazefile("mm3to4_out/MAZE0016.DAT")
 	parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
 
+	parse_mazefile("mm3_default.sav-files/MAZE11.DAT")
+	parse_mazefile("mm3to4_out/MAZE0011.DAT")
+	parse_mazefile("mm3to4_out/MAZEX101.DAT")
+	parse_mazefile("mm3to4_out/MAZEX102.DAT")
+	parse_mazefile("mm3to4_out/MAZEX103.DAT")
+

@@ -8,7 +8,8 @@ Whats new:
 -Almost all graphics properly converted
 -Indoor and outdoor environment graphics should mostly be using the right graphics
 	-outdoor surface sprites are slightly different size so there are some cracks
--Corrected monsters in levels, and monsters now have actual stats
+-Correct monsters in levels, and monsters now have proper stats (hopefully)
+
 
 
 How to use:
@@ -25,8 +26,10 @@ HAVE FUN!
 KNOWN ISSUES/TODO LIST (READ ME!)
 -Object sprites are not animated for now
 -All maps tiles are set as "explored" for testing, so the mini map will show everything
+-Some of the events which should have you select a character just default to the first character. As a workaround you can swap the order with slot #1 temporarily
 -Every map tile does an "auto execute" for the events which is close to the way MM3 works but this will also re-trigger when you turn direction for example and may show "nothing here" message
 -Music/sound files and other cutscenes
+-Items names are coming from MMX and some will have the name "bogus"
 
 
 
