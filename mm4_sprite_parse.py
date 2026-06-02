@@ -177,7 +177,8 @@ if __name__ == "__main__":
     # parse_sprite("check_test.ccx", "out_test_xeen", mode="xeen")
     # parse_sprite("WIP_MM3_REPACK/d_10336.ccx_og", "out_mm4_og", mode="xeen")
     # parse_sprite("WIP_MM3_REPACK/d_7818.ccx_og", "out_mm4_og", mode="xeen")
-    # parse_sprite("WIP_MM3_REPACK/d_36181.ccx", "out_mm4_outdoor", mode="xeen")#OUTDOOR.TIL 
+    parse_sprite("ext_drk/d_36181.ccx", "test/mm4_outdoor-til", mode="xeen")#OUTDOOR.TIL 
+    parse_sprite("ext_drk/d_64626.ccx", "test/mm4_town-til", mode="xeen")#TOWN.TIL 
 
     # parse_sprite("mm3to4_out/056.OBJ", "out_mm3to4_sprite_test", mode="xeen")
 
@@ -227,6 +228,8 @@ if __name__ == "__main__":
     parse_sprite("ext_drk/d_33280.ccx", "test/out_xeen_test10", mode="xeen")
 
     parse_sprite("mm3to4_out/TRNG1.TWN", "out_mm3to4_sprite_test", mode="xeen")
+
+    parse_sprite("ext_drk/d_56668.ccx", "test/out_mm4_wip", mode="xeen")
 
 
 

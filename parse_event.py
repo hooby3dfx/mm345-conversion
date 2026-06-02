@@ -157,14 +157,41 @@ def convert_3to4(event_line):
         #mm3 display 0x01 -> mm4 DisplayBottom 0x29
         event_line.opcode = 0x29
         modified = True
-    # elif event_line.opcode==0x03:
-    #     #mm3 DoorTextLrg -> mm4 DisplayMain
-    #     event_line.opcode = 0x35
-    #     modified = True
-    elif event_line.opcode==0x1B:
-        if event_line.raw_args[0]==0x54 and len(event_line.raw_args)==2:
-            #temp workaround for setvar script interruption
-            event_line.raw_args = [0x00, 0x00]
+    elif event_line.opcode==0x07 or event_line.opcode==0x1F:
+        #for teleport - if target is maze 1, change to maze 29 etc
+        tele_dest = event_line.raw_args[0]
+        if tele_dest in REMAP_MAZES:
+            args_copy = bytearray(event_line.raw_args)
+            args_copy[0] = REMAP_MAZES[tele_dest]
+            # print(f"remapping teleport from {tele_dest} to {REMAP_MAZES[tele_dest]}")
+            event_line.raw_args = bytes(args_copy)
+            modified = True
+    elif event_line.opcode==0x08:
+        #mm3 if type 0x5F bypass
+        if event_line.raw_args[0]==0x5F:
+            #replace with NOP
+            event_line.opcode = 0x00
+            # event_line.raw_args = bytearray()
+            modified = True
+    elif event_line.opcode==0x0C: #takeorgive
+        #for awards - guild membership
+        givetype = event_line.raw_args[len(event_line.raw_args)-2]
+        giveitem = event_line.raw_args[len(event_line.raw_args)-1]
+        if givetype==0x0F and giveitem==0x00:
+            args_copy = bytearray(event_line.raw_args)
+            #change award from 0 (ravens guild) to: 
+            # SHANGRILA_GUILD_MEMBER = 5, GOOBER = 76, SUPER_GOOBER = 77,
+            # CASTLEVIEW_GUILD_MEMBER = 83, SANDCASTER_GUILD_MEMBER = 84,
+            # LAKESIDE_GUILD_MEMBER = 85, NECROPOLIS_GUILD_MEMBER = 86, OLYMPUS_GUILD_MEMBER = 87
+            args_copy[len(event_line.raw_args)-1] = 83
+            event_line.raw_args = bytes(args_copy)
+            modified = True
+    elif event_line.opcode==0x0F: #setchar
+        #mm3 arg 09 should be for learn which is 06 in xeen
+        if event_line.raw_args[0]==0x09:
+            args_copy = bytearray(event_line.raw_args)
+            args_copy[0] = 0x06
+            event_line.raw_args = bytes(args_copy)
             modified = True
     elif event_line.opcode==0x11:
         #MM3 ID type shop (0:bank/1:blacksmith/2:magicguild/3:inn/4:pub/5:temple/6:training)
@@ -202,35 +229,12 @@ def convert_3to4(event_line):
             args_copy[1] = 0x49
             event_line.raw_args = bytes(args_copy)
             modified = True
-    elif event_line.opcode==0x0F: #setchar
-        #mm3 arg 09 should be for learn which is 06 in xeen
-        if event_line.raw_args[0]==0x09:
-            args_copy = bytearray(event_line.raw_args)
-            args_copy[0] = 0x06
-            event_line.raw_args = bytes(args_copy)
+    elif event_line.opcode==0x1B:
+        if event_line.raw_args[0]==0x54 and len(event_line.raw_args)==2:
+            #temp workaround for setvar script interruption
+            event_line.raw_args = [0x00, 0x00]
             modified = True
-    elif event_line.opcode==0x07 or event_line.opcode==0x1F:
-        #for teleport - if target is maze 1, change to maze 29 etc
-        tele_dest = event_line.raw_args[0]
-        if tele_dest in REMAP_MAZES:
-            args_copy = bytearray(event_line.raw_args)
-            args_copy[0] = REMAP_MAZES[tele_dest]
-            # print(f"remapping teleport from {tele_dest} to {REMAP_MAZES[tele_dest]}")
-            event_line.raw_args = bytes(args_copy)
-            modified = True
-    elif event_line.opcode==0x0C: #takeorgive
-        #for awards - guild membership
-        givetype = event_line.raw_args[len(event_line.raw_args)-2]
-        giveitem = event_line.raw_args[len(event_line.raw_args)-1]
-        if givetype==0x0F and giveitem==0x00:
-            args_copy = bytearray(event_line.raw_args)
-            #change award from 0 (ravens guild) to: 
-            # SHANGRILA_GUILD_MEMBER = 5, GOOBER = 76, SUPER_GOOBER = 77,
-            # CASTLEVIEW_GUILD_MEMBER = 83, SANDCASTER_GUILD_MEMBER = 84,
-            # LAKESIDE_GUILD_MEMBER = 85, NECROPOLIS_GUILD_MEMBER = 86, OLYMPUS_GUILD_MEMBER = 87
-            args_copy[len(event_line.raw_args)-1] = 83
-            event_line.raw_args = bytes(args_copy)
-            modified = True
+
 
 
     
@@ -293,5 +297,5 @@ if __name__ == "__main__":
 
     # parse_evt_file("ext_cld/MAZE0079.EVT")
 
-    parse_evt_file("/Users/bbarnes/Games/dosc/wox/ext_sav/0xB935.ccx")
+    # parse_evt_file("/Users/bbarnes/Games/dosc/wox/ext_sav/0xB935.ccx")
 

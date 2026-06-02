@@ -250,6 +250,7 @@ Gameplay items:
 
 
 -freeze drinking from well A1(4,7); 'your defensive skill has been magically augmented' ⚠️
+-freeze drinking from well A1; 'your radiance has been magically enhanced' ⚠️
 -freeze on magic crystal ball -> a magical feeling overcomes you! ⚠️
 -crash in castle whiteshield(11,8) -> jester town event? (can bypass by walking backwards) ⚠️
 -crash/freeze in castle whiteshield pow61.icn after opening chest ⚠️

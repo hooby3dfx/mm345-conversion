@@ -842,12 +842,27 @@ def convert_meta_data(in_dir, out_dir):
 		#28 bytes - name
 		#4 bytes - 
 			#index (i+25); x; y; facing dir
-	for i, name in enumerate(MM3_MAZE_NAMES):
+	mirror_map = [
+		("HOME", 29),
+		("SEADOG", 31),
+		("FREEMAN", 33),
+		("DOOMED", 35),
+		("REDHOT", 37),
+
+		# ("WATER", 31),
+		# ("AIR", 31),
+		# ("EARTH", 31),
+		# ("FIRE", 31),
+
+		("ARENA", 66),
+		("SECRET", 65),
+	]
+	for mirror in mirror_map:
 		mirror_name_bytes = bytearray(28)
-		mirror_name_enc = name.encode('utf-8')
+		mirror_name_enc = mirror[0].encode('utf-8')
 		end_idx = len(mirror_name_enc)
 		mirror_name_bytes[0:end_idx] = mirror_name_enc
-		mirror_name_bytes.append(i+1)#mapid
+		mirror_name_bytes.append(mirror[1])#mapid
 		mirror_name_bytes.append(5)#x
 		mirror_name_bytes.append(6)#y
 		mirror_name_bytes.append(0)#dir
@@ -1030,9 +1045,17 @@ def convert_media(in_dir, out_dir):
 		mm4_anim = anim[1]
 		mm4_hash = hash_filename(mm4_anim)
 		convert_sprite_3to4(in_dir+"/"+mm3_anim, out_dir+"/"+mm4_anim)
+		#double the frames
 		merge_mm4_optimized(out_dir+"/"+mm4_anim, out_dir+"/"+mm4_anim, out_dir+"/"+mm4_anim)
 		copy_file(out_dir+"/"+mm4_anim, out_dir+"/"+mm4_hash)
 
+
+	#death.vga
+	# mm3_death = "death.vga"
+	# mm4_death = "DEATH.VGA"
+	# mm4_hash = hash_filename(mm4_death)
+	# convert_sprite_3to4(in_dir+"/"+mm3_death, out_dir+"/"+mm4_death)
+	# copy_file(out_dir+"/"+mm4_death, out_dir+"/"+mm4_hash)	
 
 
 

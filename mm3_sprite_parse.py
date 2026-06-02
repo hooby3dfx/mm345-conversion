@@ -330,7 +330,8 @@ if __name__ == "__main__":
 
     # parse_sprite("mm3out/topa1.vga", "out_mm3_wip", mode="mm3")
 
-    # parse_sprite("mm3out/out.til", "outmm3_out-til", mode="mm3")
+    parse_sprite("mm3out/out.til", "test/mm3_out-til", mode="mm3")
+    parse_sprite("mm3out/town.til", "test/mm3_town-til", mode="mm3")
     # parse_sprite("mm3out/eface01.out", "outmm3_eface", mode="mm3")
 
     # parse_sprite("mm3out/ALTRCUP.pic", "out_mm3_wip", mode="mm3")
@@ -366,7 +367,8 @@ if __name__ == "__main__":
     parse_sprite("mm3out/day.vga", "test/out_mm3_test10", mode="mm3")
 
 
-    parse_sprite("mm3out/guild1.out", "test/out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/guild1.out", "test/out_mm3_wip", mode="mm3")
+    parse_sprite("mm3out/death.vga", "test/out_mm3_wip", mode="mm3")
 
 
     # Usage
