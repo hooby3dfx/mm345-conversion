@@ -206,6 +206,56 @@ WoX concept:
 XEEN0023 (Area F3) (8,10)
 Warp to Dark map0029.
 Instead, warp to MM3 map01?
+(In the end this did not work due to how the guilds check the maze id)
+
+
+
+=QUESTS=
+quests
+-xeen games: uses quest bits/flags, set directly via event scripts (60 total; 30 for each side)
+-mm3: uses only game bits/flags, set directly via event scripts
+quest items
+-xeen games: uses quest items byte array (85 total)
+-mm3: same?
+*note that quest items are just a special range of item id. also quest item names are in XEEN.DAT
+autonotes
+-xeen games: uses world flags
+-mm3: (does not have autonotes... maybe we can put coraks notes here? right before teleports?)
+
+related data structures in party save file:
+-game bits [512 bits; 256+256]
+-world bits (auto notes) [128 bits shared]
+-quest bits [60 bits shared]
+b00(0x128) = unused
+b01(0x64)  = Slay the king of the Mad Dwarf Clan
+b02(0x32)  = Collect Phirna roots for Myra
+b07(0x01)  =
+b08(0x128) =
+b15(0x01)  = Destroy the Lair of the Ogres
+...
+b28(0x08)  = Take the Last Raindrop of Spring to the Summer Druid so that Summer may begin (love this)
+b29(0x04)  = Rid Vertigo of the plague of pests and report back
+b30(0x02)  = Find the key to the Western Tower (first Darkside quest)
+b31(0x01)  = Collect rubies from the gemstone mines
+b32(0x128) = Collect emeralds from the gemstone mines
+-quest items [85 bytes]
+
+
+IDEA FOR AUTONOTES & QUEST CONVERSION HELPER SCRIPT:
+
+"watch" and update the DARK.CUR file in the game dir
+-based on the party mazeid, set the autonote flag (and have the relevant autonote flag map to entry with coraks notes in qnotes.bin)
+-based on the game flags, set the relevant quest bits (based on the relevant quest names in qnotes.bin)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -241,12 +291,13 @@ Gameplay items:
 	outdoor area 41 is giving bone whistle instead of might potion ⚠️
 	party should start with rope and hook so to climb down pit ⚠️
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
+-Hirelings
 -How to display Coraks notes ⚠️
 -NPC offering skill causing crash (ex. cartography in fountain head) ✅
 -quests/auto notes?
 -guild membership ✅
 -cyclops cavern - no objects/ceiling ✅
--healthbar/attack icn sprite randomly not loaded ⚠️
+-healthbar/attack icn sprite randomly incorrect ⚠️
 
 
 -freeze drinking from well A1(4,7); 'your defensive skill has been magically augmented' ⚠️

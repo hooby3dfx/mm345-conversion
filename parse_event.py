@@ -177,15 +177,20 @@ def convert_3to4(event_line):
         #for awards - guild membership
         givetype = event_line.raw_args[len(event_line.raw_args)-2]
         giveitem = event_line.raw_args[len(event_line.raw_args)-1]
-        if givetype==0x0F and giveitem==0x00:
+        if givetype==0x0F and giveitem<5:
             args_copy = bytearray(event_line.raw_args)
             #change award from 0 (ravens guild) to: 
             # SHANGRILA_GUILD_MEMBER = 5, GOOBER = 76, SUPER_GOOBER = 77,
             # CASTLEVIEW_GUILD_MEMBER = 83, SANDCASTER_GUILD_MEMBER = 84,
             # LAKESIDE_GUILD_MEMBER = 85, NECROPOLIS_GUILD_MEMBER = 86, OLYMPUS_GUILD_MEMBER = 87
-            args_copy[len(event_line.raw_args)-1] = 83
+            args_copy[len(event_line.raw_args)-1] = args_copy[len(event_line.raw_args)-1] + 83
             event_line.raw_args = bytes(args_copy)
             modified = True
+        elif givetype==0x14:
+            print(f"GAME BIT GIVEN, item: {giveitem}")
+        elif givetype==0x68:
+            print(f"QUEST FLAG GIVEN!? item: {giveitem}")
+
     elif event_line.opcode==0x0F: #setchar
         #mm3 arg 09 should be for learn which is 06 in xeen
         if event_line.raw_args[0]==0x09:
@@ -219,16 +224,21 @@ def convert_3to4(event_line):
         #4->3
         #5->4
         #6->5
+        #jester in here too
         if event_line.raw_args[0] > 3:
             event_line.raw_args = [event_line.raw_args[0]-1]
             modified = True
     elif event_line.opcode==0x14:
-        if event_line.raw_args[0]==0x15 and event_line.raw_args[1]==0x64:
+        givetype1 = event_line.raw_args[0]
+        giveitem1 = event_line.raw_args[1]
+        if givetype1==0x15 and giveitem1==0x64:
             #extended give; TEST instead of giving 0x64 (mm4 bone whistle), give 0x49 (mm3 rope)
             args_copy = bytearray(event_line.raw_args)
             args_copy[1] = 0x49
             event_line.raw_args = bytes(args_copy)
             modified = True
+        elif givetype1==0x14:
+            print(f"GAME BIT GIVEN, item: {giveitem1}")
     elif event_line.opcode==0x1B:
         if event_line.raw_args[0]==0x54 and len(event_line.raw_args)==2:
             #temp workaround for setvar script interruption
@@ -291,6 +301,7 @@ if __name__ == "__main__":
 
 
     parse_evt_file('mm3out/MAZE01.EVT')
+    # parse_evt_file('mm3out/MAZE02.EVT')
     # parse_evt_file('mm3out/MAZE41.EVT')
 
     # parse_evt_file('mm3out/MAZE16.EVT')

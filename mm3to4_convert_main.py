@@ -807,11 +807,12 @@ def convert_meta_data(in_dir, out_dir):
 	# VIEWTEXT.BIN
 
 
-	mm3_bin = "award.bin"
+	mm3_bin = "awardb.bin" #"award.bin"
 	mm4_bin = "AWARD.BIN"
 	mm4_hash = hash_filename(mm4_bin)
 	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
+	#probably some additional data needs to get added to this, since the award id for ravens guild is +83 to match with darkside
 
 	mm3_bin = "tavern.bin"
 	mm4_bin = "TAVERN.BIN"
@@ -819,11 +820,15 @@ def convert_meta_data(in_dir, out_dir):
 	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
 
-	mm3_bin = "quest.bin"
-	mm4_bin = "QUEST.BIN"
-	mm4_hash = hash_filename(mm4_bin)
-	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
-	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
+	# mm3_bin = "quest.bin"
+	# mm4_bin = "QUEST.BIN"
+	# mm4_hash = hash_filename(mm4_bin)
+	# copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
+	# copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
+	# quest.bin = quests from clouds only?
+	# notes.bin = notes from clouds only?
+	# qnotes.bin = combined quests and auto notes?
+
 
 
 
