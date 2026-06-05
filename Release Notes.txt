@@ -7,9 +7,9 @@ v0.02 Major upgrade
 Whats new:
 -Almost all graphics properly converted
 -Indoor and outdoor environment graphics should mostly be using the right graphics
-	-outdoor surface sprites are slightly different size so there are some cracks
+	-outdoor surface sprites are slightly different size so there are some cracks between tiles
 -Correct monsters in levels, and monsters now have proper stats (hopefully)
-
+-Generally the game should be playable
 
 
 How to use:
@@ -17,7 +17,7 @@ How to use:
 2. Update XEEN.CC and DARK.CC from this release
 3. Launch the game and then start a new game...
 -Once you start a new game, it will start in Clouds of Xeen (MM4) starting area, Vertigo.
--Go right and you will see the teleport mirror; when facing the mirror there are trees on the left and right. If you step onto the tree directly to the left then you will warp to Isles of Terra (MM3) starting area, Fountain Head!
+-Directly in front of you will be a glass box... fight the slime and then click on the box!
 -At this point the colors will look all messed up. Press tab/menu, save game, quit, and then load the save file and it will look proper MM3!
 -To climb down into the pit in fountain head you will need rope. For now this can be obtained from the caravan right outside town.
 As a general note, saving often is recommended as there are some issues that can crash or freeze the game.
@@ -30,6 +30,9 @@ KNOWN ISSUES/TODO LIST (READ ME!)
 -Every map tile does an "auto execute" for the events which is close to the way MM3 works but this will also re-trigger when you turn direction for example and may show "nothing here" message
 -Music/sound files and other cutscenes
 -Items names are coming from MMX and some will have the name "bogus"
+-Quests and Coraks notes
+-Please report any other issues you find on the github page!!
+https://github.com/hooby3dfx/mm345-conversion
 
 
 
