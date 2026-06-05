@@ -1011,18 +1011,18 @@ def convert_media(in_dir, out_dir):
 		("weapon.out", "BLCK2.TWN"),
 		# ("weapon.out", "BLCK3.TWN"),
 
-		("inn.out", "BNKR1.TWN"),
-		("inn.out", "BNKR2.TWN"),
-		("inn.out", "BNKR3.TWN"),
-		("inn.out", "BNKR4.TWN"),
+		("bank.out", "BNKR1.TWN"),
+		("bank.out", "BNKR2.TWN"),
+		("bank.out", "BNKR3.TWN"),
+		("bank.out", "BNKR4.TWN"),
 		# ("inn.out", "BNKR5.TWN"),
 
 		("guild1.out", "GILD1.TWN"),
-		("guild1.out", "GILD2.TWN"),
+		("guild2.out", "GILD2.TWN"),
 		("guild1.out", "GILD3.TWN"),
-		("guild1.out", "GILD4.TWN"),
+		("guild2.out", "GILD4.TWN"),
 		("guild1.out", "GILD5.TWN"),
-		("guild1.out", "GILD6.TWN"),
+		("guild2.out", "GILD6.TWN"),
 		# ("guild1.out", "GILD7.TWN"),
 
 		("temple.out", "TMPL1.TWN"),
@@ -1031,9 +1031,9 @@ def convert_media(in_dir, out_dir):
 		# ("temple.out", "TMPL4.TWN"),
 
 		("train1.out", "TRNG1.TWN"),
-		("train1.out", "TRNG2.TWN"),
-		("train1.out", "TRNG3.TWN"),
-		("train1.out", "TRNG4.TWN"),
+		("train2.out", "TRNG2.TWN"),
+		("train3.out", "TRNG3.TWN"),
+		("train4.out", "TRNG4.TWN"),
 		("train1.out", "TRNG5.TWN"),
 		# ("train1.out", "TRNG6.TWN"),
 
@@ -1051,6 +1051,7 @@ def convert_media(in_dir, out_dir):
 		mm4_hash = hash_filename(mm4_anim)
 		convert_sprite_3to4(in_dir+"/"+mm3_anim, out_dir+"/"+mm4_anim)
 		#double the frames
+		#TODO reverse/loop guild
 		merge_mm4_optimized(out_dir+"/"+mm4_anim, out_dir+"/"+mm4_anim, out_dir+"/"+mm4_anim)
 		copy_file(out_dir+"/"+mm4_anim, out_dir+"/"+mm4_hash)
 

@@ -76,8 +76,21 @@ Again, this is a preview of current work in progress. The below issues will be f
 The rest is highly untested and anything not described above that you notice, please let me know!
 
 
+
+
+
+
+
 Roadmap:
 -Get to a fully playable and completable state, and then also officially supported in ScummVM
+
+
+
+
+
+
+The source for this project can be found on github:
+https://github.com/hooby3dfx/mm345-conversion
 
 
 For the technically inclined, here is how to generate your own MM 3-to-4 CC file:
