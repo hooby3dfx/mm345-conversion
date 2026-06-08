@@ -248,10 +248,17 @@ IDEA FOR AUTONOTES & QUEST CONVERSION HELPER SCRIPT:
 -based on the game flags, set the relevant quest bits (based on the relevant quest names in qnotes.bin)
 
 
+qnotes.bin layout:
+184 asciiz entries
 
+00: Slay the king of the Mad Dwarf Clan
+08: Get Princess Roxanne's tiara
+22: Free Crodo from the clutches
+23: Climb Darzog's Tower, gain entrance
+57: Electricity resistance +50 at D3,15,4 (first autonote entry)
+82: Hit Points +100 at Asp,8,3
 
-
-
+mm3: 19 quests + 66 coraks
 
 
 
@@ -287,19 +294,19 @@ Progress notes:
 
 
 Gameplay items:
--Items... 
+-Items/names... 
 	outdoor area 41 is giving bone whistle instead of might potion ⚠️
 	party should start with rope and hook so to climb down pit ⚠️
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
 -Hirelings
 -How to display Coraks notes ⚠️
 -NPC offering skill causing crash (ex. cartography in fountain head) ✅
--quests/auto notes?
 -guild membership ✅
 -cyclops cavern - no objects/ceiling ✅
 -healthbar/attack icn sprite randomly incorrect ⚠️
 
 
+Script bugs:
 -freeze drinking from well A1(4,7); 'your defensive skill has been magically augmented' ⚠️
 -freeze drinking from well A1; 'your radiance has been magically enhanced' ⚠️
 -freeze on magic crystal ball -> a magical feeling overcomes you! ⚠️

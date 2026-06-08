@@ -807,12 +807,23 @@ def convert_meta_data(in_dir, out_dir):
 	# VIEWTEXT.BIN
 
 
-	mm3_bin = "awardb.bin" #"award.bin"
+	mm3_bin = "award.bin"
+	mm3_award_data = []
 	mm4_bin = "AWARD.BIN"
 	mm4_hash = hash_filename(mm4_bin)
-	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
+	#probably some additional data needs to get added to this, 
+	#since the award id for ravens guild is +83 to match with darkside.
+	#duplicate it for now?
+	with open(in_dir+"/"+mm3_bin, 'rb') as source:
+		mm3_award_data = source.read()
+	mm4_award_data = bytearray()
+	mm4_award_data.extend(mm3_award_data)
+	mm4_award_data.extend(mm3_award_data)
+	with open(out_dir+"/"+mm4_bin, 'wb') as dest:
+		dest.write(mm4_award_data)
+	# copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
-	#probably some additional data needs to get added to this, since the award id for ravens guild is +83 to match with darkside
+
 
 	mm3_bin = "tavern.bin"
 	mm4_bin = "TAVERN.BIN"
@@ -820,14 +831,36 @@ def convert_meta_data(in_dir, out_dir):
 	copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
 
-	# mm3_bin = "quest.bin"
+
+	mm3_quest_bin = "quest.bin"
+	mm3_corak_bin = "corak.bin"
+	mm3_quest_data = []
+	mm3_corak_data = []
+	mm4_bin = "QNOTES.BIN"
 	# mm4_bin = "QUEST.BIN"
-	# mm4_hash = hash_filename(mm4_bin)
+	mm4_hash = hash_filename(mm4_bin)
 	# copy_file(in_dir+"/"+mm3_bin, out_dir+"/"+mm4_bin)
 	# copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
 	# quest.bin = quests from clouds only?
 	# notes.bin = notes from clouds only?
 	# qnotes.bin = combined quests and auto notes?
+
+	with open(in_dir+"/"+mm3_quest_bin, 'rb') as source:
+		mm3_quest_data = source.read()
+	with open(in_dir+"/"+mm3_corak_bin, 'rb') as source:
+		mm3_corak_data = source.read()
+	qnotes_data = bytearray()
+	qnotes_data.extend(mm3_quest_data)
+	for i in range(33): #dummy data after quest names
+		qnotes_data.extend(f"Q{i:02}".encode("utf-8"))
+		qnotes_data.append(0)
+	qnotes_data.extend(mm3_corak_data)
+	for i in range(30): #dummy data after autonotes
+		qnotes_data.extend(f"A{i:02}".encode("utf-8"))
+		qnotes_data.append(0)
+	with open(out_dir+"/"+mm4_bin, 'wb') as dest:
+		dest.write(qnotes_data)
+	copy_file(out_dir+"/"+mm4_bin, out_dir+"/"+mm4_hash)
 
 
 
@@ -848,6 +881,7 @@ def convert_meta_data(in_dir, out_dir):
 		#4 bytes - 
 			#index (i+25); x; y; facing dir
 	mirror_map = [
+		# TODO proper x,y coords
 		("HOME", 29),
 		("SEADOG", 31),
 		("FREEMAN", 33),

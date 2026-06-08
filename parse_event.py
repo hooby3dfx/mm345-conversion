@@ -302,7 +302,7 @@ if __name__ == "__main__":
 
     parse_evt_file('mm3out/MAZE01.EVT')
     # parse_evt_file('mm3out/MAZE02.EVT')
-    # parse_evt_file('mm3out/MAZE41.EVT')
+    parse_evt_file('mm3out/MAZE41.EVT')
 
     # parse_evt_file('mm3out/MAZE16.EVT')
 
