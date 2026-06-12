@@ -183,7 +183,9 @@ def convert_3to4(event_line):
             # SHANGRILA_GUILD_MEMBER = 5, GOOBER = 76, SUPER_GOOBER = 77,
             # CASTLEVIEW_GUILD_MEMBER = 83, SANDCASTER_GUILD_MEMBER = 84,
             # LAKESIDE_GUILD_MEMBER = 85, NECROPOLIS_GUILD_MEMBER = 86, OLYMPUS_GUILD_MEMBER = 87
-            args_copy[len(event_line.raw_args)-1] = args_copy[len(event_line.raw_args)-1] + 83
+            guild_award = giveitem + 83
+            print(f"GUILD AWARD UPDATED from {giveitem} TO {guild_award}")
+            args_copy[len(event_line.raw_args)-1] = guild_award
             event_line.raw_args = bytes(args_copy)
             modified = True
         elif givetype==0x14:

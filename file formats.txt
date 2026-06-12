@@ -263,6 +263,14 @@ mm3: 19 quests + 66 coraks
 
 
 
+HUD
+global.icn	frame around display area, portraits
+hpbars.icn
+main.icn	action/menu buttons on right 
+border.icn	animations around main display frame
+view.icn	icons for char stats screen
+
+back.raw	mm3 overall in game background
 
 
 
@@ -293,6 +301,7 @@ Progress notes:
 -for now all sprites not animated (DARK.DAT)
 
 
+
 Gameplay items:
 -Items/names... 
 	outdoor area 41 is giving bone whistle instead of might potion ⚠️
@@ -304,6 +313,11 @@ Gameplay items:
 -guild membership ✅
 -cyclops cavern - no objects/ceiling ✅
 -healthbar/attack icn sprite randomly incorrect ⚠️
+-wildabar cavern skull monster freeze on attack ✅
+
+
+Crashes:
+-town portal spell: error drawing sprite in window 0001 handle 0041 frame 0168
 
 
 Script bugs:

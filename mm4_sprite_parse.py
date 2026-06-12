@@ -229,7 +229,8 @@ if __name__ == "__main__":
 
     parse_sprite("mm3to4_out/TRNG1.TWN", "out_mm3to4_sprite_test", mode="xeen")
 
-    parse_sprite("ext_drk/d_56668.ccx", "test/out_mm4_wip", mode="xeen")
+    # parse_sprite("ext_cld/d_63857.ccx", "test/out_mm4_wip", mode="xeen")
+    parse_sprite("ext_cld/d_64841.ccx", "test/out_mm4_wip", mode="xeen")
 
 
 

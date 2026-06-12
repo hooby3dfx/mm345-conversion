@@ -368,7 +368,8 @@ if __name__ == "__main__":
 
 
     # parse_sprite("mm3out/guild1.out", "test/out_mm3_wip", mode="mm3")
-    parse_sprite("mm3out/death.vga", "test/out_mm3_wip", mode="mm3")
+    # parse_sprite("mm3out/death.vga", "test/out_mm3_wip", mode="mm3")
+    parse_sprite("mm3out/view.icn", "test/out_mm3_wip", mode="mm3")
 
 
     # Usage

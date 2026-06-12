@@ -25,6 +25,16 @@ def pack_bitfield_compact_msb(bool_array: List[bool]) -> bytes:
         for strt in range(0, len(bool_array), 8)
     )
 
+def unpack_nibbles(byte_data) -> List[bool]:
+    lower_list = []
+    upper_list = []
+    for i in range(len(byte_data)):
+        lower = (byte_data[i] & 0x0F);
+        upper = (byte_data[i]>>4 & 0x0F);
+        lower_list.append(lower)
+        upper_list.append(upper)
+    return lower_list + upper_list
+
 
 @dataclass
 class XeenPartyData:
@@ -47,7 +57,7 @@ class XeenPtyParser:
 
     def parse(self) -> XeenPartyData:
         data = self.data
-        print(f"{len(data)}")
+        # print(f"{len(data)}")
 
         # --- 1. PARSE HEADER STRINGS & METADATA ---
         # The save title/name is usually the first 20-28 bytes null-terminated ASCIIZ
@@ -60,7 +70,7 @@ class XeenPtyParser:
         # (Adjust exact offsets if your specific mod offset sheet differs slightly)
         current_map_id = data[0x0D]
         party_x = data[0x01]
-        print(f"{party_x}")
+        # print(f"{party_x}")
         party_y = data[0x0C]
         party_direction = data[0x0A]
 
@@ -135,6 +145,25 @@ class XeenPtyParser:
     #         f.write(bytes([new_byte]))
 
 
+def parse_characters(chr_data):
+    for slot in range(30):
+        character = chr_data[slot*354:slot*354+354]
+        name = character[0:16]
+        if not name[0]:
+            continue
+        awards = character[0x39:0x39+64]
+        # awards_bits = unpack_bitfield_msb(awards)
+        # awards_true_set = [index for index, value in enumerate(awards_bits) if value]
+        awards_list = unpack_nibbles(awards)
+        print(f"len(awards_list): {len(awards_list)}")
+        awards_true_set = [index for index, value in enumerate(awards_list) if value]
+
+        print(f"character in slot {slot}:")
+        print(f"name: {name}")
+        print(f"awards: {awards_true_set}")
+        #47, 151: saved fountain head, skulls given to kranion
+        #23: falcons guild???
+        #15, 155: ravens guild, albatross guild???
 
 
 
@@ -147,11 +176,21 @@ if __name__ == "__main__":
     with open(args.file, "rb") as f:
         fdata = f.read()
 
+        sav_cc_chr_offset = 3649
+        sav_cc_chr_len = 354 * 30
+        chr_data = fdata[sav_cc_chr_offset:sav_cc_chr_offset+sav_cc_chr_len]
+        parse_characters(chr_data)
+
+
+
+
+
+
         sav_cc_pty_offset = 14269
         sav_cc_pty_len = 1528
     
         pty_data = fdata[sav_cc_pty_offset:sav_cc_pty_offset+sav_cc_pty_len]
-        print(f"{len(pty_data)}")
+        # print(f"{len(pty_data)}")
         # print(f"{pty_data}")
 
         # Point this directly to an unpacked/temporary live save file instance
@@ -179,6 +218,7 @@ if __name__ == "__main__":
 
             #set autonote based on current mapid (for coraks note)
             if party_state.current_map_id < 65:
+                # TODO handle remapped levels like town
                 print(f"setting autonote to {party_state.current_map_id}")
                 # pty_parser.write_autonote(autonote_index=party_state.current_map_id, state=True)
                 party_state.autonotes_bits = [False]*len(party_state.autonotes_bits)
@@ -213,6 +253,7 @@ if __name__ == "__main__":
             MM3_GAMEFLAG_TO_QUEST_MAP = {
                 1:(16, True),#baywatch; alpha->beta; START
                 2:(17, True),#baywatch cavern; beta->gamma; START
+                3:(18, True),#wildabar; gamma->delta; START
 
                 4:(15, True),#fountain head; silver skulls; START
                 5:(15, True),#fountain head; silver skulls; PROGRESS
@@ -221,7 +262,19 @@ if __name__ == "__main__":
                 8:(15, True),#fountain head; silver skulls; PROGRESS
                 9:(15, False),#fountain head; silver skulls; END
 
-                170:(14, False),#fountain head; Morphose; END
+                10:(19, True), #wildabar cavern; delta->zeta; START
+
+                #13 wildabar cavern; pull level, not a quest?
+
+                # 120:(),orc cart in A1; not a quest
+                #...
+
+                # 132:(),?mountains map 47
+
+                160:(4, True),#A2; unicorn; START
+
+                170:(14, True),#fountain head(NEW GAME/DEFAULT); Morphose; START
+                171:(14, False),#fountain head; Morphose; END
 
 
             }

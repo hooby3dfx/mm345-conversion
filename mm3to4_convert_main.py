@@ -8,7 +8,7 @@ from parse_event import parse_evt_file
 from parse_mob import parse_mm3_mob
 from mm3to4_sprite_transcoder2 import convert_sprite_3to4
 from mm4_sprite_merge import merge_mm4_sprites
-from mm4_sprite_merge2 import merge_mm4_multi_frame
+# from mm4_sprite_merge2 import merge_mm4_multi_frame
 from mm4_sprite_merge3 import merge_mm4_optimized
 from hashFileName import hash_file_name_mm4
 from sprite_inspect import inspect_sprite
@@ -818,6 +818,8 @@ def convert_meta_data(in_dir, out_dir):
 		mm3_award_data = source.read()
 	mm4_award_data = bytearray()
 	mm4_award_data.extend(mm3_award_data)
+	null_bytes = [0x00]*59
+	mm4_award_data.extend(null_bytes)
 	mm4_award_data.extend(mm3_award_data)
 	with open(out_dir+"/"+mm4_bin, 'wb') as dest:
 		dest.write(mm4_award_data)
@@ -868,7 +870,8 @@ def convert_meta_data(in_dir, out_dir):
 
 	mm4_mon = "DARK.MON"
 	mm4_hash = hash_filename(mm4_mon)
-	parse_monsters(in_dir, out_dir+"/"+mm4_hash)
+	parse_monsters(in_dir, out_dir+"/"+mm4_mon)
+	copy_file(out_dir+"/"+mm4_mon, out_dir+"/"+mm4_hash)
 
 	#mirror text
 	#XEENMIRR.TXT / DARKMIRR.TXT
@@ -931,18 +934,21 @@ MM3_FACE_SPRITE_NAMES = [
 MM3_ICONS = [
 	'bank.icn','bank2.icn',
 	'buy.icn',#skip(frame ct)
-	'cast.icn','charpow.icn',
+	'cast.icn',
+	'charpow.icn',
 	'combat.icn',#skip(frame ct)
 	'confirm.icn','confirm2.icn',
 	'cpanel.icn',
 	'create.icn',#skip(frame ct)
 	'detctmon.icn',#skip(frame ct)
-	'detect.icn','duplicat.icn',
+	'detect.icn',
+	'duplicat.icn',
 	'element.icn',
 	# 'equip.icn', #causes crash in blacksmith:'error drawing sprite in window:0000 handle:0029 frame:0013'
 	'esc.icn',
 	'global.icn',#skip(frame ct)
-	'hpbars.icn','inn.icn',
+	'hpbars.icn',
+	'inn.icn',
 	'items.icn',#skip(frame ct)
 	'lloyds.icn',
 	'main.icn',#skip(frame ct)
@@ -950,7 +956,10 @@ MM3_ICONS = [
 	'pow0.icn','pow10.icn','pow11.icn','pow12.icn',
 	'pow13.icn','pow14.icn','pow2.icn','pow3.icn',
 	'pow4.icn','pow5.icn','pow7.icn','pow8.icn','pow9.icn',
-	'protect.icn','restore.icn','scroll.icn','sell.icn',
+	'protect.icn',
+	'restore.icn',
+	'scroll.icn',
+	'sell.icn',
 	'start.icn',#skip(frame ct)
 	'train.icn',
 	'view.icn'
@@ -992,6 +1001,12 @@ def convert_2d_graphics(in_dir, out_dir):
 		else:
 			print(f"skipping icon {mm4_icon} ({mm4_frame_ct} frames)")
 
+
+	mm3_back = "back.raw" 
+	mm4_back = "BACK.RAW" 
+	mm4_hash = hash_filename(mm4_back)
+	copy_file(in_dir+"/"+mm3_back, out_dir+"/"+mm4_back)
+	copy_file(out_dir+"/"+mm4_back, out_dir+"/"+mm4_hash)
 
 
 

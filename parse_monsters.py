@@ -16,7 +16,17 @@ MONSTER_SPRITES = [
 ]
 
 MONSTER_NAMES = [
-    'Vampire Bat','Bubble Man','Goblin','Orc Warrior','Skeleton','Screamer','Oh No Bug','Moose Rat','Wild Fungus','Zombie','Candle Creep','Mad Dwarf','Ninja','Magic Mantis','Ogre','Bugaboo','Phase Head','Giant Spider','Sprite','Dino Beetle','Cobra Fiend','Scorpia','Cryo Spore','Cursed Fool','Mini Dragon','Plasmoid','Carnage Hand','Ghoul','Castle Guard','Phantom','Pirana','Evil Ranger','Shadow Rogue','Tree Golem','Wicked Witch','Iron Wizard','Death Locust','Archer','Mystic Cloud','Barbarian','Cleric of Moo','Fire Lizard','Fire Stalker','Gargoyle','Ghost','Draconi','Sonic Ninja','Evil Eye','Guardian','Paladin','Dark Pegasus','Reaper','Sorcerer','Lich','Spirit Shield','Troll','Major Demon','Dinosaur','ED-409','Black Knight','Death Agent','Mummy','Priest of Moo','Toxic Worm','Dragon Worm','Cyclops','Major Devil','Green Dragon','Jouster','Death Snake','Vampire','Werewolf','Terminator','Great Hydra','Vulture Roc','Kudo Crab','Medusa','Minotaur','Octobeast','Dragon Lord','Rat Overlord','Mummy King','Cyclops King','Minotaur King','Vampire King','Moo Master','Top Jouster','Eye Master','Cult Leader'
+    'Vampire Bat','Bubble Man','Goblin','Orc Warrior','Skeleton','Screamer','Oh No Bug','Moose Rat',
+    'Wild Fungus','Zombie','Candle Creep','Mad Dwarf','Ninja','Magic Mantis','Ogre','Bugaboo',
+    'Phase Head','Giant Spider','Sprite','Dino Beetle','Cobra Fiend','Scorpia','Cryo Spore','Cursed Fool',
+    'Mini Dragon','Plasmoid','Carnage Hand','Ghoul','Castle Guard','Phantom','Pirana','Evil Ranger',
+    'Shadow Rogue','Tree Golem','Wicked Witch','Iron Wizard','Death Locust','Archer','Mystic Cloud','Barbarian',
+    'Cleric of Moo','Fire Lizard','Fire Stalker','Gargoyle','Ghost','Draconi','Sonic Ninja','Evil Eye',
+    'Guardian','Paladin','Dark Pegasus','Reaper','Sorcerer','Lich','Spirit Shield','Troll',
+    'Major Demon','Dinosaur','ED-409','Black Knight','Death Agent','Mummy','Priest of Moo','Toxic Worm',
+    'Dragon Worm','Cyclops','Major Devil','Green Dragon','Jouster','Death Snake','Vampire','Werewolf',
+    'Terminator','Great Hydra','Vulture Roc','Kudo Crab','Medusa','Minotaur','Octobeast','Dragon Lord',
+    'Rat Overlord','Mummy King','Cyclops King','Minotaur King','Vampire King','Moo Master','Top Jouster','Eye Master','Cult Leader'
 ]
 
 files = [
@@ -29,38 +39,47 @@ files = [
 
 files = [
     #name 16b
+
     "MonExp.dat",#4b
+
     "MonHP.dat",#2b
     "MonAC.dat", #1b
     "MonSpd.dat",#1b
+
     "MonNumA.dat", #1b
     #hates 
     "dummy-hates",#1b
     "MonDmgN.dat",#strikes? 
     "dummy-strikes2",#1b fill
+
     "MonDmgS.dat",#dmg per strike?
     "MonDmgT.dat",#dmg/att type?
     "MonSpec.dat",#special
-    "MonAttP.dat",#hit chance?
+    "MonAttP.dat",#hit chance? attack probability. crash if this is 0 for phase head???
+
     "MonRang.dat", 
     #mon type
     "dummy-montype",
     "MonFire.dat",
     "MonElec.dat", 
+
     "MonCold.dat", 
     "MonAcid.dat", 
     "MonEner.dat",
     "MonMagi.dat", 
+
     "MonPhys.dat", 
     #field29?
-    "MonHitB.dat", #not sure what this is for...
+    "dummy-f29",#"MonHitB.dat", #not sure what this is for...
     "MonGold.dat", #4b -> should be 2b
+
     "MonGems.dat", #2b -> should be 1b
     "MonTrea.dat",#treasure/item?
     #flying
     "dummy-fly",
     #img num
     "dummy-img#",
+
     #loop
     "dummy-loop",
     #anim
@@ -78,6 +97,25 @@ files = [
     # "dummy-voc",
     # "dummy-voc",
 ]
+
+def remap_special(mm3val):
+    #xeen special values:
+    # SA_NONE = 0, SA_MAGIC = 1, SA_FIRE = 2, SA_ELEC = 3, SA_COLD = 4,
+    # SA_POISON = 5, SA_ENERGY = 6, SA_DISEASE = 7, SA_INSANE = 8,
+    # SA_SLEEP = 9, SA_CURSEITEM = 10, SA_INLOVE = 11, SA_DRAINSP = 12,
+    # SA_CURSE = 13, SA_PARALYZE = 14, SA_UNCONSCIOUS = 15,
+    # SA_CONFUSE = 16, SA_BREAKWEAPON = 17, SA_WEAKEN = 18,
+    # SA_ERADICATE = 19, SA_AGING = 20, SA_DEATH = 21, SA_STONE = 22
+
+    #xeen damage type values:
+    # DT_PHYSICAL = 0, DT_MAGICAL = 1, DT_FIRE = 2, DT_ELECTRICAL = 3,
+    # DT_COLD = 4, DT_POISON = 5, DT_ENERGY = 6, DT_SLEEP = 7,
+    # DT_FINGEROFDEATH = 8, DT_HOLYWORD = 9, DT_MASS_DISTORTION = 10,
+    # DT_UNDEAD = 11, DT_BEASTMASTER = 12, DT_DRAGONSLEEP = 13,
+    # DT_GOLEMSTOPPER = 14, DT_HYPNOTIZE = 15, DT_INSECT_SPRAY = 16,
+    # DT_POISON_VOLLEY = 17, DT_MAGIC_ARROW = 18
+
+    return 0
 
 
 
@@ -100,7 +138,11 @@ def parse_variable_binary(filename):
             data = f.read(90)
             values_dec = list(data)
             for i in range(90):
-                values_raw.append(bytes([data[i]]))
+                if filename.endswith("MonAttP.dat") and i==16:
+                    #crash if this is 0 for phase head???
+                    values_raw.append(bytes([0x01]))
+                else:
+                    values_raw.append(bytes([data[i]]))
         elif file_size == 180:
             # 2 bytes per row (Little-Endian Unsigned Short)
             for _ in range(90):
