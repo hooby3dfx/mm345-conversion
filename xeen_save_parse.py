@@ -144,8 +144,114 @@ class XeenPtyParser:
     #         f.seek(byte_offset)
     #         f.write(bytes([new_byte]))
 
+    def print_party_summary(self, party_state):
+        print("PARTY DATA")
+        print(f"Current Position  : Map {party_state.current_map_id} at ({party_state.party_x}, {party_state.party_y})")
+
+    def update_status_bits(self, party_state):
+        print("UPDATING DATA")
+
+        # print(f"quest_bits ({len(party_state.quest_bits)}): {party_state.quest_bits}")
+        # print(f"autonotes_bits ({len(party_state.autonotes_bits)}): {party_state.autonotes_bits}")
+        # print(f"gameflag_bits ({len(party_state.gameflag_bits)}): {party_state.gameflag_bits}")
+
+        gameflags_true_set = [index for index, value in enumerate(party_state.gameflag_bits) if value]
+        print(f"gameflags_true_set: {gameflags_true_set}")
+
+        autonotes_true_set = [index for index, value in enumerate(party_state.autonotes_bits) if value]
+        print(f"autonotes_true_set: {autonotes_true_set}")
+
+        questbits_true_set = [index for index, value in enumerate(party_state.quest_bits) if value]
+        print(f"questbits_true_set: {questbits_true_set}")
+
+        #set autonote based on current mapid (for coraks note)
+        if party_state.current_map_id < 65:
+            # TODO handle remapped levels like town
+            print(f"setting autonote to {party_state.current_map_id}")
+            # pty_parser.write_autonote(autonote_index=party_state.current_map_id, state=True)
+            party_state.autonotes_bits = [False]*len(party_state.autonotes_bits)
+            party_state.autonotes_bits[party_state.current_map_id] = True
+        
+        updated_autonote_bytes = pack_bitfield_compact_msb(party_state.autonotes_bits)
+        print(f"updated_autonote_bytes {len(updated_autonote_bytes)} {updated_autonote_bytes}")
+        #0x2D3:0x2E3
+
+
+        # 01 Take the precious sea shells to the nymph Athea, and become enchanted by her siren's song.
+        # 02 Present the Pirate Queen with Pearls to pacify her plunderous heart.
+        # 03 Bring love to Princess Trueberry that she may once again step beyond the darkend walls of her loveless shack.
+        # 04 Return the relic to the shrine of Icarus to resurrect the lonely Unicorn.
+        # 05 Set free the soul of Greywind the Illusionist from the stone walls of the ruined castle.
+        # 06 Release the spirit of Blackwind the Spellbinder from it's captivity in the broken keep.
+        # 07 Return the Artifacts of Good to their rightful seat in castle Whiteshield.
+        # 08 Return the Artifacts of Neutrality to their rightful seat in castle Bloodreign.
+        # 09 Return the Artifacts of Evil to their rightful seat in castle Dragontooth.
+        # 10 Render the Ultimate Power Orbs unto Zealot, King Righteous, and give strength to the hands of the good.
+        # 11 Render the Ultimate Power Orbs unto Tumult, King Chaotic, and give strength to the hands of the neutral.
+        # 12 Render the Ultimate Power Orbs unto Malefactor, King Malicious, and give strength to the hands of the evil.
+        # 13 Find the final steps to your destiny below the Ancient Pyramids.
+        # 14 Find Morphose, the Protector of Fountain Head, and release him from his magic cell.
+        # 15 Deliver five Silver Skulls to Kranion, in Fountain Head, so he may finish his shrine to the Forces.
+
+        # 16 Seek Brother Beta in the cavern under Baywatch.
+        # 17 Seek Brother Gamma in Wildabar.
+        # 18 Seek Brother Delta in the cavern below Wildabar
+        # 19 Seek Brother Zeta in Arachnoid Cavern
+
+        #set questbits based on mapping of gameflags set by mm3
+        MM3_GAMEFLAG_TO_QUEST_MAP = {
+            1:(16, True),#baywatch; alpha->beta; START
+            2:(17, True),#baywatch cavern; beta->gamma; START
+            3:(18, True),#wildabar; gamma->delta; START
+
+            4:(15, True),#fountain head; silver skulls; START
+            5:(15, True),#fountain head; silver skulls; PROGRESS
+            6:(15, True),#fountain head; silver skulls; PROGRESS
+            7:(15, True),#fountain head; silver skulls; PROGRESS
+            8:(15, True),#fountain head; silver skulls; PROGRESS
+            9:(15, False),#fountain head; silver skulls; END
+
+            10:(19, True), #wildabar cavern; delta->zeta; START
+            #[1,2,3,10 are all unset after talking to zeta]
+
+            #13 wildabar cavern; pull level, not a quest?
+
+            #24...35
+
+            # 120:(),orc cart in A1; not a quest
+            #...
+
+            # 132:(),?mountains map 47
+
+            160:(4, True),#A2; unicorn; START
+
+            170:(14, True),#fountain head(NEW GAME/DEFAULT); Morphose; START
+            171:(14, False),#fountain head; Morphose; END
+
+
+        }
+
+        updated_quest_bits = [False]*len(party_state.quest_bits)
+
+        for gameflag in gameflags_true_set:
+            if gameflag in MM3_GAMEFLAG_TO_QUEST_MAP:
+                quest_state_update = MM3_GAMEFLAG_TO_QUEST_MAP[gameflag]
+                print(f"for gameflag {gameflag}: quest_state_update {quest_state_update}")
+                party_state.quest_bits[quest_state_update[0]] = quest_state_update[1]
+                updated_quest_bits[quest_state_update[0]] = quest_state_update[1]
+
+        updated_quest_bit_bytes = pack_bitfield_compact_msb(updated_quest_bits)
+        print(f"updated_quest_bit_bytes {len(updated_quest_bit_bytes)} {updated_quest_bit_bytes}")
+        #0x2E3:0x2EB
+
+
+        return updated_autonote_bytes, updated_quest_bit_bytes
+
+
+
 
 def parse_characters(chr_data):
+    print("CHARACTER DATA")
     for slot in range(30):
         character = chr_data[slot*354:slot*354+354]
         name = character[0:16]
@@ -155,9 +261,8 @@ def parse_characters(chr_data):
         # awards_bits = unpack_bitfield_msb(awards)
         # awards_true_set = [index for index, value in enumerate(awards_bits) if value]
         awards_list = unpack_nibbles(awards)
-        print(f"len(awards_list): {len(awards_list)}")
+        # print(f"len(awards_list): {len(awards_list)}")
         awards_true_set = [index for index, value in enumerate(awards_list) if value]
-
         print(f"character in slot {slot}:")
         print(f"name: {name}")
         print(f"awards: {awards_true_set}")
@@ -165,147 +270,104 @@ def parse_characters(chr_data):
         #23: falcons guild???
         #15, 155: ravens guild, albatross guild???
 
+def parse_cc_header(cc_data):
+    #2b file count; uint16
+    #toc entry / file descriptors:
+    #8b * file count
+        #Offset Data Type   Description
+        # 0x00    uint16  File ID
+        # 0x02    uint24  File offset
+        # 0x05    uint16  File length
+        # 0x07    byte    Padding byte
+
+    num_files = struct.unpack("<H", cc_data[0:2])[0]
+    toc_len = num_files*8
+    print(f"SAV CC file num_files: {num_files}")
+    print(f"SAV CC file toc_len: {toc_len}")
+
+    return toc_len+2
+
+
+def copy_data(from_data, to_data, start, end):
+    print(f"copy_data {len(from_data)} {len(to_data)} [{start}, {end}]")
+    out_data = bytearray(to_data)
+    move_data = from_data[start:end]
+    out_data[start:end] = move_data
+    return out_data
+
 
 
 if __name__ == "__main__":
 
     aparser = argparse.ArgumentParser(description="Inspect Xeen save file data")
     aparser.add_argument("file", help="The .SAV or .CUR file to inspect")
+    aparser.add_argument("-m", help="Create modified file with updated status bits", action='store_true')
+    aparser.add_argument("-mpt", help="Target file to move PARTY to")
+    aparser.add_argument("-mdt", help="Target file to move DATA to")
     args = aparser.parse_args()
 
     with open(args.file, "rb") as f:
         fdata = f.read()
 
-        sav_cc_chr_offset = 3649
+        file_data_start = parse_cc_header(fdata)
+        file_pointer = file_data_start
+        print(f"file_pointer: {file_pointer}")
+
+        name_entry = fdata[file_pointer:file_pointer+31]
+        file_pointer+=31
+        print(f"file name: {name_entry}")
+        print(f"file_pointer: {file_pointer}")
+
+        # sav_cc_chr_offset = 3649
         sav_cc_chr_len = 354 * 30
-        chr_data = fdata[sav_cc_chr_offset:sav_cc_chr_offset+sav_cc_chr_len]
+        chr_data = fdata[file_pointer:file_pointer+sav_cc_chr_len]
+        file_pointer+=sav_cc_chr_len
         parse_characters(chr_data)
+        print(f"file_pointer: {file_pointer}")
 
-
-
-
-
-
-        sav_cc_pty_offset = 14269
+        sav_cc_pty_offset = file_pointer
+        # sav_cc_pty_offset = 14269
         sav_cc_pty_len = 1528
-    
-        pty_data = fdata[sav_cc_pty_offset:sav_cc_pty_offset+sav_cc_pty_len]
-        # print(f"{len(pty_data)}")
-        # print(f"{pty_data}")
+        pty_data = fdata[file_pointer:file_pointer+sav_cc_pty_len]
+        file_pointer+=sav_cc_pty_len
 
-        # Point this directly to an unpacked/temporary live save file instance
-        pty_parser = XeenPtyParser(pty_data)
-        
-        try:
-            party_state = pty_parser.parse()
-            # print(f"Loaded Save String: {party_state.save_name}")
-            print(f"Current Position  : Map {party_state.current_map_id} at ({party_state.party_x}, {party_state.party_y})")
-            # print(f"Active Roster IDs : {party_state.active_party_slots}")
-            # print(f"Autonote #4 Status: {party_state.autonotes_bits[4]}")
+        pty_parser = XeenPtyParser(pty_data)        
+        party_state = pty_parser.parse()
+        pty_parser.print_party_summary(party_state)
+        print(f"file_pointer: {file_pointer}")
 
-            # print(f"quest_bits ({len(party_state.quest_bits)}): {party_state.quest_bits}")
-            # print(f"autonotes_bits ({len(party_state.autonotes_bits)}): {party_state.autonotes_bits}")
-            # print(f"gameflag_bits ({len(party_state.gameflag_bits)}): {party_state.gameflag_bits}")
+        if args.mpt:
+            with open(args.mpt, "rb+") as target:
+                tdata = target.read()
+                # print(f"{args.t} len {len(tdata)}")
+                new_data = copy_data(fdata, tdata, file_data_start, file_pointer)
+                target.seek(0)
+                target.write(new_data)
+                target.truncate()
+                print(f"wrote to file {args.mpt}")
 
-            gameflags_true_set = [index for index, value in enumerate(party_state.gameflag_bits) if value]
-            print(f"gameflags_true_set: {gameflags_true_set}")
-
-            autonotes_true_set = [index for index, value in enumerate(party_state.autonotes_bits) if value]
-            print(f"autonotes_true_set: {autonotes_true_set}")
-
-            questbits_true_set = [index for index, value in enumerate(party_state.quest_bits) if value]
-            print(f"questbits_true_set: {questbits_true_set}")
-
-            #set autonote based on current mapid (for coraks note)
-            if party_state.current_map_id < 65:
-                # TODO handle remapped levels like town
-                print(f"setting autonote to {party_state.current_map_id}")
-                # pty_parser.write_autonote(autonote_index=party_state.current_map_id, state=True)
-                party_state.autonotes_bits = [False]*len(party_state.autonotes_bits)
-                party_state.autonotes_bits[party_state.current_map_id] = True
-            
-            updated_autonote_bytes = pack_bitfield_compact_msb(party_state.autonotes_bits)
-            print(f"updated_autonote_bytes {len(updated_autonote_bytes)} {updated_autonote_bytes}")
-            #0x2D3:0x2E3
+        if args.mdt:
+            with open(args.mdt, "rb+") as target:
+                tdata = target.read()
+                # print(f"{args.t} len {len(tdata)}")
+                new_data = copy_data(fdata, tdata, file_pointer, len(fdata))
+                target.seek(0)
+                target.write(new_data)
+                target.truncate()
+                print(f"wrote to file {args.mdt}")
 
 
-            # 01 Take the precious sea shells to the nymph Athea, and become enchanted by her siren's song.
-            # 02 Present the Pirate Queen with Pearls to pacify her plunderous heart.
-            # 03 Bring love to Princess Trueberry that she may once again step beyond the darkend walls of her loveless shack.
-            # 04 Return the relic to the shrine of Icarus to resurrect the lonely Unicorn.
-            # 05 Set free the soul of Greywind the Illusionist from the stone walls of the ruined castle.
-            # 06 Release the spirit of Blackwind the Spellbinder from it's captivity in the broken keep.
-            # 07 Return the Artifacts of Good to their rightful seat in castle Whiteshield.
-            # 08 Return the Artifacts of Neutrality to their rightful seat in castle Bloodreign.
-            # 09 Return the Artifacts of Evil to their rightful seat in castle Dragontooth.
-            # 10 Render the Ultimate Power Orbs unto Zealot, King Righteous, and give strength to the hands of the good.
-            # 11 Render the Ultimate Power Orbs unto Tumult, King Chaotic, and give strength to the hands of the neutral.
-            # 12 Render the Ultimate Power Orbs unto Malefactor, King Malicious, and give strength to the hands of the evil.
-            # 13 Find the final steps to your destiny below the Ancient Pyramids.
-            # 14 Find Morphose, the Protector of Fountain Head, and release him from his magic cell.
-            # 15 Deliver five Silver Skulls to Kranion, in Fountain Head, so he may finish his shrine to the Forces.
-            # 16 Seek Brother Beta in the cavern under Baywatch.
-            # 17 Seek Brother Gamma in Wildabar.
-            # 18 Seek Brother Delta in the cavern below Wildabar
-            # 19 Seek Brother Zeta in Arachnoid Cavern
+        if args.m:
+            updated_autonote_bytes, updated_quest_bit_bytes = pty_parser.update_status_bits(party_state)
 
-            #set questbits based on mapping of gameflags set by mm3
-            MM3_GAMEFLAG_TO_QUEST_MAP = {
-                1:(16, True),#baywatch; alpha->beta; START
-                2:(17, True),#baywatch cavern; beta->gamma; START
-                3:(18, True),#wildabar; gamma->delta; START
-
-                4:(15, True),#fountain head; silver skulls; START
-                5:(15, True),#fountain head; silver skulls; PROGRESS
-                6:(15, True),#fountain head; silver skulls; PROGRESS
-                7:(15, True),#fountain head; silver skulls; PROGRESS
-                8:(15, True),#fountain head; silver skulls; PROGRESS
-                9:(15, False),#fountain head; silver skulls; END
-
-                10:(19, True), #wildabar cavern; delta->zeta; START
-
-                #13 wildabar cavern; pull level, not a quest?
-
-                # 120:(),orc cart in A1; not a quest
-                #...
-
-                # 132:(),?mountains map 47
-
-                160:(4, True),#A2; unicorn; START
-
-                170:(14, True),#fountain head(NEW GAME/DEFAULT); Morphose; START
-                171:(14, False),#fountain head; Morphose; END
-
-
-            }
-
-            updated_quest_bits = [False]*len(party_state.quest_bits)
-
-            for gameflag in gameflags_true_set:
-                if gameflag in MM3_GAMEFLAG_TO_QUEST_MAP:
-                    quest_state_update = MM3_GAMEFLAG_TO_QUEST_MAP[gameflag]
-                    print(f"for gameflag {gameflag}: quest_state_update {quest_state_update}")
-                    party_state.quest_bits[quest_state_update[0]] = quest_state_update[1]
-                    updated_quest_bits[quest_state_update[0]] = quest_state_update[1]
-
-            updated_quest_bit_bytes = pack_bitfield_compact_msb(updated_quest_bits)
-            print(f"updated_quest_bit_bytes {len(updated_quest_bit_bytes)} {updated_quest_bit_bytes}")
-            #0x2E3:0x2EB
-
-            with open(args.file+"m", "wb") as outfile:
+            modified_file = args.file+"m"
+            with open(modified_file, "wb") as outfile:
                 dest_buffer = bytearray(fdata)
                 dest_buffer[sav_cc_pty_offset+0x2D3:sav_cc_pty_offset+0x2E3] = updated_autonote_bytes
                 dest_buffer[sav_cc_pty_offset+0x2E3:sav_cc_pty_offset+0x2EB] = updated_quest_bit_bytes
                 outfile.write(dest_buffer)
+                print(f"wrote to file {modified_file}")
 
 
-
-            # Automator Action: If map conditions align, trigger target note automatically
-            # if party_state.current_map_id == 15 and not party_state.autonotes_bits[4]:
-            #     pty_parser.write_autonote(autonote_index=4, state=True)
-            #     print("Successfully flipped Note 4 to Active State via binary slice manipulation!")
-                
-        except FileNotFoundError:
-            print("Waiting for save pipeline initialization container...")
 
 

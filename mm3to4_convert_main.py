@@ -928,8 +928,10 @@ MM3_FACE_SPRITE_NAMES = [
 	'elf1.fac','elf2.fac','elf3.fac','elf4.fac',
 	'gnome1.fac','gnome2.fac','gnome3.fac','gnome4.fac',
 	'horc1.fac','horc2.fac','horc3.fac','horc4.fac',
+
 	'hire0.fac','hire1.fac','hire2.fac','hire3.fac',
-	'hire4.fac','hire5.fac','hire6.fac','hire7.fac','hire8.fac','hire9.fac']
+	'hire4.fac','hire5.fac','hire6.fac','hire7.fac',
+	'hire8.fac','hire9.fac']
 
 MM3_ICONS = [
 	'bank.icn','bank2.icn',
@@ -964,6 +966,7 @@ MM3_ICONS = [
 	'train.icn',
 	'view.icn'
 ]
+# MM3_ICONS = []
 
 
 def convert_2d_graphics(in_dir, out_dir):
@@ -977,6 +980,12 @@ def convert_2d_graphics(in_dir, out_dir):
 		mm4_hash = hash_filename(mm4_fac)
 		convert_sprite_3to4(in_dir+"/"+mm3_fac, out_dir+"/"+mm4_fac)
 		copy_file(out_dir+"/"+mm4_fac, out_dir+"/"+mm4_hash)
+
+	mm3_fac = "dse.fac" 
+	mm4_fac = "DSE.FAC" 
+	mm4_hash = hash_filename(mm4_fac)
+	convert_sprite_3to4(in_dir+"/"+mm3_fac, out_dir+"/"+mm4_fac)
+	copy_file(out_dir+"/"+mm4_fac, out_dir+"/"+mm4_hash)
 
 	#npc faces (44)
 	for i in range(30):
@@ -1007,6 +1016,18 @@ def convert_2d_graphics(in_dir, out_dir):
 	mm4_hash = hash_filename(mm4_back)
 	copy_file(in_dir+"/"+mm3_back, out_dir+"/"+mm4_back)
 	copy_file(out_dir+"/"+mm4_back, out_dir+"/"+mm4_hash)
+
+	mm3_create = "create.raw" 
+	mm4_create = "CREATE.RAW" 
+	mm4_hash = hash_filename(mm4_create)
+	copy_file(in_dir+"/"+mm3_create, out_dir+"/"+mm4_create)
+	copy_file(out_dir+"/"+mm4_create, out_dir+"/"+mm4_hash)
+
+	mm3_dice = "dice.vga"
+	mm4_dice = "DICE.VGA"
+	mm4_hash = hash_filename(mm4_dice)
+	convert_sprite_3to4(in_dir+"/"+mm3_dice, out_dir+"/"+mm4_dice)
+	copy_file(out_dir+"/"+mm4_dice, out_dir+"/"+mm4_hash)
 
 
 
@@ -1122,6 +1143,7 @@ def convert_all(in_dir, out_dir):
 	convert_meta_data(in_dir, out_dir)
 	convert_2d_graphics(in_dir, out_dir)
 	convert_media(in_dir, out_dir)
+	print("all done!")
 
 
 

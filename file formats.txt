@@ -7,6 +7,7 @@ Credits/References (standing on the shoulders of giants):
 - Cedric Busch http://games.playazlounge.net/
 - ReWolf https://blog.rewolf.pl/blog/?p=1202
 - https://xeenmusic.com/
+- https://www.cthscr.ru/mmmerge/spells-mm.html
 
 
 
@@ -314,18 +315,20 @@ Gameplay items:
 -cyclops cavern - no objects/ceiling ✅
 -healthbar/attack icn sprite randomly incorrect ⚠️
 -wildabar cavern skull monster freeze on attack ✅
+-snow ground sprite show not showing; instead road is showing (frozen isles) ⚠️
 
 
 Crashes:
--town portal spell: error drawing sprite in window 0001 handle 0041 frame 0168
+-town portal spell not going to correct maps
 
 
 Script bugs:
 -freeze drinking from well A1(4,7); 'your defensive skill has been magically augmented' ⚠️
 -freeze drinking from well A1; 'your radiance has been magically enhanced' ⚠️
 -freeze on magic crystal ball -> a magical feeling overcomes you! ⚠️
--crash in castle whiteshield(11,8) -> jester town event? (can bypass by walking backwards) ⚠️
+-crash in castle whiteshield(11,8) -> jester town event? (can bypass by walking backwards) ✅
 -crash/freeze in castle whiteshield pow61.icn after opening chest ⚠️
+-crash/freeze on gongs in B1 ⚠️
 
 
 

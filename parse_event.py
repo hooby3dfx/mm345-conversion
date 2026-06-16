@@ -157,6 +157,7 @@ def convert_3to4(event_line):
         #mm3 display 0x01 -> mm4 DisplayBottom 0x29
         event_line.opcode = 0x29
         modified = True
+
     elif event_line.opcode==0x07 or event_line.opcode==0x1F:
         #for teleport - if target is maze 1, change to maze 29 etc
         tele_dest = event_line.raw_args[0]
@@ -166,6 +167,7 @@ def convert_3to4(event_line):
             # print(f"remapping teleport from {tele_dest} to {REMAP_MAZES[tele_dest]}")
             event_line.raw_args = bytes(args_copy)
             modified = True
+
     elif event_line.opcode==0x08:
         #mm3 if type 0x5F bypass
         if event_line.raw_args[0]==0x5F:
@@ -173,6 +175,7 @@ def convert_3to4(event_line):
             event_line.opcode = 0x00
             # event_line.raw_args = bytearray()
             modified = True
+
     elif event_line.opcode==0x0C: #takeorgive
         #for awards - guild membership
         givetype = event_line.raw_args[len(event_line.raw_args)-2]
@@ -200,6 +203,7 @@ def convert_3to4(event_line):
             args_copy[0] = 0x06
             event_line.raw_args = bytes(args_copy)
             modified = True
+
     elif event_line.opcode==0x11:
         #MM3 ID type shop (0:bank/1:blacksmith/2:magicguild/3:inn/4:pub/5:temple/6:training)
         #mm4:
@@ -227,9 +231,14 @@ def convert_3to4(event_line):
         #5->4
         #6->5
         #jester in here too
-        if event_line.raw_args[0] > 3:
+        if event_line.raw_args[0] > 3 and event_line.raw_args[0] < 8:
             event_line.raw_args = [event_line.raw_args[0]-1]
             modified = True
+        elif event_line.raw_args[0] == 8:
+            print(f"Jester event")
+            event_line.opcode = 0x00
+            modified = True
+
     elif event_line.opcode==0x14:
         givetype1 = event_line.raw_args[0]
         giveitem1 = event_line.raw_args[1]
@@ -241,12 +250,26 @@ def convert_3to4(event_line):
             modified = True
         elif givetype1==0x14:
             print(f"GAME BIT GIVEN, item: {giveitem1}")
+
     elif event_line.opcode==0x1B:
         if event_line.raw_args[0]==0x54 and len(event_line.raw_args)==2:
             #temp workaround for setvar script interruption
-            event_line.raw_args = [0x00, 0x00]
-            modified = True
+            # event_line.raw_args = [0x00, 0x00]
+            
+            #replace with NOP instead?
+            # event_line.opcode = 0x00
 
+            args_copy = bytearray(event_line.raw_args)
+            if event_line.raw_args[1]==1:
+                args_copy[1]=2
+                event_line.raw_args = bytes(args_copy)
+                modified = True
+            elif event_line.raw_args[1]==2:
+                args_copy[1]=1
+                event_line.raw_args = bytes(args_copy)
+                modified = True
+
+            
 
 
     
@@ -302,9 +325,11 @@ if __name__ == "__main__":
     # parse_evt_file("/Users/bbarnes/Games/dosc/wox/ext_cld_sav/0xB8D5.ccx")
 
 
-    parse_evt_file('mm3out/MAZE01.EVT')
+    # parse_evt_file('mm3out/MAZE01.EVT')
     # parse_evt_file('mm3out/MAZE02.EVT')
-    parse_evt_file('mm3out/MAZE41.EVT')
+
+    # parse_evt_file('mm3out/MAZE41.EVT')
+    parse_evt_file('mm3out/MAZE47.EVT')
 
     # parse_evt_file('mm3out/MAZE16.EVT')
 
