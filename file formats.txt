@@ -8,6 +8,8 @@ Credits/References (standing on the shoulders of giants):
 - ReWolf https://blog.rewolf.pl/blog/?p=1202
 - https://xeenmusic.com/
 - https://www.cthscr.ru/mmmerge/spells-mm.html
+- https://github.com/ValleyBell/MidiConverters/blob/master/nwc12mid.c
+
 
 
 
@@ -318,17 +320,36 @@ Gameplay items:
 -snow ground sprite show not showing; instead road is showing (frozen isles) ⚠️
 
 
-Crashes:
--town portal spell not going to correct maps
+Crashes (DOS):
+-town portal spell not going to correct maps ⚠️
+1 fountain head -> crash (window 1 handle 41 frame 168) expecting 29
+2 baywatch -> halls of insanity (maze#19) expecting 31
+3 wildabar -> crash (maze0000.mob) expecting 33
+4 swamp town -> fountain head cavern (maze#06) expecting 35
+5 blistering heights -> mm3 maze98 (maze#98) expecting 37
+is this related to mirror text entries? and why does darkmirr.txt have invalid maze ids??
 
 
-Script bugs:
+Crashes (ScummVM):
+-entering temple of moo:
+[2026-06-23 17:58:01] Opening hashed: aaze0016.hed
+[2026-06-23 17:58:01] Opening hashed: maze0078.dat
+[2026-06-23 17:58:01] Opening hashed: maze0078.mob
+[2026-06-23 17:58:01] Opening hashed: maze0077.dat
+[2026-06-23 17:58:01] Opening hashed: maze0077.mob
+Assertion failed: (idx < _size), function operator[], file array.h, line 275.
+
+
+
+
+Script bugs (DOS):
 -freeze drinking from well A1(4,7); 'your defensive skill has been magically augmented' ⚠️
 -freeze drinking from well A1; 'your radiance has been magically enhanced' ⚠️
 -freeze on magic crystal ball -> a magical feeling overcomes you! ⚠️
 -crash in castle whiteshield(11,8) -> jester town event? (can bypass by walking backwards) ✅
 -crash/freeze in castle whiteshield pow61.icn after opening chest ⚠️
 -crash/freeze on gongs in B1 ⚠️
+
 
 
 

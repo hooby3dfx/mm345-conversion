@@ -148,8 +148,6 @@ class XeenPtyParser:
         print("PARTY DATA")
         print(f"Current Position  : Map {party_state.current_map_id} at ({party_state.party_x}, {party_state.party_y})")
 
-    def update_status_bits(self, party_state):
-        print("UPDATING DATA")
 
         # print(f"quest_bits ({len(party_state.quest_bits)}): {party_state.quest_bits}")
         # print(f"autonotes_bits ({len(party_state.autonotes_bits)}): {party_state.autonotes_bits}")
@@ -163,6 +161,16 @@ class XeenPtyParser:
 
         questbits_true_set = [index for index, value in enumerate(party_state.quest_bits) if value]
         print(f"questbits_true_set: {questbits_true_set}")
+
+
+    def update_status_bits(self, party_state):
+        print("UPDATING DATA")
+
+        gameflags_true_set = [index for index, value in enumerate(party_state.gameflag_bits) if value]
+
+        autonotes_true_set = [index for index, value in enumerate(party_state.autonotes_bits) if value]
+
+        questbits_true_set = [index for index, value in enumerate(party_state.quest_bits) if value]
 
         #set autonote based on current mapid (for coraks note)
         if party_state.current_map_id < 65:
@@ -220,10 +228,14 @@ class XeenPtyParser:
 
             # 120:(),orc cart in A1; not a quest
             #...
-
             # 132:(),?mountains map 47
 
+            #145-153: love?
+            #157,159
             160:(4, True),#A2; unicorn; START
+
+
+            #163, 164? castle whiteshield
 
             170:(14, True),#fountain head(NEW GAME/DEFAULT); Morphose; START
             171:(14, False),#fountain head; Morphose; END

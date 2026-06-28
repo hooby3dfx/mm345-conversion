@@ -885,6 +885,19 @@ def convert_meta_data(in_dir, out_dir):
 			#index (i+25); x; y; facing dir
 	mirror_map = [
 		# TODO proper x,y coords
+
+		# ("TEST01", 1),
+		# ("TEST02", 2),
+		# ("TEST03", 3),
+		# ("TEST04", 4),
+		# ("TEST05", 5),
+		# ("TEST06", 6),
+		# ("TEST07", 7),
+		# ("TEST08", 8),
+		# ("TEST09", 9),
+		# ("TEST10", 10),
+		# ("TEST11", 11),
+
 		("HOME", 29),
 		("SEADOG", 31),
 		("FREEMAN", 33),
@@ -1132,6 +1145,15 @@ def convert_media(in_dir, out_dir):
 	# mm4_hash = hash_filename(mm4_death)
 	# convert_sprite_3to4(in_dir+"/"+mm3_death, out_dir+"/"+mm4_death)
 	# copy_file(out_dir+"/"+mm4_death, out_dir+"/"+mm4_hash)	
+
+
+	#experimental music file
+	mm3_music = "cityxt.m"
+	mm4_music = "CITYXT.M" #"CAVERN3A.M"
+	mm4_hash = hash_filename(mm4_music)
+	copy_file(in_dir+"/"+mm3_music, out_dir+"/"+mm4_music)
+	copy_file(out_dir+"/"+mm4_music, out_dir+"/"+mm4_hash)
+
 
 
 
