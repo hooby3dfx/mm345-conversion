@@ -13,6 +13,7 @@ from mm4_sprite_merge3 import merge_mm4_optimized
 from hashFileName import hash_file_name_mm4
 from sprite_inspect import inspect_sprite
 from parse_monsters import parse_monsters
+from mm3to4_music_convert4 import convert_m_file
 
 '''
 OK so here we go.
@@ -1148,11 +1149,92 @@ def convert_media(in_dir, out_dir):
 
 
 	#experimental music file
-	mm3_music = "cityxt.m"
-	mm4_music = "CITYXT.M" #"CAVERN3A.M"
-	mm4_hash = hash_filename(mm4_music)
-	copy_file(in_dir+"/"+mm3_music, out_dir+"/"+mm4_music)
-	copy_file(out_dir+"/"+mm4_music, out_dir+"/"+mm4_hash)
+	# mm3_music = "cityxt.m"
+	# mm4_music = "CITYXT.M" #"CAVERN3A.M"
+	# mm4_hash = hash_filename(mm4_music)
+	# copy_file(in_dir+"/"+mm3_music, out_dir+"/"+mm4_music)
+	# copy_file(out_dir+"/"+mm4_music, out_dir+"/"+mm4_hash)
+
+	#mm3:
+	# bank.m
+	# caves.m
+	# city.m
+	# combat.m
+	# cyber.m
+	# dungeon.m
+	# eerie.m
+	# grounds.m
+	# guild.m
+	# honky.m
+	# medieval.m
+	# mm3theme.m
+	# temples.m
+	# towninn.m
+	# venture.m
+
+	#darkside:
+	# OUTDAY2.M		0x8D5B	3807	
+	# CSTL1REV.M		0x117E	1742	
+	# CAVERN1.M		0x4ADD	1421	
+	# TOWNDAY1.M		0x8C80	3155	
+	# NEWBRIGH.M		0xB051	5066	
+	# CSTL2REV.M		0x317E	1537	
+	# CSTL3REV.M		0x517E	3017	
+	# OUTDAY4.M		0x8D63	6132	
+	# BIGTHEME.M		0xA864	27328	
+	# CANTHEME.M		0x206A	30901	
+	# OUTNGHT2.M		0x4AE9	8777	
+	# TWNWLK.M		0x98DF	5799	
+	# OUTNGHT4.M		0x4AF1	8497	
+	# DNGON1.M		0xC5AE	4412	
+	# OUTNGHT1.M		0x4AE5	7675	
+	# GUILD.M		0x73BA	2361	
+	# TWNNITEB.M		0x15F0	4909	
+	# BANK.M		0x1194	3241	
+	# DNGON2.M		0xC5B2	4112	
+	# TEMPLE.M		0x73D7	3640	
+	# DNGON3.M		0xC5B6	6884	
+	# TRAINING.M		0x770E	4625	unused in final game (SMITH.M used instead)
+	# TAVERN.M		0xC24C	3283	
+	# TWNNITEA.M		0x15EC	14592	
+	# CAVERN2.M		0x4AE1	1899	
+	# CAVERN3A.M		0x8D2E	1690	
+	# SMITH.M		0xB6C9	3044	used for Training Grounds in final game
+	# DAYDESRT.M		0x658D	7675	
+	# SCIFI1.M		0x5A66	2395	unused in final game
+	# SCIFI2.M		0x5A6A	2487	unused in final game
+	# OUTDAY1.M		0x8D57	4620	
+	#SF05.M
+	#SF09.M
+
+	music_map = [
+		("bank.m", "BANK.M"),
+		("caves.m", "CAVERN1.M"),
+		("caves.m", "CAVERN2.M"),
+		("caves.m", "CAVERN3A.M"),
+		("city.m", "TWNWLK.M"),
+		# ("combat.m", "SMITH.M"),
+		# ("cyber.m", "BANK.M"),
+		("dungeon.m", "DNGON1.M"),
+		("dungeon.m", "DNGON2.M"),
+		("dungeon.m", "DNGON3.M"),
+		# ("eerie.m", "BANK.M"),
+		("grounds.m", "SMITH.M"),
+		("guild.m", "GUILD.M"),
+		("medieval.m", "CSTL1REV.M"),
+		("medieval.m", "CSTL2REV.M"),
+		("medieval.m", "CSTL3REV.M"),
+		("mm3theme.m", "BIGTHEME.M"),
+		("towninn.m", "TAVERN.M"),
+		("temples.m", "TEMPLE.M"),
+		# ("venture.m", "BANK.M"),
+	]
+	for song in music_map:
+		mm3_song = song[0]
+		mm4_song = song[1]
+		mm4_hash = hash_filename(mm4_song)
+		convert_m_file(in_dir+"/"+mm3_song, out_dir+"/"+mm4_song)
+		copy_file(out_dir+"/"+mm4_song, out_dir+"/"+mm4_hash)
 
 
 

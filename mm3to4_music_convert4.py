@@ -31,16 +31,18 @@ def transcode_step_by_step(mm3_data):
             xeen_patch = bytearray(26)
             
             # Global Metadata Block
-            xeen_patch[0] = 0x01        # Voice Type Flags (0x01 = Single OPL voice active)
-            xeen_patch[1] = 0x00        # Fine Tuning / Detune (0 = Neutral)
-            xeen_patch[2] = 0x00        # Pan (0 = Centered/Default layout)
-            xeen_patch[3] = 0x7F        # Volume Scaling Factor (Full dynamic range)
+            # xeen_patch[0] = 0x01        # Voice Type Flags (0x01 = Single OPL voice active)
+            # xeen_patch[1] = 0x00        # Fine Tuning / Detune (0 = Neutral)
+            # xeen_patch[2] = 0x00        # Pan (0 = Centered/Default layout)
+            # xeen_patch[3] = 0x7F        # Volume Scaling Factor (Full dynamic range)
             
             # Voice 1 Block: Direct copy of the 11 OPL parameters
-            xeen_patch[4:15] = mm3_opl
+            # xeen_patch[4:15] = mm3_opl
             
             # Voice 2 Block: Left as 0x00 (Disabled)
-            xeen_patch[15:26] = mm3_opl
+            # xeen_patch[15:26] = mm3_opl
+            
+            xeen_patch[0:11] = mm3_opl
             
             # --- EMIT TO THE XEEN STREAM ---
             # Xeen uses a clean 0xA0 command flag for instrument changes/definitions
@@ -141,18 +143,19 @@ def transcode_step_by_step(mm3_data):
     return xeen_stream
 
 
+def convert_m_file(in_path, out_path):
 
+    with open(in_path, "rb") as infile:
+        xeen_stream = transcode_step_by_step(infile.read())
 
+        with open(out_path, "wb") as outfile:
+            outfile.write(xeen_stream)
+            print(f"wrote {len(xeen_stream)} bytes to {outfile}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: python this_file.py <mm3_input.m> <mmx_output.m>")
         sys.exit(1)
 
-    with open(sys.argv[1], "rb") as infile:
-        xeen_stream = transcode_step_by_step(infile.read())
-
-        with open(sys.argv[2], "wb") as outfile:
-            outfile.write(xeen_stream)
-            print(f"wrote {len(xeen_stream)} bytes to {outfile}")
+    convert_m_file(sys.argv[1], sys.argv[2])
 
