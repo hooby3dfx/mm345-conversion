@@ -276,6 +276,13 @@ view.icn	icons for char stats screen
 back.raw	mm3 overall in game background
 
 
+Music status:
+OPL-DOS			mostly working, some volume issues
+OPL-ScummVM		""
+MIDI-DOS		perfect? (dosbox default mididevice)
+MIDI-ScummVM	perfect! (MT-32 emulator / rom)
+
+
 
 
 

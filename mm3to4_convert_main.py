@@ -1173,37 +1173,45 @@ def convert_media(in_dir, out_dir):
 	# venture.m
 
 	#darkside:
-	# OUTDAY2.M		0x8D5B	3807	
-	# CSTL1REV.M		0x117E	1742	
-	# CAVERN1.M		0x4ADD	1421	
-	# TOWNDAY1.M		0x8C80	3155	
-	# NEWBRIGH.M		0xB051	5066	
-	# CSTL2REV.M		0x317E	1537	
-	# CSTL3REV.M		0x517E	3017	
-	# OUTDAY4.M		0x8D63	6132	
+	# BANK.M		0x1194	3241	
+
 	# BIGTHEME.M		0xA864	27328	
 	# CANTHEME.M		0x206A	30901	
-	# OUTNGHT2.M		0x4AE9	8777	
-	# TWNWLK.M		0x98DF	5799	
-	# OUTNGHT4.M		0x4AF1	8497	
-	# DNGON1.M		0xC5AE	4412	
-	# OUTNGHT1.M		0x4AE5	7675	
-	# GUILD.M		0x73BA	2361	
-	# TWNNITEB.M		0x15F0	4909	
-	# BANK.M		0x1194	3241	
-	# DNGON2.M		0xC5B2	4112	
-	# TEMPLE.M		0x73D7	3640	
-	# DNGON3.M		0xC5B6	6884	
-	# TRAINING.M		0x770E	4625	unused in final game (SMITH.M used instead)
-	# TAVERN.M		0xC24C	3283	
-	# TWNNITEA.M		0x15EC	14592	
+
+	# CAVERN1.M		0x4ADD	1421	
 	# CAVERN2.M		0x4AE1	1899	
 	# CAVERN3A.M		0x8D2E	1690	
-	# SMITH.M		0xB6C9	3044	used for Training Grounds in final game
+	# CSTL1REV.M		0x117E	1742	
+	# CSTL2REV.M		0x317E	1537	
+	# CSTL3REV.M		0x517E	3017	
 	# DAYDESRT.M		0x658D	7675	
+	# DNGON1.M		0xC5AE	4412	
+	# DNGON2.M		0xC5B2	4112	
+	# DNGON3.M		0xC5B6	6884	
+	# GUILD.M		0x73BA	2361	
+
+	# NEWBRIGH.M		0xB051	5066	
+
+	# OUTDAY1.M		0x8D57	4620	
+	# OUTDAY2.M		0x8D5B	3807	
+	# OUTDAY4.M		0x8D63	6132	
+	# OUTNGHT1.M		0x4AE5	7675
+	# OUTNGHT2.M		0x4AE9	8777	
+	# OUTNGHT4.M		0x4AF1	8497	
+
+	# SMITH.M		0xB6C9	3044	used for Training Grounds in final game
+	# TAVERN.M		0xC24C	3283	
+	# TEMPLE.M		0x73D7	3640	
+
+	# TOWNDAY1.M		0x8C80	3155	
+	# TWNNITEA.M		0x15EC	14592	
+	# TWNNITEB.M		0x15F0	4909	
+	# TWNWLK.M		0x98DF	5799	
+
+	# TRAINING.M		0x770E	4625	unused in final game (SMITH.M used instead)
+
 	# SCIFI1.M		0x5A66	2395	unused in final game
 	# SCIFI2.M		0x5A6A	2487	unused in final game
-	# OUTDAY1.M		0x8D57	4620	
 	#SF05.M
 	#SF09.M
 
@@ -1223,12 +1231,11 @@ def convert_media(in_dir, out_dir):
 		("guild.m", "GUILD.M"),
 		("medieval.m", "TWNWLK.M"),
 		("medieval.m", "TOWNDAY1.M"),
-		("medieval.m", "TWNWLK.M"),
 		# ("medieval.m", "CSTL1REV.M"),
 		# ("medieval.m", "CSTL2REV.M"),
 		# ("medieval.m", "CSTL3REV.M"),
 		("mm3theme.m", "BIGTHEME.M"),
-		("mm3theme.m", "NEWBRIGH.M"),	#NEWBRIGH is used in town and main menu...	
+		("venture.m", "NEWBRIGH.M"),	#NEWBRIGH is used in town and main menu...	
 		("towninn.m", "TAVERN.M"),
 		("temples.m", "TEMPLE.M"),
 		("venture.m", "OUTDAY1.M"),

@@ -69,7 +69,7 @@ def transcode_step_by_step(mm3_data):
             
             xeen_cmd.append(cmd)
             xeen_cmd.append(note_payload)
-            xeen_cmd.append(0x00)#midi fade in rate?
+            xeen_cmd.append(0x7F)#midi fade in rate?
             chan_last_note_map[chan] = note_payload
 
             i += 2
