@@ -1212,7 +1212,7 @@ def convert_media(in_dir, out_dir):
 		("caves.m", "CAVERN1.M"),
 		("caves.m", "CAVERN2.M"),
 		("caves.m", "CAVERN3A.M"),
-		("city.m", "TWNWLK.M"),
+		# ("city.m", "BANK.M"),
 		# ("combat.m", "SMITH.M"),
 		# ("cyber.m", "BANK.M"),
 		("dungeon.m", "DNGON1.M"),
@@ -1221,13 +1221,19 @@ def convert_media(in_dir, out_dir):
 		# ("eerie.m", "BANK.M"),
 		("grounds.m", "SMITH.M"),
 		("guild.m", "GUILD.M"),
-		("medieval.m", "CSTL1REV.M"),
-		("medieval.m", "CSTL2REV.M"),
-		("medieval.m", "CSTL3REV.M"),
+		("medieval.m", "TWNWLK.M"),
+		("medieval.m", "TOWNDAY1.M"),
+		("medieval.m", "TWNWLK.M"),
+		# ("medieval.m", "CSTL1REV.M"),
+		# ("medieval.m", "CSTL2REV.M"),
+		# ("medieval.m", "CSTL3REV.M"),
 		("mm3theme.m", "BIGTHEME.M"),
+		("mm3theme.m", "NEWBRIGH.M"),	#NEWBRIGH is used in town and main menu...	
 		("towninn.m", "TAVERN.M"),
 		("temples.m", "TEMPLE.M"),
-		# ("venture.m", "BANK.M"),
+		("venture.m", "OUTDAY1.M"),
+		("venture.m", "OUTDAY2.M"),
+		("venture.m", "OUTDAY4.M"),
 	]
 	for song in music_map:
 		mm3_song = song[0]

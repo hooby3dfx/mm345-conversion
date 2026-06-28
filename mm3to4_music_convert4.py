@@ -5,18 +5,22 @@ import sys
 def transcode_step_by_step(mm3_data):
     mm3_stream = bytearray(mm3_data)
     xeen_stream = bytearray()
+
+    chan_last_note_map = {}
     
     i = 0
     while i < len(mm3_stream):
         cmd = mm3_stream[i]
         cmd_type = cmd & 0xF0
-        print(f"cmd_type {hex(cmd_type)}")
+        chan = cmd & 0x0F
+
+        print(f"cmd_type {hex(cmd_type)} chan {hex(chan)}")
 
         xeen_cmd = bytearray()
         
         # --- COMMAND 0x20: INSTRUMENT DEFINITION ---
         if cmd_type == 0x20:
-            inst_id = cmd & 0x0F
+            # inst_id = cmd & 0x0F
 
             if i + 14 >= len(mm3_stream):
                 print("Error: Truncated MM3 instrument payload at end of stream.")
@@ -41,8 +45,9 @@ def transcode_step_by_step(mm3_data):
             
             # Voice 2 Block: Left as 0x00 (Disabled)
             # xeen_patch[15:26] = mm3_opl
-            
+
             xeen_patch[0:11] = mm3_opl
+            xeen_patch[24] = mt32_inst
             
             # --- EMIT TO THE XEEN STREAM ---
             # Xeen uses a clean 0xA0 command flag for instrument changes/definitions
@@ -64,7 +69,8 @@ def transcode_step_by_step(mm3_data):
             
             xeen_cmd.append(cmd)
             xeen_cmd.append(note_payload)
-            xeen_cmd.append(0x00)
+            xeen_cmd.append(0x00)#midi fade in rate?
+            chan_last_note_map[chan] = note_payload
 
             i += 2
             
@@ -75,7 +81,7 @@ def transcode_step_by_step(mm3_data):
                 payload_size = 2  # 00 ll mm
                 subroutine_pos = struct.unpack('<H', mm3_stream[i+1 : i + payload_size+1])[0]
                 print(f"subroutine_pos {subroutine_pos}")
-                #TODO these will need to be adjusted...
+                #TODO this address will need to be adjusted ... is this used?
                 xeen_cmd.extend(mm3_stream[i : i + payload_size+1])
 
             elif cmd_type == 0x10:   
@@ -84,11 +90,19 @@ def transcode_step_by_step(mm3_data):
 
             elif cmd_type == 0x30: 
                 payload_size = 1  # 30 vv
-                #midi volume - skip
+                #midi volume - (in xeen this is part of cmd 0xA)
+                xeen_cmd.append((0xA0 | chan))
+                xeen_cmd.append(0x00)
+                xeen_cmd.append(mm3_stream[i+1])
 
             elif cmd_type == 0x40: 
                 payload_size = 2  # 40 mm ll
                 xeen_cmd.extend(mm3_stream[i : i + payload_size+1])
+
+            elif cmd_type == 0x50: 
+                payload_size = 0
+                #unknown - skip
+                print(f"unknown cmd 5")
 
             elif cmd_type == 0x60: 
                 payload_size = 1  # 60 pp
@@ -102,7 +116,7 @@ def transcode_step_by_step(mm3_data):
             elif cmd_type == 0x80: 
                 payload_size = 0  # 8# (Standard version is 1 byte total)
                 xeen_cmd.extend(mm3_stream[i : i + payload_size+1])
-                xeen_cmd.append(0x00)
+                xeen_cmd.append(chan_last_note_map[chan])#this is the midi note to stop (...last note?)
 
             elif cmd_type == 0xA0: 
                 payload_size = 1  # A# vv
