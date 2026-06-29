@@ -120,9 +120,10 @@ def transcode_step_by_step(mm3_data):
 
             elif cmd_type == 0xA0: 
                 payload_size = 1  # A# vv
+                #opl volume
                 xeen_cmd.append(cmd)
-                xeen_cmd.append(mm3_stream[i+1])
                 xeen_cmd.append(0x05)
+                xeen_cmd.append(mm3_stream[i+1])
 
             elif cmd_type == 0xB0: 
                 payload_size = 1  # B# vv
