@@ -20,7 +20,6 @@ def transcode_step_by_step(mm3_data):
         
         # --- COMMAND 0x20: INSTRUMENT DEFINITION ---
         if cmd_type == 0x20:
-            # inst_id = cmd & 0x0F
 
             if i + 14 >= len(mm3_stream):
                 print("Error: Truncated MM3 instrument payload at end of stream.")
@@ -30,6 +29,16 @@ def transcode_step_by_step(mm3_data):
             mm3_opl = mm3_stream[i+1:i+12]       # 11 bytes (00 to 0A)
             tandy_env = mm3_stream[i+12:i+14]    # 2 bytes (0B to 0C)
             mt32_inst = mm3_stream[i+14]         # 1 byte (0D)
+
+            print(f"opl instrument chan {chan} op1 level {mm3_opl[1]}")
+            print(f"opl instrument chan {chan} op2 level {mm3_opl[6]}")
+            carrier_ksl = mm3_opl[6] & 0xC0
+            carrier_attenuation = mm3_opl[6] & 0x3F
+            print(f"opl instrument chan {chan} op2 carrier_ksl {carrier_ksl} carrier_attenuation {carrier_attenuation}")
+            boosted_attenuation = int(carrier_attenuation * 0.0)
+            mm3_opl[6] = carrier_ksl | boosted_attenuation
+            print(f"opl instrument chan {chan} op2 level boosted {mm3_opl[6]}")
+
             
             # --- CONSTRUCT THE 26-BYTE XEEN INSTRUMENT PATCH ---
             xeen_patch = bytearray(26)
@@ -50,8 +59,7 @@ def transcode_step_by_step(mm3_data):
             xeen_patch[24] = mt32_inst
             
             # --- EMIT TO THE XEEN STREAM ---
-            # Xeen uses a clean 0xA0 command flag for instrument changes/definitions
-            # along with the target instrument ID
+            # Xeen uses a 0x20 command flag for instrument definitions
             xeen_cmd.append(cmd) #(0x20 | inst_id)
             xeen_cmd.extend(xeen_patch)
             
@@ -123,7 +131,9 @@ def transcode_step_by_step(mm3_data):
                 #opl volume
                 xeen_cmd.append(cmd)
                 xeen_cmd.append(0x05)
-                xeen_cmd.append(mm3_stream[i+1])
+                # xeen_cmd.append(mm3_stream[i+1])
+                xeen_cmd.append(0x00)
+                print(f"opl chan {chan} vol {mm3_stream[i+1]}")
 
             elif cmd_type == 0xB0: 
                 payload_size = 1  # B# vv

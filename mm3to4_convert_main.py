@@ -1221,7 +1221,7 @@ def convert_media(in_dir, out_dir):
 		("caves.m", "CAVERN2.M"),
 		("caves.m", "CAVERN3A.M"),
 		# ("city.m", "BANK.M"),
-		# ("combat.m", "SMITH.M"),
+		# ("combat.m", "SMITH.M"), #arena
 		# ("cyber.m", "BANK.M"),
 		("dungeon.m", "DNGON1.M"),
 		("dungeon.m", "DNGON2.M"),
@@ -1229,15 +1229,16 @@ def convert_media(in_dir, out_dir):
 		# ("eerie.m", "BANK.M"),
 		("grounds.m", "SMITH.M"),
 		("guild.m", "GUILD.M"),
+		# ("honky.m", "GUILD.M"),
 		("medieval.m", "TWNWLK.M"),
 		("medieval.m", "TOWNDAY1.M"),
 		# ("medieval.m", "CSTL1REV.M"),
 		# ("medieval.m", "CSTL2REV.M"),
 		# ("medieval.m", "CSTL3REV.M"),
 		("mm3theme.m", "BIGTHEME.M"),
-		("venture.m", "NEWBRIGH.M"),	#NEWBRIGH is used in town and main menu...	
-		("towninn.m", "TAVERN.M"),
+		("venture.m", "NEWBRIGH.M"),	#NEWBRIGH is used in town AND main menu...	
 		("temples.m", "TEMPLE.M"),
+		("towninn.m", "TAVERN.M"),
 		("venture.m", "OUTDAY1.M"),
 		("venture.m", "OUTDAY2.M"),
 		("venture.m", "OUTDAY4.M"),
