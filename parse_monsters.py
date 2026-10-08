@@ -10,9 +10,9 @@ MONSTER_SPRITES = [
     "pirana", "ranger", "thief", "treeglum", "witch", "robo2", "dthlocus", "archer", "ballface", "barbaran",
     "cleric", "firelzrd", "firemon", "gargoyle", "ghost", "lizard", "sonicnja", "beholder", "cris", "paladin",
     "pegasus", "reaper", "sorc", "lich", "shield", "troll", "demon", "dino", "robo", "blknight",
-    "martface", "mummy", "powsorc", "cataplr", "undragon", "cyclop", "devil", "grndrgn", "wizard", "worm",
+    "martface", "mummy", "powsorc", "cataplr", "undragon", "cyclop", "devil", "grndrgn", "knight", "wizard", "worm",
     "vampire", "werewolf", "termnatr", "hydra", "roc", "kudo", "medusa", "minotaur", "octobest", "draglord",
-    "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10",
+    "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9",
 ]
 
 MONSTER_NAMES = [
@@ -24,7 +24,7 @@ MONSTER_NAMES = [
     'Cleric of Moo','Fire Lizard','Fire Stalker','Gargoyle','Ghost','Draconi','Sonic Ninja','Evil Eye',
     'Guardian','Paladin','Dark Pegasus','Reaper','Sorcerer','Lich','Spirit Shield','Troll',
     'Major Demon','Dinosaur','ED-409','Black Knight','Death Agent','Mummy','Priest of Moo','Toxic Worm',
-    'Dragon Worm','Cyclops','Major Devil','Green Dragon','Jouster','Death Snake','Vampire','Werewolf',
+    'Dragon Worm','Cyclops','Major Devil','Green Dragon','Jouster','Wizard','Death Snake','Vampire','Werewolf',
     'Terminator','Great Hydra','Vulture Roc','Kudo Crab','Medusa','Minotaur','Octobeast','Dragon Lord',
     'Rat Overlord','Mummy King','Cyclops King','Minotaur King','Vampire King','Moo Master','Top Jouster','Eye Master','Cult Leader'
 ]
