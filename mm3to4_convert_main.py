@@ -289,7 +289,7 @@ MM3_MON_SPRITE_NAMES = [
 	'demon','dino','robo','blknight','martface','mummy','powsorc','cataplr',
 	'undragon','cyclop','devil','grndrgn','knight','wizard','worm','vampire','werewolf',
 	'termnatr','hydra','roc','kudo','medusa','minotaur','octobest','draglord',
-	'rat','mummy','cyclop','minotaur','vampire','powsorc','knight','beholder','cobra',]#TODO last 9 reuse sprites
+	'rat','mummy','cyclop','minotaur','vampire','powsorc','knight','beholder','cobra',]# last 9 reuse sprites
 
 
 def convert_sprites(in_dir, out_dir):

@@ -3,6 +3,8 @@
 #cc file "build" script
 output_dir=mm3to4_out
 repack_dir=wipmm5to3repack #or wipmm4to3repack
+mmx_source_dir=ext_darkw
+mm3_source_dir=mm3out
 base_game=DARK #XEEN or DARK
 first_level=29
 clean_slate=1
@@ -14,12 +16,12 @@ if [ $clean_slate -gt 0 ]; then
 
 	echo clean slating $repack_dir
 	rm -rf $repack_dir
-	cp -r ext_darkw $repack_dir
+	cp -r $mmx_source_dir $repack_dir
 fi
 
 #do the file conversion:
 echo doing file conversion
-python3 mm3to4_convert_main.py mm3out $output_dir > mm3tox_convert_main_log.txt
+python3 mm3to4_convert_main.py $mm3_source_dir $output_dir > mm3tox_convert_main_log.txt
 
 #temp workaround for maze29 -> maze129
 # mv $output_dir/MAZE00${first_level}.DAT $output_dir/MAZEX1${first_level}.DAT

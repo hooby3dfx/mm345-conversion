@@ -252,6 +252,7 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 						mm4_objects.extend([ox, oy, oid, 0x01])
 				else:
 					if oid<16: #and ox<16 and oy<16:
+						#TODO handle cases like map1 rat overlord with oid 165
 						mm4_monsters.extend([ox, oy, oid, 0x00])
 
 
@@ -275,7 +276,7 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 
 if __name__ == "__main__":
 
-	# parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
+	parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
@@ -291,5 +292,5 @@ if __name__ == "__main__":
 	# parse_mm3_mob("mm3_default.sav-files/MAZE42.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
-	parse_mm3_mob("mm3_default.sav-files/MAZE11.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE11.MOB")
 

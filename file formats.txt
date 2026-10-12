@@ -338,7 +338,7 @@ is this related to mirror text entries? and why does darkmirr.txt have invalid m
 
 
 Crashes (ScummVM):
--entering temple of moo:
+-entering temple of moo: ✅
 [2026-06-23 17:58:01] Opening hashed: aaze0016.hed
 [2026-06-23 17:58:01] Opening hashed: maze0078.dat
 [2026-06-23 17:58:01] Opening hashed: maze0078.mob
