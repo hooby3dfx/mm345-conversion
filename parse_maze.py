@@ -97,23 +97,47 @@ def top3to4(top3):
 	match top3:
 		case 0: #empty
 			return 0
+		case 1:
+			return 8
+		case 2:
+			return 5
 		case 3: #temple
 			return 9
+		case 4:
+			return 3
+		case 5:
+			return 7
 		case 6: #caravan
 			return 6
+		case 7:
+			return 11
 		case 8: #empty
 			return 0
 		case 9: #houses/village
 			return 8
+		case 10:
+			return 5
+		case 11:
+			return 9
+		case 12:
+			return 3
+		case 13:
+			return 7
 		case 14: #caravan
 			return 6
+		case 15:
+			return 11
 		case _:
 			print(f"unhandled top3: {top3}")
-			return 0
+			return top3
+
+	return top3
 
 def base3to4(base3):
 	match base3:
 		case 15:
+			#the last slot (15) is used for the end of the map slot and set to 0x0F for this purpose.
+			#so if there are any land cells using 15, set them to 7 instead 
 			return 7
 
 	return base3
@@ -137,6 +161,7 @@ MM4 base layer values (surface type index):
 13 = CLOUD.SRF
 14 = SCORTCH.SRF 
 15 = SPACE.SRF
+
 16. space			00	middle layer (wall type index)
 17. mountain		01
 18. trees			02
@@ -153,6 +178,7 @@ MM4 base layer values (surface type index):
 29. dead trees		13
 30. dead trees2		14
 31. space			15
+
 32. space			00	top layer (direct reference)
 33. tower			01
 34. tent			02
@@ -169,7 +195,8 @@ MM4 base layer values (surface type index):
 45. temple			13
 46. space			14
 47. space			15
-
+48. ??				16
+49. ??				17
 
 MM3 OUT.TIL:
 0. water
@@ -463,9 +490,24 @@ def convert_info_3to4(mm3_info, out_id=0):
 		wallTypes = [0x00, 0x01, 0x02, 0x03, 0x00, 0x05, 0x00, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x00, 0x0D, 0x0E, 0x0F]
 		surfTypes = [0x00, 0x01, 0x02, 0x03, 0x00, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x0D, 0x0E, 0x0F]
 	else:
-		wallTypes = [0x00, 0x01, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00]
-		#snow appearing for swamp
-		surfTypes = [0x00, 0x01, 0x02, 0x04, 0x04, 0x02, 0x01, 0x07, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x02, 0x01, 0x0F]
+		#snow appearing for swamp, and road for snow?
+
+		if maze_id < 49:
+			#A&B
+			surfTypes = [0x00, 0x01, 0x02, 0x04, 0x04, 0x02, 0x01, 0x07, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x02, 0x01, 0x0F]
+			wallTypes = [0x00, 0x01, 0x02, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x04, 0x00, 0x00, 0x00]
+		elif maze_id == 49 or maze_id == 53 or maze_id == 57 or maze_id == 61:
+			#C1, D1, E1, F1 (snow)
+			surfTypes = [0x00, 0x01, 0x02, 0x04, 0x04, 0x02, 0x01, 0x03, 0x08, 0x09, 0x0A, 0x00, 0x00, 0x02, 0x01, 0x0F]
+			wallTypes = [0x00, 0x01, 0x0A, 0x03, 0x00, 0x07, 0x06, 0x00, 0x00, 0x01, 0x0A, 0x03, 0x00, 0x07, 0x06, 0x00]
+		elif maze_id >= 58:
+			#swamp
+			surfTypes = [0x00, 0x01, 0x02, 0x04, 0x04, 0x02, 0x01, 0x06, 0x08, 0x09, 0x0A, 0x04, 0x00, 0x02, 0x01, 0x0F]
+			wallTypes = [0x00, 0x09, 0x08, 0x03, 0x01, 0x01, 0x02, 0x00, 0x00, 0x09, 0x08, 0x03, 0x00, 0x00, 0x02, 0x00]
+		else:
+			#C2,C3,C4+
+			surfTypes = [0x00, 0x01, 0x02, 0x05, 0x04, 0x02, 0x01, 0x06, 0x08, 0x09, 0x0A, 0x05, 0x00, 0x02, 0x01, 0x0F]
+			wallTypes = [0x00, 0x09, 0x0A, 0x03, 0x01, 0x01, 0x02, 0x00, 0x00, 0x09, 0x0A, 0x03, 0x00, 0x00, 0x02, 0x00]
 
 	floorType = 0
 	runX = 2 #TODO parse these
@@ -554,23 +596,26 @@ def parse_mazefile(filepath, outpath='mm3to4dat.bin', out_id=0):
 
 if __name__ == "__main__":
 
-	parse_mazefile("ext_cld_world/MAZE0028.DAT")
+	# parse_mazefile("ext_cld_world/MAZE0028.DAT")
 	# parse_mazefile("scummvmxeen/mazex255-og.dat")
-	parse_mazefile("ext_cld_world/MAZE0023.DAT")
+	# parse_mazefile("ext_cld_world/MAZE0023.DAT")
 
 	# parse_mazefile("scummvmxeen/mazex255.dat")
 
-	parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
+	# parse_mazefile("mm3_default.sav-files/MAZE01.DAT")
 	# parse_mazefile("mm3_default.sav-files/MAZE02.DAT")
 	# parse_mazefile("mm3_default.sav-files/MAZE41.DAT")
 
-	parse_mazefile("mm3to4_out/MAZE0016.DAT")
-	parse_mazefile("mm3_default.sav-files/MAZE42.DAT")
-	parse_mazefile("mm3to4_out/MAZE0042.DAT")
+	# parse_mazefile("mm3to4_out/MAZE0016.DAT")
+	# parse_mazefile("mm3_default.sav-files/MAZE42.DAT")
+	# parse_mazefile("mm3to4_out/MAZE0042.DAT")
 
 	# parse_mazefile("mm3_default.sav-files/MAZE11.DAT")
 	# parse_mazefile("mm3to4_out/MAZE0011.DAT")
 	# parse_mazefile("mm3to4_out/MAZEX101.DAT")
 	# parse_mazefile("mm3to4_out/MAZEX102.DAT")
 	# parse_mazefile("mm3to4_out/MAZEX103.DAT")
+
+	parse_mazefile("mm3_default.sav-files/MAZE49.DAT") #C1
+
 

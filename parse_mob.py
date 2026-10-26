@@ -120,7 +120,7 @@ def get_monsters_for_mazeid(maze_id):
 	    [0x14, 0x0a, 0x1f, 0x58], # Slithercult Stronghold: Cobra Fiend, Candle Creep, Evil Ranger, Cult Leader
 	    [0x3d, 0x2c, 0x1b],  # Fortress of Fear: Mummy, Ghost, Ghoul
 	    [0x18, 0x26, 0x2f, 0x57], # Halls of Insanity: Mini Dragon, Mystic Cloud, Evil Eye, Eye Master
-	    [0x3b],              # Dark Warrior Keep: Black Knight
+	    [0x3b],              # Dark Warrior Keep: Black Knight <-FIXME!
 	    [0x38, 0x42],        # Cathedral of Carnage: Major Demon, Major Devil
 	    [0x04, 0x1b, 0x09, 0x35, 0x46, 0x3d], # Tomb of Terror: Skeleton, Ghoul, Zombie, Lich, Vampire, Mummy
 	    [0x4c, 0x4d, 0x53],  # The Maze From Hell: Medusa, Minotaur, Minotaur King
@@ -158,7 +158,7 @@ def get_monsters_for_mazeid(maze_id):
 	    [0x38, 0x4e],        # D3: Major Demon, Octobeast
 	    [0x14, 0x19],        # D4: Cobra Fiend, Plasmoid
 	    [0x25, 0x1f],        # E1: Archer, Evil Ranger
-	    [0x2c, 0x3d, 0x04],  # E2: Ghost, Mummy, Skeleton
+	    [0x2c, 0x3d, 0x04],  # E2: Ghost, Mummy, Skeleton <-FIXME!
 	    [0x17, 0x21],        # E3: Cursed Fool, Tree Golem
 	    [0x24, 0x4a, 0x27],  # E4: Death Locust, Vulture Roc, Barbarian
 	    [0x25, 0x17],        # F1: Archer, Cursed Fool
@@ -237,6 +237,8 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 				# mm4_mids.extend(bytearray([0xFF]) * 11)
 
 				monsters = get_monsters_for_mazeid(mazeid)
+				monsters.append(0x00)
+				monsters.append(0x00)
 				mm4_mids.extend(monsters)
 				mm4_mids.extend(bytearray([0xFF]) * (16-len(monsters)))
 
@@ -254,6 +256,8 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 					if oid<16: #and ox<16 and oy<16:
 						#TODO handle cases like map1 rat overlord with oid 165
 						mm4_monsters.extend([ox, oy, oid, 0x00])
+						if oid>=len(get_monsters_for_mazeid(mazeid))+2:
+							print(f"WARNING monster instance {oid} greater than monster types in {mazeid}")
 
 
 		mm4_mob = bytearray()
@@ -276,7 +280,7 @@ def parse_mm3_mob(filepath, outpath="mm3to4mob.bin"):
 
 if __name__ == "__main__":
 
-	parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
+	# parse_mm3_mob("mm3_default.sav-files/MAZE01.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE02.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE03.MOB")
 	# parse_mm3_mob("mm3_default.sav-files/MAZE04.MOB")
@@ -293,4 +297,6 @@ if __name__ == "__main__":
 	# parse_mm3_mob("mm3_default.sav-files/MAZE54.MOB")
 
 	# parse_mm3_mob("mm3_default.sav-files/MAZE11.MOB")
+
+	parse_mm3_mob("mm3_default.sav-files/MAZE64.MOB")
 

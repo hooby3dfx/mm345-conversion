@@ -317,14 +317,18 @@ Gameplay items:
 	outdoor area 41 is giving bone whistle instead of might potion ⚠️
 	party should start with rope and hook so to climb down pit ⚠️
 -Arachnoid Caverns math quiz with max party size of 8 ⚠️
--Hirelings
--How to display Coraks notes ⚠️
+-Hirelings - just make them available at tavern?
+-How to display Coraks notes ✅
 -NPC offering skill causing crash (ex. cartography in fountain head) ✅
 -guild membership ✅
 -cyclops cavern - no objects/ceiling ✅
 -healthbar/attack icn sprite randomly incorrect ⚠️
 -wildabar cavern skull monster freeze on attack ✅
--snow ground sprite show not showing; instead road is showing (frozen isles) ⚠️
+-ground sprites - snow/sand ground sprite showing as road (frozen isles) ✅
+-gong object sprite swap ⚠️
+-ring item coming as cape ⚠️
+-some scripts not giving item (ex temple of moo skeletons) [seems like spells]
+-some scripts giving wrong effect (well near fountain head) ⚠️
 
 
 Crashes (DOS):
@@ -338,13 +342,13 @@ is this related to mirror text entries? and why does darkmirr.txt have invalid m
 
 
 Crashes (ScummVM):
--entering temple of moo: ✅
-[2026-06-23 17:58:01] Opening hashed: aaze0016.hed
-[2026-06-23 17:58:01] Opening hashed: maze0078.dat
-[2026-06-23 17:58:01] Opening hashed: maze0078.mob
-[2026-06-23 17:58:01] Opening hashed: maze0077.dat
-[2026-06-23 17:58:01] Opening hashed: maze0077.mob
+-entering temple of moo ✅
 Assertion failed: (idx < _size), function operator[], file array.h, line 275.
+-traveling north east on boat tour ✅
+Assertion failed: (!mon._id), function synchronize, file map.cpp, line 532.
+-script spin issue giving skulls ✅
+-whiteshield dungeon ✅
+Could not open file - aazex129.txt!
 
 
 

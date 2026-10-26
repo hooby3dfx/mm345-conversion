@@ -260,7 +260,7 @@ def convert_maps(in_dir, out_dir):
 
 		if Path(in_dir+"/"+maze_txt).is_file():
 			print(f"found maze TXT file: {maze_txt}")
-			maze_txt_mm4 = f"AAZE{outnum:04}.TXT" if outnum < 100 else f"AAZEX{outnum:03}.EVT"
+			maze_txt_mm4 = f"AAZE{outnum:04}.TXT" if outnum < 100 else f"AAZEX{outnum:03}.TXT"
 			print(f"target MM4 maze TXT file: {maze_txt_mm4}")
 			#straight copy
 			copy_file(in_dir+"/"+maze_txt, out_dir+"/"+maze_txt_mm4)
@@ -399,7 +399,8 @@ def convert_sprites(in_dir, out_dir):
 
 MM3TO4_OUTDOOR_TERRAIN = [
 	# WAL files
-	# ('swmtree.vga','DEDLTREE.WAL'),
+	('swmtree.vga','DEDLTREE.WAL'),
+	('higrass.vga','GRASS.WAL'),
 	('dtree.vga','DTREE.WAL'),
 	('lavamtn.vga','LAVAMNT.WAL'),
 	('ltree.vga','LTREE.WAL'),
@@ -407,6 +408,7 @@ MM3TO4_OUTDOOR_TERRAIN = [
 	('palms.vga','PALM.WAL'),
 	('snomtn.vga','SNOMNT.WAL'),
 	('snotree.vga','SNOTREE.WAL'),
+
 ]
 
 MM3TO4_OUTDOOR_SURFACE = [
@@ -415,7 +417,7 @@ MM3TO4_OUTDOOR_SURFACE = [
 	('desert.vga','DESERT.SRF'),
 	('dirt.vga','DIRT.SRF'),
 	# ('','DWATER.SRF'),
-	('swamp.vga','DWATER.SRF'),
+	# ('swamp.vga','DWATER.SRF'),#deep water
 	('grass.vga','GRASS.SRF'),
 	('lava.vga','LAVA.SRF'),
 	('road.vga','ROAD.SRF'),

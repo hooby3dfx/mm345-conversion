@@ -170,6 +170,7 @@ def convert_3to4(event_line):
 
     elif event_line.opcode==0x08:
         #mm3 if type 0x5F bypass
+        #found in fountain head skull miser 69,69
         if event_line.raw_args[0]==0x5F:
             #replace with NOP
             event_line.opcode = 0x00
@@ -329,9 +330,9 @@ if __name__ == "__main__":
     # parse_evt_file('mm3out/MAZE02.EVT')
 
     # parse_evt_file('mm3out/MAZE41.EVT')
-    parse_evt_file('mm3out/MAZE47.EVT')
+    # parse_evt_file('mm3out/MAZE47.EVT')
 
-    # parse_evt_file('mm3out/MAZE16.EVT')
+    parse_evt_file('mm3out/MAZE16.EVT')
 
     # parse_evt_file("ext_cld/MAZE0079.EVT")
 
